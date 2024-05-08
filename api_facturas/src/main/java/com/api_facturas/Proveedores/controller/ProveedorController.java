@@ -89,5 +89,17 @@ public class ProveedorController {
         }
     }
 
+    // localhost:8080/api/providers/account/change-info
+    @PutMapping("/account/change-info")
+    public ResponseEntity<Object> changeProviderInfo(@Valid @RequestBody ProveedorEntity proveedorEntity) {
+        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        try {
+            ProveedorEntity updatedProveedor = proveedorService.changeProviderInfo(userLogged, proveedorEntity);
+            httpSession.setAttribute("userLogged", updatedProveedor);
+            return ResponseEntity.ok("Información del proveedor actualizada correctamente");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 }
