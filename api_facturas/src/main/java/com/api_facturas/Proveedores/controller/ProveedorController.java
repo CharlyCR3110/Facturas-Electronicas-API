@@ -33,9 +33,10 @@ public class ProveedorController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> loginProveedor(@RequestBody ProveedorEntity proveedorEntity) {
+    public ResponseEntity<Object> loginProveedor(@RequestBody ProveedorEntity proveedorEntity, HttpSession session) {
         try {
             ProveedorEntity loggedProveedor = proveedorService.loginProveedor(proveedorEntity.getCorreo(), proveedorEntity.getContrasena());
+            session.setAttribute("userLogged", loggedProveedor);
             return ResponseEntity.ok(loggedProveedor);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
