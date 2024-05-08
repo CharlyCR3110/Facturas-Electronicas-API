@@ -43,7 +43,7 @@ public class ProductoService {
         }
     }
 
-    public void editProduct(ProductoEntity producto) {
+    public ProductoEntity editProduct(ProductoEntity producto) {
         // verificar que el proveedor no tenga un producto con el mismo nombre
         ArrayList<ProductoEntity> productos = productoRepository.findAllByIdProveedor(producto.getIdProveedor());
         for (ProductoEntity p : productos) {
@@ -51,7 +51,7 @@ public class ProductoService {
                 throw new RuntimeException("Ya existe un producto con el mismo nombre");
             }
         }
-        productoRepository.save(producto);
+        return productoRepository.save(producto);
     }
 
     public ArrayList<ProductoEntity> searchProductsByName(ProveedorEntity userLogged, String searchName) {
