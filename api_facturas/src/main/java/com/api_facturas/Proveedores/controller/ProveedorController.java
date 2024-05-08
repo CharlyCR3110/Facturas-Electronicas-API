@@ -32,5 +32,14 @@ public class ProveedorController {
         }
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<Object> loginProveedor(@RequestBody ProveedorEntity proveedorEntity) {
+        try {
+            ProveedorEntity loggedProveedor = proveedorService.loginProveedor(proveedorEntity.getCorreo(), proveedorEntity.getContrasena());
+            return ResponseEntity.ok(loggedProveedor);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 }
