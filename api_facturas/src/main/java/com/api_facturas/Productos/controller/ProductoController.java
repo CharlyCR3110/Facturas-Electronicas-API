@@ -59,4 +59,14 @@ public class ProductoController {
         return ResponseEntity.badRequest().build();
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable int id) {
+        try {
+            productoService.deleteProductById(id);
+            return ResponseEntity.ok("Producto eliminado");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }
