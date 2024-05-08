@@ -43,4 +43,10 @@ public class ProveedorController {
         }
     }
 
+    @GetMapping("/logout")
+    public ResponseEntity<Object> logoutProveedor(HttpSession session) {
+        session.removeAttribute("userLogged");
+        return ResponseEntity.ok("Sesión cerrada");
+    }
+
 }
