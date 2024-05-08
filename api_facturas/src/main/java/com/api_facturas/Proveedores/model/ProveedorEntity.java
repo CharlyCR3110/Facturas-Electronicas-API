@@ -46,8 +46,7 @@ public class ProveedorEntity {
     private String contrasena;
 
     @Basic
-    @NotBlank(message = "El estado es requerido")
-    @Pattern(regexp = "^(en espera|activo|inactivo)$", message = "El estado debe ser 'en espera', 'activo' o 'inactivo'")
+    @Pattern(regexp = "^(en espera|activo|inactivo|)$", message = "El estado debe ser 'en espera', 'activo' o 'inactivo'")
     @Column(name = "estado")
     private String estado;
 
