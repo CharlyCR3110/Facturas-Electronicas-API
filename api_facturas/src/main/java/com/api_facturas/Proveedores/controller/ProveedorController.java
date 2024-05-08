@@ -49,4 +49,16 @@ public class ProveedorController {
         return ResponseEntity.ok("Sesión cerrada");
     }
 
+    @PutMapping("/account/change-email")
+    public ResponseEntity<Object> changeEmail(@Valid @RequestBody ProveedorEntity proveedorEntity) {
+        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        try {
+            ProveedorEntity updatedProveedor = proveedorService.changeEmail(userLogged, proveedorEntity.getCorreo());
+            httpSession.setAttribute("userLogged", updatedProveedor);
+            return ResponseEntity.ok("Correo actualizado correctamente");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }
