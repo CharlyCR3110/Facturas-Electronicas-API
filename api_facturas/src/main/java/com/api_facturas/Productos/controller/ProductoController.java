@@ -5,6 +5,7 @@ import com.api_facturas.Productos.service.ProductoService;
 import com.api_facturas.Proveedores.model.ProveedorEntity;
 import com.api_facturas.Proveedores.service.ProveedorService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,5 +45,18 @@ public class ProductoController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/add")
+    public ResponseEntity<ProductoEntity> addProduct(@Valid @RequestBody ProductoEntity producto) {
+        ProveedorEntity userLogged = proveedorService.loginProveedor("proveedora@example.com", "123");
+
+        producto.setIdProveedor(userLogged.getIdProveedor());
+
+        ProductoEntity productoGuardado = productoService.saveProduct(producto);
+        if (productoGuardado != null) {
+            return ResponseEntity.ok(productoGuardado);
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
 
 }
