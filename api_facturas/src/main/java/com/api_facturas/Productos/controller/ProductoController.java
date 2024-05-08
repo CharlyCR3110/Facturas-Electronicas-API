@@ -6,6 +6,7 @@ import com.api_facturas.Proveedores.model.ProveedorEntity;
 import com.api_facturas.Proveedores.service.ProveedorService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +67,21 @@ public class ProductoController {
             return ResponseEntity.ok("Producto eliminado");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ProductoEntity> updateProduct(@PathVariable("id") Integer productoId, @Valid @RequestBody ProductoEntity producto) {
+        ProveedorEntity userLogged = proveedorService.loginProveedor("proveedora@example.com", "123");
+
+        producto.setIdProveedor(userLogged.getIdProveedor());
+        ProductoEntity existingProduct = productoService.getProductoByID(productoId);
+        if (existingProduct != null) {
+            producto.setIdProducto(productoId);
+            ProductoEntity updatedProduct = productoService.editProduct(producto);
+            return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
