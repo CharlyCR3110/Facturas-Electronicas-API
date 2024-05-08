@@ -85,4 +85,17 @@ public class ProductoController {
         }
     }
 
+    // http://localhost:8080/api/products/search?searchName=producto
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductoEntity>> searchProducts(@RequestParam("searchName") String searchName) {
+        ProveedorEntity userLogged = proveedorService.loginProveedor("proveedora@example.com", "123");
+
+        ArrayList<ProductoEntity> productos = productoService.searchProductsByName(userLogged, searchName);
+        if (!productos.isEmpty()) {
+            return new ResponseEntity<>(productos, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
+
 }
