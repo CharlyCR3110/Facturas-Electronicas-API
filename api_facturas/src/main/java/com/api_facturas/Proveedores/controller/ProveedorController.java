@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
@@ -33,10 +34,10 @@ public class ProveedorController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> loginProveedor(@RequestBody ProveedorEntity proveedorEntity, HttpSession session) {
+    public ResponseEntity<Object> loginProveedor(@RequestBody ProveedorEntity proveedorEntity) {
         try {
             ProveedorEntity loggedProveedor = proveedorService.loginProveedor(proveedorEntity.getCorreo(), proveedorEntity.getContrasena());
-            session.setAttribute("userLogged", loggedProveedor);
+            httpSession.setAttribute("userLogged", loggedProveedor);
             return ResponseEntity.ok(loggedProveedor);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
