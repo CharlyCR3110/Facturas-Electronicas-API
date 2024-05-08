@@ -62,4 +62,32 @@ public class ProveedorController {
         }
     }
 
+    // localhost:8080/api/providers/account/change-password?currentPassword=123&newPassword=1234&confirmPassword=1234
+    @PutMapping("/account/change-password")
+    public ResponseEntity<Object> changePassword(@RequestParam("currentPassword") String currentPassword,
+                                                 @RequestParam("newPassword") String newPassword,
+                                                 @RequestParam("confirmPassword") String confirmPassword) {
+        if (!newPassword.equals(confirmPassword)) {
+            return ResponseEntity.badRequest().body("Las contraseñas no coinciden");
+        }
+
+        if (newPassword.equals(currentPassword)) {
+            return ResponseEntity.badRequest().body("La nueva contraseña no puede ser igual a la actual");
+        }
+
+        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            return ResponseEntity.badRequest().body("No se ha iniciado sesión");
+        }
+
+        try {
+            ProveedorEntity updatedProveedor = proveedorService.changePassword(userLogged, newPassword);
+            httpSession.setAttribute("userLogged", updatedProveedor);
+            return ResponseEntity.ok("Contraseña actualizada correctamente");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
 }
