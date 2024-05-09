@@ -32,12 +32,10 @@ public class ProductoController {
     @SuppressWarnings("unchecked")
     @GetMapping("/")
     public ResponseEntity<List<ProductoEntity>> getAllProducts() {
-//        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
-//        if (userLogged == null) {
-//            return ResponseEntity.status(401).build();
-//        }
-        ProveedorEntity userLogged = proveedorService.loginProveedor("proveedora@example.com", "123");
-        //TODO: Cambiar el usuario loggeado por el que se obtiene de la sesion
+        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            return ResponseEntity.badRequest().build();
+        }
 
         ArrayList<ProductoEntity> productos = productoService.getProductosByProveedor(userLogged);
         if (productos != null) {
@@ -48,7 +46,10 @@ public class ProductoController {
 
     @PostMapping("/add")
     public ResponseEntity<ProductoEntity> addProduct(@Valid @RequestBody ProductoEntity producto) {
-        ProveedorEntity userLogged = proveedorService.loginProveedor("proveedora@example.com", "123");
+        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            return ResponseEntity.badRequest().build();
+        }
 
         producto.setIdProveedor(userLogged.getIdProveedor());
 
@@ -72,7 +73,10 @@ public class ProductoController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<ProductoEntity> updateProduct(@PathVariable("id") Integer productoId, @Valid @RequestBody ProductoEntity producto) {
-        ProveedorEntity userLogged = proveedorService.loginProveedor("proveedora@example.com", "123");
+        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            return ResponseEntity.badRequest().build();
+        }
 
         producto.setIdProveedor(userLogged.getIdProveedor());
         ProductoEntity existingProduct = productoService.getProductoByID(productoId);
@@ -88,7 +92,10 @@ public class ProductoController {
     // http://localhost:8080/api/products/search?searchName=producto
     @GetMapping("/search")
     public ResponseEntity<List<ProductoEntity>> searchProducts(@RequestParam("searchName") String searchName) {
-        ProveedorEntity userLogged = proveedorService.loginProveedor("proveedora@example.com", "123");
+        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            return ResponseEntity.badRequest().build();
+        }
 
         ArrayList<ProductoEntity> productos = productoService.searchProductsByName(userLogged, searchName);
         if (!productos.isEmpty()) {
