@@ -41,4 +41,20 @@ public class ClienteController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/add")
+    public ResponseEntity<ClienteEntity> addClient(@Valid @RequestBody ClienteEntity cliente) {
+        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        cliente.setIdProveedor(userLogged.getIdProveedor());
+        ClienteEntity newClient = clienteService.saveClient(cliente);
+        if (newClient != null) {
+            return ResponseEntity.ok(newClient);
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
+
 }
