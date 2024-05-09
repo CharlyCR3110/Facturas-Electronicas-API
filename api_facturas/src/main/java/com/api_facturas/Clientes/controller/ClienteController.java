@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
-@Controller
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+@RestController
+@RequestMapping("/api/clients")
 public class ClienteController {
     private final ClienteService clienteService;
 
@@ -25,7 +27,7 @@ public class ClienteController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<ArrayList<ClienteEntity>> getClientes(Model model) {
+    public ResponseEntity<ArrayList<ClienteEntity>> getAllClients(Model model) {
         ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
             return ResponseEntity.status(401).build();
