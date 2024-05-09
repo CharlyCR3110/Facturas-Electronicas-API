@@ -30,4 +30,15 @@ public class AdminController {
         this.httpSession = httpSession;
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<Object> loginAdmin(@Valid @RequestBody AdminEntity adminEntity) {
+        try {
+            AdminEntity loggedAdmin = adminService.loginAdmin(adminEntity.getNombre(), adminEntity.getContrasena());
+            httpSession.setAttribute("adminLogged", loggedAdmin);
+            return ResponseEntity.ok(loggedAdmin);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }
