@@ -67,4 +67,20 @@ public class ClienteController {
         }
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<ClienteEntity> updateClient(@Valid @RequestBody ClienteEntity cliente) {
+        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        cliente.setIdProveedor(userLogged.getIdProveedor());
+        ClienteEntity updatedClient = clienteService.editCliente(cliente);
+        if (updatedClient != null) {
+            return ResponseEntity.ok(updatedClient);
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
+
 }
