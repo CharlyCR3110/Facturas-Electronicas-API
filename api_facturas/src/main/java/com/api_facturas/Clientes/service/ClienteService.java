@@ -49,7 +49,7 @@ public class ClienteService {
         }
     }
 
-    public void editCliente(ClienteEntity cliente) {
+    public ClienteEntity editCliente(ClienteEntity cliente) {
         // validar que el proveedor no tenga otro cliente con la misma identificación
         ArrayList<ClienteEntity> clientes = clienteRepository.findAllByIdProveedor(cliente.getIdProveedor());
         for (ClienteEntity c : clientes) {
@@ -59,7 +59,7 @@ public class ClienteService {
         }
         // Ademas la base de datos no permite que se repita el correo (entonces no es necesario validar) (tira excepción)
 
-        clienteRepository.save(cliente);
+        return clienteRepository.save(cliente);
     }
 
     public ArrayList<ClienteEntity> searchClientsByName(ProveedorEntity userLogged, String searchName) {
