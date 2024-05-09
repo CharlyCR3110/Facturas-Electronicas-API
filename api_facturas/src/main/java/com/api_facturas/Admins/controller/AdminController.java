@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RestController
@@ -45,6 +46,18 @@ public class AdminController {
     public ResponseEntity<Object> logoutAdmin(HttpSession session) {
         session.removeAttribute("adminLogged");
         return ResponseEntity.ok("Sesión cerrada");
+    }
+
+    @GetMapping("/dashboard")
+    public ResponseEntity<Object> getAdminDashboard() {
+        AdminEntity admin = (AdminEntity) httpSession.getAttribute("adminLogged");
+        if (admin == null) {
+            return ResponseEntity.badRequest().body("No hay una sesión activa");
+        }
+        // obtener la lista de proveedores
+        List<ProveedorEntity> proveedores = proveedorService.getAllProviders();
+
+        return ResponseEntity.ok(proveedores);
     }
 
 }
