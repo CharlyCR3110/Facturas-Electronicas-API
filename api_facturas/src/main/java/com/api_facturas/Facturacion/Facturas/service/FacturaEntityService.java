@@ -38,7 +38,22 @@ public class FacturaEntityService {
     }
 
     public void deleteFactura(Integer id) {
-        facturaEntityRepository.deleteById(id);
+        try {
+            if (facturaEntityRepository.existsById(id)) {
+                facturaEntityRepository.deleteById(id);
+            } else {
+                throw new RuntimeException("Factura no encontrada");
+            }
+        } catch (Exception e) {
+            if (e.getMessage().contains("foreign key constraint fails")) {
+                // CASI IMPOSIBLE QUE ESTO PASE PORQUE HAY UN TRIGGER EN LA BASE DE DATOS QUE ELIMINA LOS DETALLES DE LA FACTURA
+                throw new RuntimeException("No se pudo eliminar la factura. Esto puede deberse a que hay detalles asociados a esta factura. Por favor, elimine primero los detalles asociados y luego intente nuevamente.");
+            } else if (e.getMessage().contains("Factura no encontrada")) {
+                throw new RuntimeException("No se encontró la factura con ID " + id);
+            }
+
+            throw new RuntimeException("No se pudo eliminar la factura");
+        }
     }
 
     public ArrayList<FacturaConDetallesDTO> getFacturasByProveedorAndClientID(ProveedorEntity userLogged, Integer searchClientID) {
