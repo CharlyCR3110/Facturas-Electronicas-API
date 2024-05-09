@@ -53,6 +53,10 @@ public class ProveedorController {
     @PutMapping("/account/change-email")
     public ResponseEntity<Object> changeEmail(@Valid @RequestBody ProveedorEntity proveedorEntity) {
         ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            return ResponseEntity.status(401).build();
+        }
+
         try {
             ProveedorEntity updatedProveedor = proveedorService.changeEmail(userLogged, proveedorEntity.getCorreo());
             httpSession.setAttribute("userLogged", updatedProveedor);
@@ -77,7 +81,7 @@ public class ProveedorController {
 
         ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
-            return ResponseEntity.badRequest().body("No se ha iniciado sesión");
+            return ResponseEntity.status(401).build();
         }
 
         try {
@@ -93,6 +97,10 @@ public class ProveedorController {
     @PutMapping("/account/change-info")
     public ResponseEntity<Object> changeProviderInfo(@Valid @RequestBody ProveedorEntity proveedorEntity) {
         ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            return ResponseEntity.status(401).build();
+        }
+
         try {
             ProveedorEntity updatedProveedor = proveedorService.changeProviderInfo(userLogged, proveedorEntity);
             httpSession.setAttribute("userLogged", updatedProveedor);
