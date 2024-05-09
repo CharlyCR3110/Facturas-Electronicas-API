@@ -83,4 +83,20 @@ public class ClienteController {
         return ResponseEntity.badRequest().build();
     }
 
+    // http://localhost:8080/api/clients/search?searchName=Juan
+    @PostMapping("/search")
+    public ResponseEntity<ArrayList<ClienteEntity>> searchClients(@RequestParam("searchName") String searchName) {
+        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        ArrayList<ClienteEntity> clientes = clienteService.searchClientsByName(userLogged, searchName);
+        if (clientes != null) {
+            return ResponseEntity.ok(clientes);
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
 }
