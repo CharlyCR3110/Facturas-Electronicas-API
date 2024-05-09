@@ -41,4 +41,10 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/logout")
+    public ResponseEntity<Object> logoutAdmin(HttpSession session) {
+        session.removeAttribute("adminLogged");
+        return ResponseEntity.ok("Sesión cerrada");
+    }
+
 }
