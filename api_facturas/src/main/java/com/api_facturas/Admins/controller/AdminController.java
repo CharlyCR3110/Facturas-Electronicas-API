@@ -52,7 +52,7 @@ public class AdminController {
     public ResponseEntity<Object> getAdminDashboard() {
         AdminEntity admin = (AdminEntity) httpSession.getAttribute("adminLogged");
         if (admin == null) {
-            return ResponseEntity.badRequest().body("No hay una sesión activa");
+            return ResponseEntity.status(401).build();
         }
         // obtener la lista de proveedores
         List<ProveedorEntity> proveedores = proveedorService.getAllProviders();
@@ -65,10 +65,9 @@ public class AdminController {
     public ResponseEntity<Object> changeProviderState(@PathVariable("providerId") Integer providerId) {
         AdminEntity admin = (AdminEntity) httpSession.getAttribute("adminLogged");
         if (admin == null) {
-            return ResponseEntity.badRequest().body("No hay una sesión activa");
+            return ResponseEntity.status(401).build();
         }
-
-
+        
         ProveedorEntity updatedProvider = proveedorService.changeProviderState(providerId);
         if (updatedProvider != null) {
             return ResponseEntity.ok(updatedProvider);
