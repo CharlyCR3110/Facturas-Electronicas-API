@@ -5,6 +5,7 @@ import com.api_facturas.Clientes.service.ClienteService;
 import com.api_facturas.Proveedores.model.ProveedorEntity;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,21 @@ public class ClienteController {
     public ClienteController(ClienteService clienteService, HttpSession httpSession) {
         this.clienteService = clienteService;
         this.httpSession = httpSession;
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<ArrayList<ClienteEntity>> getClientes(Model model) {
+        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        ArrayList<ClienteEntity> clientes = clienteService.getClientesByProveedor(userLogged);
+        if (clientes != null) {
+            return ResponseEntity.ok(clientes);
+        }
+
+        return ResponseEntity.noContent().build();
     }
 
 }
