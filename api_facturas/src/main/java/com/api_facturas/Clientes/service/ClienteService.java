@@ -19,7 +19,7 @@ public class ClienteService {
         return clienteRepository.findAllByIdProveedor(userLogged.getIdProveedor());
     }
 
-    public void saveClient(ClienteEntity newClient) {
+    public ClienteEntity saveClient(ClienteEntity newClient) {
         // validar que el proveedor no tenga otro cliente con la misma identificación
         ArrayList<ClienteEntity> clientes = clienteRepository.findAllByIdProveedor(newClient.getIdProveedor());
         for (ClienteEntity c : clientes) {
@@ -29,7 +29,7 @@ public class ClienteService {
         }
         // Ademas la base de datos no permite que se repita el correo (entonces no es necesario validar) (tira excepción)
 
-        clienteRepository.save(newClient);
+        return clienteRepository.save(newClient);
     }
 
     public void deleteClientById(Integer clienteId) {
