@@ -91,7 +91,7 @@ public class ProveedorService {
         return proveedorRepository.findAll();
     }
 
-    public void changeProviderState(int idProveedor) {
+    public ProveedorEntity changeProviderState(int idProveedor) {
         Optional<ProveedorEntity> proveedorOptional = proveedorRepository.findById(idProveedor);
         if (proveedorOptional.isPresent()) {
             ProveedorEntity proveedor = proveedorOptional.get();
@@ -100,7 +100,7 @@ public class ProveedorService {
             } else {
                 proveedor.setEstado("activo");
             }
-            proveedorRepository.save(proveedor);
+            return proveedorRepository.save(proveedor);
         } else {
             throw new IllegalArgumentException("No se encontró un proveedor con el ID proporcionado.");
         }
