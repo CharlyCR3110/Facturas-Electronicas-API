@@ -60,4 +60,21 @@ public class AdminController {
         return ResponseEntity.ok(proveedores);
     }
 
+    // changeProviderState
+    @PutMapping("/providers/changeState/{providerId}")
+    public ResponseEntity<Object> changeProviderState(@PathVariable("providerId") Integer providerId) {
+        AdminEntity admin = (AdminEntity) httpSession.getAttribute("adminLogged");
+        if (admin == null) {
+            return ResponseEntity.badRequest().body("No hay una sesión activa");
+        }
+
+
+        ProveedorEntity updatedProvider = proveedorService.changeProviderState(providerId);
+        if (updatedProvider != null) {
+            return ResponseEntity.ok(updatedProvider);
+        }
+
+        return ResponseEntity.badRequest().body("No se pudo actualizar el proveedor");
+    }
+
 }
