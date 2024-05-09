@@ -47,5 +47,25 @@ public class FacturasController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteInvoice(@PathVariable("id") Integer id, Model model) {
+        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        try {
+            facturaEntityService.deleteFactura(id);
+            ArrayList<FacturaConDetallesDTO> invoices = facturaEntityService.getFacturasByProveedor(userLogged);
+            if (invoices != null) {
+                return ResponseEntity.ok("Factura eliminada");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return ResponseEntity.badRequest().body("No se pudo eliminar la factura");
+    }
+
 }
 
