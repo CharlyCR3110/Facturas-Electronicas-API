@@ -57,4 +57,14 @@ public class ClienteController {
         return ResponseEntity.badRequest().build();
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteClient(@PathVariable int id) {
+        try {
+            clienteService.deleteClientById(id);
+            return ResponseEntity.ok("Cliente eliminado");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }
