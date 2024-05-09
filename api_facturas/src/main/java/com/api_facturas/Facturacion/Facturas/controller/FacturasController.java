@@ -67,5 +67,21 @@ public class FacturasController {
         return ResponseEntity.badRequest().body("No se pudo eliminar la factura");
     }
 
+    // http://localhost:8080/api/invoices/search?searchClientID=1
+    @PostMapping("/search")
+    public ResponseEntity<ArrayList<FacturaConDetallesDTO>> searchInvoice(@RequestParam(name = "searchClientID", required = false) Integer searchClientID, Model model) {
+        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        ArrayList<FacturaConDetallesDTO> invoices = facturaEntityService.getFacturasByProveedorAndClientID(userLogged, searchClientID);
+        if (invoices != null) {
+            return ResponseEntity.ok(invoices);
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
 }
 
