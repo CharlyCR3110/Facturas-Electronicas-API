@@ -34,7 +34,7 @@ public class ProductoController {
     public ResponseEntity<List<ProductoEntity>> getAllProducts() {
         ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(401).build();
         }
 
         ArrayList<ProductoEntity> productos = productoService.getProductosByProveedor(userLogged);
@@ -48,7 +48,7 @@ public class ProductoController {
     public ResponseEntity<ProductoEntity> addProduct(@Valid @RequestBody ProductoEntity producto) {
         ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(401).build();
         }
 
         producto.setIdProveedor(userLogged.getIdProveedor());
@@ -75,7 +75,7 @@ public class ProductoController {
     public ResponseEntity<ProductoEntity> updateProduct(@PathVariable("id") Integer productoId, @Valid @RequestBody ProductoEntity producto) {
         ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(401).build();
         }
 
         producto.setIdProveedor(userLogged.getIdProveedor());
@@ -94,7 +94,7 @@ public class ProductoController {
     public ResponseEntity<List<ProductoEntity>> searchProducts(@RequestParam("searchName") String searchName) {
         ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(401).build();
         }
 
         ArrayList<ProductoEntity> productos = productoService.searchProductsByName(userLogged, searchName);
