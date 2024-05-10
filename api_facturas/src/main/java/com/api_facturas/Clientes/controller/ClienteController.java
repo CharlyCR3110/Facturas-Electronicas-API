@@ -2,13 +2,11 @@ package com.api_facturas.Clientes.controller;
 
 import com.api_facturas.Clientes.model.ClienteEntity;
 import com.api_facturas.Clientes.service.ClienteService;
-import com.api_facturas.Proveedores.model.ProveedorEntity;
+import com.api_facturas.Usuarios.model.UsuarioEntity;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -28,7 +26,7 @@ public class ClienteController {
 
     @GetMapping("/")
     public ResponseEntity<ArrayList<ClienteEntity>> getAllClients(Model model) {
-        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
             return ResponseEntity.status(401).build();
         }
@@ -43,12 +41,12 @@ public class ClienteController {
 
     @PostMapping("/add")
     public ResponseEntity<ClienteEntity> addClient(@Valid @RequestBody ClienteEntity cliente) {
-        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
             return ResponseEntity.status(401).build();
         }
 
-        cliente.setIdProveedor(userLogged.getIdProveedor());
+        cliente.setIdUsuario(userLogged.getIdUsuario());
         ClienteEntity newClient = clienteService.saveClient(cliente);
         if (newClient != null) {
             return ResponseEntity.ok(newClient);
@@ -69,12 +67,12 @@ public class ClienteController {
 
     @PutMapping("/update")
     public ResponseEntity<ClienteEntity> updateClient(@Valid @RequestBody ClienteEntity cliente) {
-        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
             return ResponseEntity.status(401).build();
         }
 
-        cliente.setIdProveedor(userLogged.getIdProveedor());
+        cliente.setIdUsuario(userLogged.getIdUsuario());
         ClienteEntity updatedClient = clienteService.editCliente(cliente);
         if (updatedClient != null) {
             return ResponseEntity.ok(updatedClient);
@@ -86,7 +84,7 @@ public class ClienteController {
     // http://localhost:8080/api/clients/search?searchName=Juan
     @PostMapping("/search")
     public ResponseEntity<ArrayList<ClienteEntity>> searchClients(@RequestParam("searchName") String searchName) {
-        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
             return ResponseEntity.status(401).build();
         }

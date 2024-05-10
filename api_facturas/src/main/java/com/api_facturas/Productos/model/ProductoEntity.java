@@ -36,8 +36,8 @@ public class ProductoEntity {
     private BigDecimal precioUnitario;
 
     @Basic
-    @Column(name = "id_proveedor")
-    private Integer idProveedor;
+    @Column(name = "id_usuario")
+    private Integer idUsuario;
 
     public int getIdProducto() {
         return idProducto;
@@ -71,12 +71,12 @@ public class ProductoEntity {
         this.precioUnitario = precioUnitario;
     }
 
-    public Integer getIdProveedor() {
-        return idProveedor;
+    public Integer getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setIdProveedor(Integer idProveedor) {
-        this.idProveedor = idProveedor;
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     @Override
@@ -84,12 +84,12 @@ public class ProductoEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductoEntity that = (ProductoEntity) o;
-        return idProducto == that.idProducto && Objects.equals(nombre, that.nombre) && Objects.equals(descripcion, that.descripcion) && Objects.equals(precioUnitario, that.precioUnitario) && Objects.equals(idProveedor, that.idProveedor);
+        return idProducto == that.idProducto && Objects.equals(nombre, that.nombre) && Objects.equals(descripcion, that.descripcion) && Objects.equals(precioUnitario, that.precioUnitario) && Objects.equals(idUsuario, that.idUsuario);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idProducto, nombre, descripcion, precioUnitario, idProveedor);
+        return Objects.hash(idProducto, nombre, descripcion, precioUnitario, idUsuario);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class ProductoEntity {
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 ", precioUnitario=" + precioUnitario +
-                ", idProveedor=" + idProveedor +
+                ", idProveedor=" + idUsuario +
                 '}';
     }
 

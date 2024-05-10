@@ -2,7 +2,7 @@ package com.api_facturas.Productos.service;
 
 import com.api_facturas.Productos.model.ProductoEntity;
 import com.api_facturas.Productos.repository.ProductoRepository;
-import com.api_facturas.Proveedores.model.ProveedorEntity;
+import com.api_facturas.Usuarios.model.UsuarioEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,14 +15,14 @@ public class ProductoService {
         this.productoRepository = productoRepository;
     }
 
-    public ArrayList<ProductoEntity> getProductosByProveedor(ProveedorEntity userLogged) {
-        return productoRepository.findAllByIdProveedor(userLogged.getIdProveedor());
+    public ArrayList<ProductoEntity> getProductosByProveedor(UsuarioEntity userLogged) {
+        return productoRepository.findAllByIdUsuario(userLogged.getIdUsuario());
     }
 
     // save a product
     public ProductoEntity saveProduct(ProductoEntity producto) {
         // verificar que el proveedor no tenga un producto con el mismo nombre
-        ArrayList<ProductoEntity> productos = productoRepository.findAllByIdProveedor(producto.getIdProveedor());
+        ArrayList<ProductoEntity> productos = productoRepository.findAllByIdUsuario(producto.getIdUsuario());
         for (ProductoEntity p : productos) {
             if (p.getNombre().equals(producto.getNombre())) {
                 throw new RuntimeException("Ya existe un producto con el mismo nombre");
@@ -51,7 +51,7 @@ public class ProductoService {
 
     public ProductoEntity editProduct(ProductoEntity producto) {
         // verificar que el proveedor no tenga un producto con el mismo nombre
-        ArrayList<ProductoEntity> productos = productoRepository.findAllByIdProveedor(producto.getIdProveedor());
+        ArrayList<ProductoEntity> productos = productoRepository.findAllByIdUsuario(producto.getIdUsuario());
         for (ProductoEntity p : productos) {
             if (p.getNombre().equals(producto.getNombre()) && p.getIdProducto() != producto.getIdProducto()) {
                 throw new RuntimeException("Ya existe un producto con el mismo nombre");
@@ -60,20 +60,20 @@ public class ProductoService {
         return productoRepository.save(producto);
     }
 
-    public ArrayList<ProductoEntity> searchProductsByName(ProveedorEntity userLogged, String searchName) {
+    public ArrayList<ProductoEntity> searchProductsByName(UsuarioEntity userLogged, String searchName) {
         if (searchName == null || searchName.isEmpty()) {
-            return productoRepository.findAllByIdProveedor(userLogged.getIdProveedor());
+            return productoRepository.findAllByIdUsuario(userLogged.getIdUsuario());
         }
 
-        return productoRepository.findAllByIdProveedorAndNombreContaining(userLogged.getIdProveedor(), searchName);
+        return productoRepository.findAllByIdUsuarioAndNombreContaining(userLogged.getIdUsuario(), searchName);
     }
 
     public ProductoEntity getProductoByID(Integer productID) {
         return productoRepository.findById(productID).orElse(null);
     }
 
-    public ProductoEntity getProductoByNombreAndProveedor(String productName, ProveedorEntity userLogged) {
-        ProductoEntity returnValue = productoRepository.findByNombreAndIdProveedor(productName, userLogged.getIdProveedor());
+    public ProductoEntity getProductoByNombreAndProveedor(String productName, UsuarioEntity userLogged) {
+        ProductoEntity returnValue = productoRepository.findByNombreAndIdUsuario(productName, userLogged.getIdUsuario());
         if (returnValue == null) {
             throw new RuntimeException("Parece que el producto no existe");
         }

@@ -6,7 +6,7 @@ import com.api_facturas.Facturacion.Detalles.model.DetalleFacturaEntity;
 import com.api_facturas.Facturacion.Detalles.repository.DetalleFacturaEntityRepository;
 import com.api_facturas.Facturacion.Facturas.model.FacturaEntity;
 import com.api_facturas.Facturacion.Facturas.repository.FacturaEntityRepository;
-import com.api_facturas.Proveedores.model.ProveedorEntity;
+import com.api_facturas.Usuarios.model.UsuarioEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,9 +22,9 @@ public class FacturaEntityService {
         this.detalleFacturaEntityRepository = detalleFacturaEntityRepository;
     }
 
-    public ArrayList<FacturaConDetallesDTO> getFacturasByProveedor(ProveedorEntity userLogged) {
+    public ArrayList<FacturaConDetallesDTO> getFacturasByProveedor(UsuarioEntity userLogged) {
         ArrayList<FacturaConDetallesDTO> facturas = new ArrayList<>();
-        List<FacturaEntity> facturasDelProveedor = facturaEntityRepository.getFacturasByIdProveedor(userLogged.getIdProveedor());
+        List<FacturaEntity> facturasDelProveedor = facturaEntityRepository.getFacturasByIdProveedor(userLogged.getIdUsuario());
 
         for (FacturaEntity factura : facturasDelProveedor) {
             List<DetalleFacturaEntity> detalles = detalleFacturaEntityRepository.getDetallesByIdFactura(factura.getIdFactura());
@@ -56,13 +56,13 @@ public class FacturaEntityService {
         }
     }
 
-    public ArrayList<FacturaConDetallesDTO> getFacturasByProveedorAndClientID(ProveedorEntity userLogged, Integer searchClientID) {
+    public ArrayList<FacturaConDetallesDTO> getFacturasByProveedorAndClientID(UsuarioEntity userLogged, Integer searchClientID) {
         if (searchClientID == null || searchClientID == -1) {
             return getFacturasByProveedor(userLogged);
         }
 
         ArrayList<FacturaConDetallesDTO> facturas = new ArrayList<>();
-        List<FacturaEntity> facturasDelProveedor = facturaEntityRepository.getFacturasByIdProveedorAndIdCliente(userLogged.getIdProveedor(), searchClientID);
+        List<FacturaEntity> facturasDelProveedor = facturaEntityRepository.getFacturasByIdProveedorAndIdCliente(userLogged.getIdUsuario(), searchClientID);
 
         for (FacturaEntity factura : facturasDelProveedor) {
             List<DetalleFacturaEntity> detalles = detalleFacturaEntityRepository.getDetallesByIdFactura(factura.getIdFactura());

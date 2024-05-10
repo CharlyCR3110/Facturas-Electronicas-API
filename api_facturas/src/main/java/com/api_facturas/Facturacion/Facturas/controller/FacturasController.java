@@ -6,7 +6,7 @@ import com.api_facturas.Clientes.service.ClienteService;
 import com.api_facturas.Facturacion.DTO.FacturaConDetallesDTO;
 import com.api_facturas.Facturacion.Facturas.service.FacturaEntityService;
 import com.api_facturas.Productos.service.ProductoService;
-import com.api_facturas.Proveedores.model.ProveedorEntity;
+import com.api_facturas.Usuarios.model.UsuarioEntity;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +34,7 @@ public class FacturasController {
 
     @GetMapping("/history")
     public ResponseEntity<ArrayList<FacturaConDetallesDTO>> getInvoices(Model model) {
-        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
             return ResponseEntity.status(401).build();
         }
@@ -49,7 +49,7 @@ public class FacturasController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteInvoice(@PathVariable("id") Integer id, Model model) {
-        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
             return ResponseEntity.status(401).build();
         }
@@ -70,7 +70,7 @@ public class FacturasController {
     // http://localhost:8080/api/invoices/search?searchClientID=1
     @PostMapping("/search")
     public ResponseEntity<ArrayList<FacturaConDetallesDTO>> searchInvoice(@RequestParam(name = "searchClientID", required = false) Integer searchClientID, Model model) {
-        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
             return ResponseEntity.status(401).build();
         }

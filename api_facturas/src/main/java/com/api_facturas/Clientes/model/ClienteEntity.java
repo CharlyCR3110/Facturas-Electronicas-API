@@ -39,8 +39,8 @@ public class ClienteEntity {
     private String correo;
 
     @Basic
-    @Column(name = "id_proveedor")
-    private Integer idProveedor;
+    @Column(name = "id_usuario")
+    private Integer idUsuario;
 
     public int getIdCliente() {
         return idCliente;
@@ -82,12 +82,12 @@ public class ClienteEntity {
         this.correo = correo;
     }
 
-    public Integer getIdProveedor() {
-        return idProveedor;
+    public Integer getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setIdProveedor(Integer idProveedor) {
-        this.idProveedor = idProveedor;
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     @Override
@@ -95,12 +95,12 @@ public class ClienteEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClienteEntity that = (ClienteEntity) o;
-        return idCliente == that.idCliente && Objects.equals(nombre, that.nombre) && Objects.equals(identificacion, that.identificacion) && Objects.equals(telefono, that.telefono) && Objects.equals(correo, that.correo) && Objects.equals(idProveedor, that.idProveedor);
+        return idCliente == that.idCliente && Objects.equals(nombre, that.nombre) && Objects.equals(identificacion, that.identificacion) && Objects.equals(telefono, that.telefono) && Objects.equals(correo, that.correo) && Objects.equals(idUsuario, that.idUsuario);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idCliente, nombre, identificacion, telefono, correo, idProveedor);
+        return Objects.hash(idCliente, nombre, identificacion, telefono, correo, idUsuario);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class ClienteEntity {
                 ", identificacion='" + identificacion + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", correo='" + correo + '\'' +
-                ", idProveedor=" + idProveedor +
+                ", idProveedor=" + idUsuario +
                 '}';
     }
 
