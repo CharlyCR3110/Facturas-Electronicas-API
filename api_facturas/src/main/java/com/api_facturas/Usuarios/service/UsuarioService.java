@@ -1,7 +1,7 @@
-package com.api_facturas.Proveedores.service;
+package com.api_facturas.Usuarios.service;
 
-import com.api_facturas.Proveedores.model.ProveedorEntity;
-import com.api_facturas.Proveedores.repository.ProveedorRepository;
+import com.api_facturas.Usuarios.model.UsuarioEntity;
+import com.api_facturas.Usuarios.repository.UsuarioRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -9,18 +9,18 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProveedorService {
+public class UsuarioService {
 
-    private final ProveedorRepository proveedorRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public ProveedorService(ProveedorRepository proveedorRepository) {
-        this.proveedorRepository = proveedorRepository;
+    public UsuarioService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
     }
 
-    public ProveedorEntity registerProveedor(ProveedorEntity proveedor) {
+    public UsuarioEntity registerProveedor(UsuarioEntity proveedor) {
         try {
             proveedor.setEstado("en espera");
-            return proveedorRepository.save(proveedor);
+            return usuarioRepository.save(proveedor);
         } catch (DataIntegrityViolationException e) {
             if (e.getMessage().contains("correo")) {
                 throw new IllegalArgumentException("Parece que ya existe una cuenta con este correo.");
@@ -31,11 +31,11 @@ public class ProveedorService {
     }
 
     // para hacer login
-    public ProveedorEntity loginProveedor(String correo, String contrasena) {
-        Optional<ProveedorEntity> proveedorOptional = proveedorRepository.findByCorreo(correo);
+    public UsuarioEntity loginProveedor(String correo, String contrasena) {
+        Optional<UsuarioEntity> proveedorOptional = usuarioRepository.findByCorreo(correo);
 
         if (proveedorOptional.isPresent()) {
-            ProveedorEntity proveedor = proveedorOptional.get();
+            UsuarioEntity proveedor = proveedorOptional.get();
             if (proveedor.getContrasena().equals(contrasena)) {
                 if (!proveedor.getEstado().equals("activo")) {
                     throw new IllegalArgumentException("Tu cuenta no se encuentra activa. Contacta con el administrador.");
@@ -49,7 +49,7 @@ public class ProveedorService {
         }
     }
 
-    public ProveedorEntity changeEmail(ProveedorEntity proveedor, String correo) {
+    public UsuarioEntity changeEmail(UsuarioEntity proveedor, String correo) {
         // se intenta actualizar el correo del proveedor en la base de datos para el proveedor loggeado (se hace primero para evitar errores)
         String correoAnterior = proveedor.getCorreo();
         if (correo.equals(correoAnterior)) {
@@ -57,7 +57,7 @@ public class ProveedorService {
         }
         proveedor.setCorreo(correo);
         try {
-            proveedorRepository.save(proveedor);
+            usuarioRepository.save(proveedor);
         } catch (DataIntegrityViolationException e) {
             proveedor.setCorreo(correoAnterior);
             if (e.getMessage().contains("Duplicate")) {
@@ -69,38 +69,38 @@ public class ProveedorService {
         return proveedor;
     }
 
-    public ProveedorEntity changePassword(ProveedorEntity userLogged, String newPassword) {
+    public UsuarioEntity changePassword(UsuarioEntity userLogged, String newPassword) {
         userLogged.setContrasena(newPassword);
-        return proveedorRepository.save(userLogged);
+        return usuarioRepository.save(userLogged);
     }
 
-    public ProveedorEntity changeProviderInfo(ProveedorEntity userLogged, ProveedorEntity proveedorEntity) {
-        if (proveedorEntity.getNombre().equals(userLogged.getNombre()) &&
-                proveedorEntity.getTelefono().equals(userLogged.getTelefono()) &&
-                proveedorEntity.getDireccion().equals(userLogged.getDireccion())) {
+    public UsuarioEntity changeProviderInfo(UsuarioEntity userLogged, UsuarioEntity usuarioEntity) {
+        if (usuarioEntity.getNombre().equals(userLogged.getNombre()) &&
+                usuarioEntity.getTelefono().equals(userLogged.getTelefono()) &&
+                usuarioEntity.getDireccion().equals(userLogged.getDireccion())) {
             throw new IllegalArgumentException("No se realizaron cambios.");
         }
 
-        userLogged.setNombre(proveedorEntity.getNombre());
-        userLogged.setTelefono(proveedorEntity.getTelefono());
-        userLogged.setDireccion(proveedorEntity.getDireccion());
-        return proveedorRepository.save(userLogged);
+        userLogged.setNombre(usuarioEntity.getNombre());
+        userLogged.setTelefono(usuarioEntity.getTelefono());
+        userLogged.setDireccion(usuarioEntity.getDireccion());
+        return usuarioRepository.save(userLogged);
     }
 
-    public List<ProveedorEntity> getAllProviders() {
-        return proveedorRepository.findAll();
+    public List<UsuarioEntity> getAllProviders() {
+        return usuarioRepository.findAll();
     }
 
-    public ProveedorEntity changeProviderState(int idProveedor) {
-        Optional<ProveedorEntity> proveedorOptional = proveedorRepository.findById(idProveedor);
+    public UsuarioEntity changeProviderState(int idProveedor) {
+        Optional<UsuarioEntity> proveedorOptional = usuarioRepository.findById(idProveedor);
         if (proveedorOptional.isPresent()) {
-            ProveedorEntity proveedor = proveedorOptional.get();
+            UsuarioEntity proveedor = proveedorOptional.get();
             if (proveedor.getEstado().equals("activo")) {
                 proveedor.setEstado("inactivo");
             } else {
                 proveedor.setEstado("activo");
             }
-            return proveedorRepository.save(proveedor);
+            return usuarioRepository.save(proveedor);
         } else {
             throw new IllegalArgumentException("No se encontró un proveedor con el ID proporcionado.");
         }

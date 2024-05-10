@@ -1,32 +1,31 @@
-package com.api_facturas.Proveedores.controller;
+package com.api_facturas.Usuarios.controller;
 
-import com.api_facturas.Proveedores.model.ProveedorEntity;
-import com.api_facturas.Proveedores.service.ProveedorService;
+import com.api_facturas.Usuarios.model.UsuarioEntity;
+import com.api_facturas.Usuarios.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RestController
 @RequestMapping("/api/providers")
-public class ProveedorController {
-    private final ProveedorService proveedorService;
+public class UsuarioController {
+    private final UsuarioService usuarioService;
 
     private final HttpSession httpSession;
 
     // Constructor para "inyectar" el servicio (se usa en lugar de @Autowired)
-    public ProveedorController(ProveedorService proveedorService, HttpSession httpSession) {
-        this.proveedorService = proveedorService;
+    public UsuarioController(UsuarioService usuarioService, HttpSession httpSession) {
+        this.usuarioService = usuarioService;
         this.httpSession = httpSession;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> registerProveedor(@Valid @RequestBody ProveedorEntity proveedorEntity) {
+    public ResponseEntity<Object> registerProveedor(@Valid @RequestBody UsuarioEntity usuarioEntity) {
         try {
-            ProveedorEntity registeredProveedor = proveedorService.registerProveedor(proveedorEntity);
+            UsuarioEntity registeredProveedor = usuarioService.registerProveedor(usuarioEntity);
             return ResponseEntity.status(HttpStatus.CREATED).body(registeredProveedor);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -34,9 +33,9 @@ public class ProveedorController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> loginProveedor(@RequestBody ProveedorEntity proveedorEntity) {
+    public ResponseEntity<Object> loginProveedor(@RequestBody UsuarioEntity proveedorEntity) {
         try {
-            ProveedorEntity loggedProveedor = proveedorService.loginProveedor(proveedorEntity.getCorreo(), proveedorEntity.getContrasena());
+            UsuarioEntity loggedProveedor = usuarioService.loginProveedor(proveedorEntity.getCorreo(), proveedorEntity.getContrasena());
             httpSession.setAttribute("userLogged", loggedProveedor);
             return ResponseEntity.ok(loggedProveedor);
         } catch (IllegalArgumentException e) {
@@ -51,14 +50,14 @@ public class ProveedorController {
     }
 
     @PutMapping("/account/change-email")
-    public ResponseEntity<Object> changeEmail(@Valid @RequestBody ProveedorEntity proveedorEntity) {
-        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+    public ResponseEntity<Object> changeEmail(@Valid @RequestBody UsuarioEntity usuarioEntity) {
+        UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
             return ResponseEntity.status(401).build();
         }
 
         try {
-            ProveedorEntity updatedProveedor = proveedorService.changeEmail(userLogged, proveedorEntity.getCorreo());
+            UsuarioEntity updatedProveedor = usuarioService.changeEmail(userLogged, usuarioEntity.getCorreo());
             httpSession.setAttribute("userLogged", updatedProveedor);
             return ResponseEntity.ok("Correo actualizado correctamente");
         } catch (IllegalArgumentException e) {
@@ -79,13 +78,13 @@ public class ProveedorController {
             return ResponseEntity.badRequest().body("La nueva contraseña no puede ser igual a la actual");
         }
 
-        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+        UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
             return ResponseEntity.status(401).build();
         }
 
         try {
-            ProveedorEntity updatedProveedor = proveedorService.changePassword(userLogged, newPassword);
+            UsuarioEntity updatedProveedor = usuarioService.changePassword(userLogged, newPassword);
             httpSession.setAttribute("userLogged", updatedProveedor);
             return ResponseEntity.ok("Contraseña actualizada correctamente");
         } catch (IllegalArgumentException e) {
@@ -95,14 +94,14 @@ public class ProveedorController {
 
     // localhost:8080/api/providers/account/change-info
     @PutMapping("/account/change-info")
-    public ResponseEntity<Object> changeProviderInfo(@Valid @RequestBody ProveedorEntity proveedorEntity) {
-        ProveedorEntity userLogged = (ProveedorEntity) httpSession.getAttribute("userLogged");
+    public ResponseEntity<Object> changeProviderInfo(@Valid @RequestBody UsuarioEntity usuarioEntity) {
+        UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
             return ResponseEntity.status(401).build();
         }
 
         try {
-            ProveedorEntity updatedProveedor = proveedorService.changeProviderInfo(userLogged, proveedorEntity);
+            UsuarioEntity updatedProveedor = usuarioService.changeProviderInfo(userLogged, usuarioEntity);
             httpSession.setAttribute("userLogged", updatedProveedor);
             return ResponseEntity.ok("Información del proveedor actualizada correctamente");
         } catch (IllegalArgumentException e) {

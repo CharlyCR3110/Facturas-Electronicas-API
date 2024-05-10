@@ -1,4 +1,4 @@
-package com.api_facturas.Proveedores.model;
+package com.api_facturas.Usuarios.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -8,12 +8,12 @@ import jakarta.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tbl_proveedores", schema = "facturas_electronicas", catalog = "")
-public class ProveedorEntity {
+@Table(name = "tbl_usuarios", schema = "facturas_electronicas_api", catalog = "")
+public class UsuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id_proveedor")
-    private int idProveedor;
+    @Column(name = "id_usuario")
+    private int idUsuario;
 
     @Basic
     @NotBlank(message = "El nombre es requerido")
@@ -50,12 +50,17 @@ public class ProveedorEntity {
     @Column(name = "estado")
     private String estado;
 
-    public int getIdProveedor() {
-        return idProveedor;
+    @Basic
+    @Pattern(regexp = "^(proveedor|admin)$", message = "El rol debe ser 'proveedor' o 'admin'")
+    @Column(name = "rol")
+    private String rol;
+
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setIdProveedor(int idProveedor) {
-        this.idProveedor = idProveedor;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getNombre() {
@@ -106,16 +111,24 @@ public class ProveedorEntity {
         this.estado = estado;
     }
 
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProveedorEntity that = (ProveedorEntity) o;
-        return idProveedor == that.idProveedor && Objects.equals(nombre, that.nombre) && Objects.equals(direccion, that.direccion) && Objects.equals(telefono, that.telefono) && Objects.equals(correo, that.correo) && Objects.equals(contrasena, that.contrasena);
+        UsuarioEntity that = (UsuarioEntity) o;
+        return idUsuario == that.idUsuario && Objects.equals(nombre, that.nombre) && Objects.equals(direccion, that.direccion) && Objects.equals(telefono, that.telefono) && Objects.equals(correo, that.correo) && Objects.equals(contrasena, that.contrasena) && Objects.equals(estado, that.estado) && Objects.equals(rol, that.rol);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idProveedor, nombre, direccion, telefono, correo, contrasena);
+        return Objects.hash(idUsuario, nombre, direccion, telefono, correo, contrasena, estado, rol);
     }
 }
