@@ -22,33 +22,6 @@ public class UsuarioController {
         this.httpSession = httpSession;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<Object> registerProveedor(@Valid @RequestBody UsuarioEntity usuarioEntity) {
-        try {
-            UsuarioEntity registeredProveedor = usuarioService.registerProveedor(usuarioEntity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(registeredProveedor);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<Object> loginProveedor(@RequestBody UsuarioEntity proveedorEntity) {
-        try {
-            UsuarioEntity loggedProveedor = usuarioService.loginProveedor(proveedorEntity.getCorreo(), proveedorEntity.getContrasena());
-            httpSession.setAttribute("userLogged", loggedProveedor);
-            return ResponseEntity.ok(loggedProveedor);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/logout")
-    public ResponseEntity<Object> logoutProveedor(HttpSession session) {
-        session.removeAttribute("userLogged");
-        return ResponseEntity.ok("Sesión cerrada");
-    }
-
     @PutMapping("/account/change-email")
     public ResponseEntity<Object> changeEmail(@Valid @RequestBody UsuarioEntity usuarioEntity) {
         UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
