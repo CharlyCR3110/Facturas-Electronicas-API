@@ -61,12 +61,13 @@ public class AuthController {
     }
 
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public void logout(HttpServletRequest request) {
         try {
             request.logout();
             httpSession.invalidate();
         } catch (ServletException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Error al cerrar sesión");
         }
     }
 }
