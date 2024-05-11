@@ -54,4 +54,14 @@ public class AuthController {
         // El usuario está autenticado correctamente, puedes devolverlo
         return usuario;
     }
+
+
+    @PostMapping("/logout")
+    public void logout(HttpServletRequest request) {
+        try {
+            request.logout();
+            httpSession.invalidate();
+        } catch (ServletException e) {
+        }
+    }
 }
