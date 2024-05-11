@@ -6,8 +6,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,7 +27,7 @@ public class AuthController {
 
     // http://localhost:8080/api/auth/login
     @PostMapping("/login")
-    public UsuarioEntity login(@RequestBody UsuarioEntity form) {
+    public UsuarioEntity login(@RequestBody UsuarioEntity form, HttpServletRequest request) {
         // Buscar al usuario por su correo electrónico
         Optional<UsuarioEntity> usuarioOptional = usuarioRepository.findByCorreo(form.getCorreo());
         if (usuarioOptional.isEmpty()) {
@@ -43,12 +41,19 @@ public class AuthController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Contraseña incorrecta");
         }
 
-        // agregar el usuario a la http session
+        // agregar el usuario a la http session (para el controlador de productos, clientes, etc)  
         if (usuario.getRol().equals("admin")) {
             httpSession.setAttribute("adminLogged", usuario);
         } else {
             System.out.println("loadUserByUsername: usuario: " + usuario);
             httpSession.setAttribute("userLogged", usuario);
+        }
+
+        // agregar el usuario a la sesión de autenticación (para Spring Security)
+        try {
+            request.login(usuario.getCorreo(), usuario.getContrasena());
+        } catch (ServletException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
 
         // El usuario está autenticado correctamente, puedes devolverlo
