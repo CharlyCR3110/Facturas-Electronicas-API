@@ -156,7 +156,7 @@
 }
 
 /* si es un input de tipo dirección, se le pone otro icono */
-.right-column .form input[type="text"][name="address"] {
+.right-column .form input[type="text"][name="direccion"] {
   background-image: url("../icons/map-point-svgrepo-com.svg");
   background-repeat: no-repeat;
   background-size: 1rem 1rem;
