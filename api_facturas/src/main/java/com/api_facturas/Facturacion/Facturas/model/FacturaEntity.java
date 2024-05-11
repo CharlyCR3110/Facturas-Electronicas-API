@@ -17,7 +17,7 @@ public class FacturaEntity {
     @Column(name = "fecha_emision")
     private Timestamp fechaEmision;
     @Basic
-    @Column(name = "id_proveedor")
+    @Column(name = "id_usuario")
     private int idProveedor;
     @Basic
     @Column(name = "id_cliente")
