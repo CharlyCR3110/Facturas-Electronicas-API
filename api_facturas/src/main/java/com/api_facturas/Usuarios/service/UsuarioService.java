@@ -88,7 +88,7 @@ public class UsuarioService {
     }
 
     public List<UsuarioEntity> getAllProviders() {
-        return usuarioRepository.findAll();
+        return usuarioRepository.findAllByRol("proveedor");
     }
 
     public UsuarioEntity changeProviderState(int idProveedor) {
