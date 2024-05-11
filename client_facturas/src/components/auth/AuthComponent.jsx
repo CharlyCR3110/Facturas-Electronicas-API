@@ -12,14 +12,14 @@ const AuthComponent = ({ formData, setFormData, onSubmit, fields, sectionName })
     <div className='wrap'>
       <div className='left-column'>
         <div className='hero'>
-          <p className='kicker'>{sectionName === 'Iniciar Sesion' ? 'Acceso Seguro' : 'Bienvenido'}</p>
+          <p className='kicker'>{sectionName === 'Iniciar Sesión' ? 'Acceso Seguro' : 'Bienvenido'}</p>
           <h1>
-            {sectionName === 'Iniciar Sesion' ? 'Inicia Sesión' : 'Únete a Nosotros'}<br />
-            {sectionName === 'Iniciar Sesion' ? 'para Gestionar tus Facturas' : '!'}
+            {sectionName === 'Iniciar Sesión' ? 'Inicia Sesión' : 'Únete a Nosotros'}<br />
+            {sectionName === 'Iniciar Sesión' ? 'para Gestionar tus Facturas' : '!'}
             <span className='dot'>.</span>
           </h1>
           <p>
-            {sectionName === 'Iniciar Sesion' ? 'Ingresa a tu cuenta para administrar tus facturas electrónicas de forma rápida y segura.' : 'Regístrate y forma parte de nuestra comunidad de facturación electrónica.'}
+            {sectionName === 'Iniciar Sesión' ? 'Ingresa a tu cuenta para administrar tus facturas electrónicas de forma rápida y segura.' : 'Regístrate y forma parte de nuestra comunidad de facturación electrónica.'}
           </p>
         </div>
       </div>
@@ -49,7 +49,7 @@ const AuthComponent = ({ formData, setFormData, onSubmit, fields, sectionName })
           <div className='copyright'>
             <p>Copyright &copy; 2024. Todos los derechos reservados.</p>
           </div>
-          {sectionName === 'Iniciar Sesion' && (
+          {sectionName === 'Iniciar Sesión' && (
             <a className='admin-login' href='/admins/login'>Acceso de Administradores</a>
           )}
         </div>
