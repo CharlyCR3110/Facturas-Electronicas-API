@@ -20,6 +20,7 @@ public class UsuarioService {
     public UsuarioEntity registerProveedor(UsuarioEntity proveedor) {
         try {
             proveedor.setEstado("en espera");
+            proveedor.setRol("proveedor");
             return usuarioRepository.save(proveedor);
         } catch (DataIntegrityViolationException e) {
             if (e.getMessage().contains("correo")) {
