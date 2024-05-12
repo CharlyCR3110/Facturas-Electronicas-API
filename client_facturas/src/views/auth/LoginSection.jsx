@@ -15,6 +15,7 @@ const LoginSection = ({ sectionName, setLoggedUser }) => {
     try {
       const response = await fetch(API_URL_LOGIN, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
         },
