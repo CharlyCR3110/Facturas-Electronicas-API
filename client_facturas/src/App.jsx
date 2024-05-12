@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import AuthSection from './views/auth/AuthSection'
+import MainRouter from './views/main/MainRouter'
 
 function App () {
   const [loggedUser, setLoggedUser] = useState(null)
@@ -55,6 +56,7 @@ function App () {
   return (
     <div className='App'>
       <AuthSection setLoggedUser={setLoggedUser} />
+      <MainRouter />
     </div>
   )
 }
