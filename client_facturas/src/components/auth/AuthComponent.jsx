@@ -1,5 +1,5 @@
 import React from 'react'
-import ErrorComponent from '../error/ErrorComponent'
+import ErrorComponent from '../popups/ErrorComponent'
 import '../../assets/css/forms.css'
 import '../../assets/css/global.css'
 
