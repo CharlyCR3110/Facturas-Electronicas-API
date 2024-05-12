@@ -6,6 +6,8 @@ const API_URL_REGISTER = 'http://localhost:8080/api/auth/register'
 const RegisterSection = ({ sectionName }) => {
   const [formData, setFormData] = useState({})
   const [isRegisterSuccess, setIsRegisterSuccess] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+
   const fields = [
     { name: 'nombre', label: 'Nombre', type: 'text', placeholder: 'Ej. Juan' },
     { name: 'direccion', label: 'Dirección', type: 'text', placeholder: 'Ej. Calle 123' },
@@ -42,11 +44,11 @@ const RegisterSection = ({ sectionName }) => {
       setIsRegisterSuccess(true)
     } catch (error) {
       console.error('Error al registrar el usuario:', error.message)
-      // Manejar el error, por ejemplo, mostrar un mensaje al usuario
+      setErrorMessage(error.message)
     }
   }
 
-  return AuthComponent({ formData, setFormData, onSubmit, fields, sectionName, isRegisterSuccess })
+  return AuthComponent({ formData, setFormData, onSubmit, fields, sectionName, isRegisterSuccess, errorMessage, setErrorMessage })
 }
 
 export default RegisterSection

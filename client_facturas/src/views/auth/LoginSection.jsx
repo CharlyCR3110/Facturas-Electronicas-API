@@ -5,6 +5,8 @@ const API_URL_LOGIN = 'http://localhost:8080/api/auth/login'
 
 const LoginSection = ({ sectionName, setLoggedUser }) => {
   const [formData, setFormData] = useState({})
+  const [errorMessage, setErrorMessage] = useState('')
+
   const fields = [
     { name: 'correo', label: 'Correo Electrónico', type: 'email', placeholder: 'Ej. name@example.com' },
     { name: 'contrasena', label: 'Contraseña', type: 'password', placeholder: 'Ej. ********' }
@@ -32,11 +34,11 @@ const LoginSection = ({ sectionName, setLoggedUser }) => {
       setLoggedUser(user) // Establecer el usuario autenticado en el estado
     } catch (error) {
       console.error('Error al iniciar sesión:', error.message)
-      // Manejar el error, por ejemplo, mostrar un mensaje al usuario
+      setErrorMessage(error.message)
     }
   }
 
-  return AuthComponent({ formData, setFormData, onSubmit, fields, sectionName })
+  return AuthComponent({ formData, setFormData, onSubmit, fields, sectionName, isRegisterSuccess: false, errorMessage, setErrorMessage })
 }
 
 export default LoginSection
