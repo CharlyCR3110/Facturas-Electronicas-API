@@ -1,10 +1,11 @@
 import AuthComponent from '../../components/auth/AuthComponent'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 const API_URL_REGISTER = 'http://localhost:8080/api/auth/register'
 
 const RegisterSection = ({ sectionName }) => {
   const [formData, setFormData] = useState({})
+  const [isRegisterSuccess, setIsRegisterSuccess] = useState(false)
   const fields = [
     { name: 'nombre', label: 'Nombre', type: 'text', placeholder: 'Ej. Juan' },
     { name: 'direccion', label: 'Dirección', type: 'text', placeholder: 'Ej. Calle 123' },
@@ -12,14 +13,6 @@ const RegisterSection = ({ sectionName }) => {
     { name: 'correo', label: 'Correo Electrónico', type: 'email', placeholder: 'Ej. name@example.com' },
     { name: 'contrasena', label: 'Contraseña', type: 'password', placeholder: 'Ej. ********' }
   ]
-
-  // {
-  //   "nombre": "Proveedor API_TEST",
-  //   "direccion": "Calle Principal 123",
-  //   "telefono": "555-12343",
-  //   "correo": "proveedor_api_01@example.com",
-  //   "contrasena": "123"
-  // }
 
   const onSubmit = async (e) => {
     e.preventDefault()
@@ -44,13 +37,16 @@ const RegisterSection = ({ sectionName }) => {
 
       // Limpiar el formulario
       setFormData({})
+
+      // Mostrar mensaje de éxito
+      setIsRegisterSuccess(true)
     } catch (error) {
       console.error('Error al registrar el usuario:', error.message)
       // Manejar el error, por ejemplo, mostrar un mensaje al usuario
     }
   }
 
-  return AuthComponent({ formData, setFormData, onSubmit, fields, sectionName })
+  return AuthComponent({ formData, setFormData, onSubmit, fields, sectionName, isRegisterSuccess })
 }
 
 export default RegisterSection
