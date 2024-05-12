@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import '../../assets/css/forms.css'
 import '../../assets/css/global.css'
 
 // sectionName (Iniciar Sesion|Registro)
-const AuthComponent = ({ formData, setFormData, onSubmit, fields, sectionName }) => {
+const AuthComponent = ({ formData, setFormData, onSubmit, fields, sectionName, isRegisterSuccess }) => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
@@ -25,34 +25,42 @@ const AuthComponent = ({ formData, setFormData, onSubmit, fields, sectionName })
       </div>
 
       <div className='right-column'>
-        <div className='form'>
-          <h2>{sectionName}</h2>
-          <form onSubmit={onSubmit}>
-            {fields.map((field) => (
-              <div key={field.name} className='form-group'>
-                <label htmlFor={field.name}>{field.label}</label>
-                <input
-                  type={field.type}
-                  name={field.name}
-                  placeholder={field.placeholder}
-                  value={formData[field.name] || ''}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            ))}
-            <button type='submit' className='btn btn-primary'>{sectionName}</button>
-          </form>
-          <a className='btn btn-secondary' href={sectionName === 'Iniciar Sesión' ? '/register' : '/login'}>
-            {sectionName === 'Iniciar Sesión' ? 'Registrarse' : 'Iniciar Sesión'}
-          </a>
-          <div className='copyright'>
-            <p>Copyright &copy; 2024. Todos los derechos reservados.</p>
+        {isRegisterSuccess &&
+          <div className='confirmation-message'>
+            <p>¡Registro exitoso! Debe esperar a que un administrador apruebe su cuenta.</p>
+            <a className='btn btn-secondary' href='/login'>Iniciar Sesión</a>
+          </div>}
+
+        {!isRegisterSuccess && (
+          <div className='form'>
+            <h2>{sectionName}</h2>
+            <form onSubmit={onSubmit}>
+              {fields.map((field) => (
+                <div key={field.name} className='form-group'>
+                  <label htmlFor={field.name}>{field.label}</label>
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    placeholder={field.placeholder}
+                    value={formData[field.name] || ''}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              ))}
+              <button type='submit' className='btn btn-primary'>{sectionName}</button>
+            </form>
+            <a className='btn btn-secondary' href={sectionName === 'Iniciar Sesión' ? '/register' : '/login'}>
+              {sectionName === 'Iniciar Sesión' ? 'Registrarse' : 'Iniciar Sesión'}
+            </a>
+            <div className='copyright'>
+              <p>Copyright &copy; 2024. Todos los derechos reservados.</p>
+            </div>
+            {sectionName === 'Iniciar Sesión' && (
+              <a className='admin-login' href='/admins/login'>Acceso de Administradores</a>
+            )}
           </div>
-          {sectionName === 'Iniciar Sesión' && (
-            <a className='admin-login' href='/admins/login'>Acceso de Administradores</a>
-          )}
-        </div>
+        )}
 
         <input type='checkbox' id='errorToggle' className='error-toggle' />
         <div className='error-overlay'>
