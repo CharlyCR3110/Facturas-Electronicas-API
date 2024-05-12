@@ -1,9 +1,10 @@
 import React from 'react'
+import ErrorComponent from '../error/ErrorComponent'
 import '../../assets/css/forms.css'
 import '../../assets/css/global.css'
 
 // sectionName (Iniciar Sesion|Registro)
-const AuthComponent = ({ formData, setFormData, onSubmit, fields, sectionName, isRegisterSuccess }) => {
+const AuthComponent = ({ formData, setFormData, onSubmit, fields, sectionName, isRegisterSuccess, errorMessage, setErrorMessage }) => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
@@ -56,20 +57,10 @@ const AuthComponent = ({ formData, setFormData, onSubmit, fields, sectionName, i
             <div className='copyright'>
               <p>Copyright &copy; 2024. Todos los derechos reservados.</p>
             </div>
-            {sectionName === 'Iniciar Sesión' && (
-              <a className='admin-login' href='/admins/login'>Acceso de Administradores</a>
-            )}
           </div>
         )}
-
-        <input type='checkbox' id='errorToggle' className='error-toggle' />
-        <div className='error-overlay'>
-          <div className='error-popup'>
-            <label htmlFor='errorToggle' className='close-btn'>&times;</label>
-            <p className='error-message' id='errorMessage' />
-          </div>
-        </div>
       </div>
+      {errorMessage && <ErrorComponent error={errorMessage} onClose={() => setErrorMessage('')} />}
     </div>
   )
 }
