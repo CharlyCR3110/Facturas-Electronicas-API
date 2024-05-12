@@ -22,6 +22,7 @@ public class WebSecurityConfig {
         httpSecurity
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/register").permitAll()
                         .requestMatchers("/api/auth/logout").authenticated()
                         .requestMatchers("/api/admins/**").hasAnyAuthority("admin")
                         .requestMatchers("/api/**").hasAnyAuthority("proveedor")
