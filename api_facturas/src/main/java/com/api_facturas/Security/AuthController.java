@@ -2,10 +2,12 @@ package com.api_facturas.Security;
 
 import com.api_facturas.Usuarios.model.UsuarioEntity;
 import com.api_facturas.Usuarios.repository.UsuarioRepository;
+import com.api_facturas.Usuarios.service.UsuarioService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,11 +20,13 @@ public class AuthController {
     final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
     private final HttpSession httpSession;
+    private final UsuarioService usuarioService;
 
-    public AuthController(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, HttpSession httpSession) {
+    public AuthController(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, HttpSession httpSession, UsuarioService usuarioService) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
         this.httpSession = httpSession;
+        this.usuarioService = usuarioService;
     }
 
     // http://localhost:8080/api/auth/login
@@ -69,5 +73,21 @@ public class AuthController {
         } catch (ServletException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Error al cerrar sesión");
         }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<UsuarioEntity> register(@RequestBody UsuarioEntity form) {
+        // Encriptar la contraseña
+        form.setContrasena(passwordEncoder.encode(form.getContrasena()));
+        try {
+            return ResponseEntity.ok(usuarioService.registerProveedor(form));
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("correo")) {
+                return ResponseEntity.status(409).build();
+            } else {
+                return ResponseEntity.status(400).build();
+            }
+        }
+
     }
 }
