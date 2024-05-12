@@ -5,37 +5,40 @@ function App () {
   const [loggedUser, setLoggedUser] = useState(null)
 
   // logout fetch
+  // estoy trabajando con cookies (JSessionId)
   const logout = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/logout/', {
+      const response = await fetch('http://localhost:8080/api/auth/logout', {
         method: 'GET',
-        headers: {
-          Authorization: `Bearer ${loggedUser.token}`
-        }
+        credentials: 'include'
       })
 
       if (!response.ok) {
-        throw new Error('Cierre de sesión fallido')
+        throw new Error('Error al cerrar sesión')
       }
 
-      console.log('Cierre de sesión exitoso')
       setLoggedUser(null)
     } catch (error) {
       console.error('Error al cerrar sesión:', error.message)
     }
   }
 
-  // http://localhost:8080/api/products/
+  // get products fetch
   const getProducts = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/products/')
+      const response = await fetch('http://localhost:8080/api/products/', {
+        method: 'GET',
+        credentials: 'include'
+      })
+
       if (!response.ok) {
-        throw new Error('Error al obtener los productos')
+        throw new Error('Error al obtener productos')
       }
+
       const products = await response.json()
       console.log('Productos:', products)
     } catch (error) {
-      console.error('Error al obtener los productos:', error.message)
+      console.error('Error al obtener productos:', error.message)
     }
   }
 
