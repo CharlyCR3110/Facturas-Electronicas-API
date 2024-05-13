@@ -9,7 +9,7 @@ import '../../assets/css/account_info.css'
 import '../../assets/css/fragments/header.css'
 import '../../assets/css/fragments/nav.css'
 
-const AccountInfoContainer = () => {
+const AccountInfoSection = () => {
   const [confirmationMessage, setConfirmationMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -76,4 +76,4 @@ const AccountInfoContainer = () => {
   )
 }
 
-export default AccountInfoContainer
+export default AccountInfoSection
