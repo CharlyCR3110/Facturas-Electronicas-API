@@ -3,6 +3,7 @@ import TitleComponent from '../../components/pages/TitleComponent'
 import TableComponent from '../../components/pages/TableComponent'
 import HeaderComponent from '../../components/fragments/HeaderComponent'
 import SideNavbar from '../../components/fragments/SideNavbar'
+import { handleDelete } from './actionHandlers'
 import '../../assets/css/global.css'
 import '../../assets/css/product-client-invoice-styles.css'
 import '../../assets/css/fragments/header.css'
@@ -63,7 +64,7 @@ const ProductsSection = () => {
             headers={['Id Producto', 'Nombre', 'Descripcion', 'Precio Unitario']}
             data={products.map(product => [product.idProducto, product.nombre, product.descripcion, product.precioUnitario])}
             handleEdit={product => console.log(product)}
-            handleDelete={product => console.log(product)}
+            handleDelete={handleDelete}
             handleSendToInvoice={product => console.log(product)}
           />
         </div>
