@@ -3,7 +3,7 @@ import AccountInfoForm from '../../components/account_info/AccountInfoForm'
 import HeaderComponent from '../../components/fragments/HeaderComponent'
 import SideNavbar from '../../components/fragments/SideNavbar'
 import PopupComponent from '../../components/popups/PopupComponent'
-import { handlePasswordChangeFormSubmit, handleEmailChangeFormSubmit } from './formHandlers' // Importar las funciones
+import { handlePasswordChangeFormSubmit, handleEmailChangeFormSubmit, handlePersonalInfoChangeFormSubmit } from './formHandlers' // Importar las funciones
 import '../../assets/css/global.css'
 import '../../assets/css/account_info.css'
 import '../../assets/css/fragments/header.css'
@@ -23,13 +23,6 @@ const AccountInfoContainer = () => {
     { name: 'confirmPassword', type: 'password', placeholder: 'Confirmar contraseña', label: 'Confirmar Contraseña' }
   ]
 
-  const handleFormSubmit = (formData) => {
-    // Aquí puedes manejar el envío del formulario
-    console.log('Datos del formulario:', formData)
-    // Simulación de confirmación
-    confirmationMessage('true')
-  }
-
   const loggedUser = JSON.parse(window.sessionStorage.getItem('loggedUser'))
 
   if (!loggedUser) {
@@ -37,7 +30,11 @@ const AccountInfoContainer = () => {
     console.error('Usuario no autenticado')
   }
 
-  console.log('Usuario autenticado:', loggedUser)
+  const changePersonalInfoFields = [
+    { name: 'nombre', type: 'text', placeholder: 'Nombre', label: 'Nombre', value: loggedUser.nombre },
+    { name: 'direccion', type: 'text', placeholder: 'Dirección', label: 'Dirección', value: loggedUser.direccion },
+    { name: 'telefono', type: 'text', placeholder: 'Teléfono', label: 'Teléfono', value: loggedUser.telefono }
+  ]
 
   return (
     <>
@@ -65,12 +62,8 @@ const AccountInfoContainer = () => {
 
           <AccountInfoForm
             title='Datos del Proveedor'
-            onSubmit={handleFormSubmit}
-            fields={[
-              { name: 'nombre', type: 'text', placeholder: 'Nombre', label: 'Nombre', value: loggedUser.nombre },
-              { name: 'direccion', type: 'text', placeholder: 'Dirección', label: 'Dirección', value: loggedUser.direccion },
-              { name: 'telefono', type: 'text', placeholder: 'Teléfono', label: 'Teléfono', value: loggedUser.telefono }
-            ]}
+            onSubmit={handlePersonalInfoChangeFormSubmit}
+            fields={changePersonalInfoFields}
             setConfirmationMessage={setConfirmationMessage}
             setErrorMessage={setErrorMessage}
           />
