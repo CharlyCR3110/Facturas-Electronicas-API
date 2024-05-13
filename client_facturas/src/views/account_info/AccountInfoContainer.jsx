@@ -6,9 +6,16 @@ import '../../assets/css/global.css'
 import '../../assets/css/account_info.css'
 import '../../assets/css/fragments/header.css'
 import '../../assets/css/fragments/nav.css'
+import { handlePasswordChangeFormSubmit } from './formHandlers' // Importar las funciones
 
 const AccountInfoContainer = () => {
   const [confirmation, setConfirmation] = useState(false)
+
+  const changePasswordFields = [
+    { name: 'currentPassword', type: 'password', placeholder: 'Contraseña actual', label: 'Contraseña Actual' },
+    { name: 'newPassword', type: 'password', placeholder: 'Contraseña nueva', label: 'Nueva Contraseña' },
+    { name: 'confirmPassword', type: 'password', placeholder: 'Confirmar contraseña', label: 'Confirmar Contraseña' }
+  ]
 
   const handleFormSubmit = (formData) => {
     // Aquí puedes manejar el envío del formulario
@@ -40,16 +47,13 @@ const AccountInfoContainer = () => {
             fields={[
               { name: 'correo', type: 'email', placeholder: 'Correo', label: 'Cambiar Correo' }
             ]}
+            setConfirmation={setConfirmation}
           />
 
           <AccountInfoForm
             title='Contraseña'
-            onSubmit={handleFormSubmit}
-            fields={[
-              { name: 'currentPassword', type: 'password', placeholder: 'Contraseña actual', label: 'Contraseña Actual' },
-              { name: 'newPassword', type: 'password', placeholder: 'Contraseña nueva', label: 'Nueva Contraseña' },
-              { name: 'confirmPassword', type: 'password', placeholder: 'Confirmar contraseña', label: 'Confirmar Contraseña' }
-            ]}
+            onSubmit={handlePasswordChangeFormSubmit}
+            fields={changePasswordFields}
           />
 
           <AccountInfoForm
