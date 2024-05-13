@@ -3,6 +3,7 @@ import TitleComponent from '../../components/pages/TitleComponent'
 import TableComponent from '../../components/pages/TableComponent'
 import HeaderComponent from '../../components/fragments/HeaderComponent'
 import SideNavbar from '../../components/fragments/SideNavbar'
+import PopupComponent from '../../components/popups/PopupComponent'
 import { handleDelete } from './actionHandlers'
 import '../../assets/css/global.css'
 import '../../assets/css/product-client-invoice-styles.css'
@@ -10,10 +11,11 @@ import '../../assets/css/fragments/header.css'
 import '../../assets/css/fragments/nav.css'
 
 const ProductsSection = () => {
+  const getAllProductsApiUrl = 'http://localhost:8080/api/products/'
   // Estado para almacenar los clientes
   const [products, setProducts] = useState([])
-  const getAllProductsApiUrl = 'http://localhost:8080/api/products/'
   const [loading, setLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const loggedUser = JSON.parse(window.sessionStorage.getItem('loggedUser'))
 
@@ -66,9 +68,11 @@ const ProductsSection = () => {
             handleEdit={product => console.log(product)}
             handleDelete={handleDelete}
             handleSendToInvoice={product => console.log(product)}
+            setErrorMessage={setErrorMessage}
           />
         </div>
       </div>
+      {errorMessage && <PopupComponent message={errorMessage} onClose={() => setErrorMessage('')} type='error' />}
     </>
   )
 }
