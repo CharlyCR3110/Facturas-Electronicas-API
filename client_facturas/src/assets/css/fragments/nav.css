@@ -59,3 +59,17 @@ li {
   background-color: var(--primary-color);
   color: white;
 }
+
+.menu-group-label a:hover {
+  background-color: var(--primary-color-hover);
+  color: white;
+}
+
+.menu-group-label a.active:hover {
+  background-color: var(--primary-color-hover);
+  color: white;
+}
+
+a:hover {
+  cursor: pointer;
+}
