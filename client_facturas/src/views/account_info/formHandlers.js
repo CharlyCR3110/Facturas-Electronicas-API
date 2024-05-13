@@ -1,4 +1,3 @@
-// localhost:8080/api/providers/account/change-password?currentPassword=123&newPassword=1234&confirmPassword=1234
 export const handlePasswordChangeFormSubmit = async (formData, setFormData, setConfirmation) => {
   try {
     const { currentPassword, newPassword, confirmPassword } = formData
@@ -30,7 +29,48 @@ export const handlePasswordChangeFormSubmit = async (formData, setFormData, setC
 
     // Limpiar los campos del formulario
     setFormData({})
+
+    // confirmar el cambio
+    setConfirmation(true)
   } catch (error) {
     console.error('Error al cambiar la contraseña:', error.message)
+  }
+}
+// http://localhost:8080/api/providers/account/change-email?idProveedor=1&newEmail="newemail@example.com"
+
+export const handleEmailChangeFormSubmit = async (formData, setFormData, setConfirmation) => {
+  const userLogged = JSON.parse(window.sessionStorage.getItem('loggedUser'))
+  const userLoggedId = userLogged.idUsuario
+  userLogged.correo = formData.correo
+
+  console.log('Usuario logueado:', userLogged)
+
+  try {
+    const response = await fetch(`http://localhost:8080/api/providers/account/change-email?idProveedor=${userLoggedId}&newEmail=${formData.email}`, {
+      method: 'PUT',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al cambiar el correo')
+    }
+
+    // expected: updated json object
+    const data = await response.json()
+    console.log('Respuesta del servidor:', data)
+
+    // Actualizar el usuario logueado
+    window.sessionStorage.setItem('loggedUser', JSON.stringify(data))
+
+    // Limpiar los campos del formulario
+    setFormData({})
+
+    // confirmar el cambio
+    setConfirmation(true)
+  } catch (error) {
+    console.error('Error al cambiar el correo:', error.message)
   }
 }
