@@ -1,11 +1,13 @@
 package com.api_facturas.Usuarios.controller;
 
+import ch.qos.logback.classic.encoder.JsonEncoder;
 import com.api_facturas.Usuarios.model.UsuarioEntity;
 import com.api_facturas.Usuarios.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
@@ -13,13 +15,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/providers")
 public class UsuarioController {
     private final UsuarioService usuarioService;
-
     private final HttpSession httpSession;
+    private final PasswordEncoder passwordEncoder;
 
     // Constructor para "inyectar" el servicio (se usa en lugar de @Autowired)
-    public UsuarioController(UsuarioService usuarioService, HttpSession httpSession) {
+    public UsuarioController(UsuarioService usuarioService, HttpSession httpSession, PasswordEncoder passwordEncoder) {
         this.usuarioService = usuarioService;
         this.httpSession = httpSession;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PutMapping("/account/change-email")
@@ -57,7 +60,7 @@ public class UsuarioController {
         }
 
         try {
-            UsuarioEntity updatedProveedor = usuarioService.changePassword(userLogged, newPassword);
+            UsuarioEntity updatedProveedor = usuarioService.changePassword(userLogged, passwordEncoder.encode(newPassword));
             httpSession.setAttribute("userLogged", updatedProveedor);
             return ResponseEntity.ok("Contraseña actualizada correctamente");
         } catch (IllegalArgumentException e) {
