@@ -64,18 +64,25 @@ public class UsuarioController {
         }
     }
 
-    // localhost:8080/api/providers/account/change-info
+    // http://localhost:8080/api/providers/account/change-info?idProveedor=1&newName=NewName&newAddress=NewAddress&newPhone=1234567890
     @PutMapping("/account/change-info")
-    public ResponseEntity<Object> changeProviderInfo(@Valid @RequestBody UsuarioEntity usuarioEntity) {
+    public ResponseEntity<Object> changeProviderInfo(@Valid @RequestParam("idProveedor") Integer idProveedor,
+                                                     @Valid @RequestParam("newName") String name,
+                                                     @Valid @RequestParam("newAddress") String address,
+                                                     @Valid @RequestParam("newPhone") String phone) {
         UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
             return ResponseEntity.status(401).build();
         }
 
+        if (idProveedor != userLogged.getIdUsuario()) {
+            return ResponseEntity.status(401).build();
+        }
+
         try {
-            UsuarioEntity updatedProveedor = usuarioService.changeProviderInfo(userLogged, usuarioEntity);
+            UsuarioEntity updatedProveedor = usuarioService.changeProviderInfo(userLogged, idProveedor, name, address, phone);
             httpSession.setAttribute("userLogged", updatedProveedor);
-            return ResponseEntity.ok("Información del proveedor actualizada correctamente");
+            return ResponseEntity.ok(updatedProveedor);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
