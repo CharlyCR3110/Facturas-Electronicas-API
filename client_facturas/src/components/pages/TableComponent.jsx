@@ -1,6 +1,6 @@
 import React from 'react'
 
-const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToInvoice }) => {
+const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToInvoice, setErrorMessage }) => {
   return (
     <table className='table'>
       <thead>
@@ -17,9 +17,9 @@ const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToI
               <td key={cellIndex}>{cell}</td>
             ))}
             <td>
-              <button id='edit_button' className='toggle-popup toggle-edit-popup action-btn' onClick={() => handleEdit(row)}>Editar</button>
-              <button id='delete_button' className='action-btn' onClick={() => handleDelete(row)}>Eliminar</button>
-              <button id='to_invoice_button' className='action-btn' onClick={() => handleSendToInvoice(row)}>Enviar a Factura</button>
+              <button id='edit_button' className='toggle-popup toggle-edit-popup action-btn' onClick={() => handleEdit(row, setErrorMessage)}>Editar</button>
+              <button id='delete_button' className='action-btn' onClick={() => handleDelete(row, setErrorMessage)}>Eliminar</button>
+              <button id='to_invoice_button' className='action-btn' onClick={() => handleSendToInvoice(row, setErrorMessage)}>Enviar a Factura</button>
             </td>
           </tr>
         ))}
