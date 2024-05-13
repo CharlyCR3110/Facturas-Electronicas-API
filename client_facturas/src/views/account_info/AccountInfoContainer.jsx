@@ -75,8 +75,8 @@ const AccountInfoContainer = () => {
             setErrorMessage={setErrorMessage}
           />
         </section>
-        {confirmationMessage && <PopupComponent messsage={confirmationMessage} onClose={() => setConfirmationMessage('')} type='confirmation' />}
-        {errorMessage && <PopupComponent messsage={errorMessage} onClose={() => setErrorMessage('')} type='error' />}
+        {confirmationMessage && <PopupComponent message={confirmationMessage} onClose={() => setConfirmationMessage('')} type='confirmation' />}
+        {errorMessage && <PopupComponent message={errorMessage} onClose={() => setErrorMessage('')} type='error' />}
       </div>
 
     </>

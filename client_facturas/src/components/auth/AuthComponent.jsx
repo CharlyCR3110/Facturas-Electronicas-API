@@ -60,7 +60,7 @@ const AuthComponent = ({ formData, setFormData, onSubmit, fields, sectionName, i
           </div>
         )}
       </div>
-      {errorMessage && <PopupComponent messsage={errorMessage} onClose={() => setErrorMessage('')} type='error' />}
+      {errorMessage && <PopupComponent message={errorMessage} onClose={() => setErrorMessage('')} type='error' />}
     </div>
   )
 }
