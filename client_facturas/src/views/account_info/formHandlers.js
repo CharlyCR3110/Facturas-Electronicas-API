@@ -1,4 +1,4 @@
-export const handlePasswordChangeFormSubmit = async (formData, setFormData, setConfirmation) => {
+export const handlePasswordChangeFormSubmit = async (formData, setFormData, setConfirmationMessage, setErrorMessage) => {
   try {
     const { currentPassword, newPassword, confirmPassword } = formData
 
@@ -31,14 +31,15 @@ export const handlePasswordChangeFormSubmit = async (formData, setFormData, setC
     setFormData({})
 
     // confirmar el cambio
-    setConfirmation(true)
+    setConfirmationMessage('Contraseña actualizada correctamente')
   } catch (error) {
     console.error('Error al cambiar la contraseña:', error.message)
+    setErrorMessage(error.message)
   }
 }
 // http://localhost:8080/api/providers/account/change-email?idProveedor=1&newEmail="newemail@example.com"
 
-export const handleEmailChangeFormSubmit = async (formData, setFormData, setConfirmation) => {
+export const handleEmailChangeFormSubmit = async (formData, setFormData, setConfirmation, setErrorMessage) => {
   const userLogged = JSON.parse(window.sessionStorage.getItem('loggedUser'))
   const userLoggedId = userLogged.idUsuario
   userLogged.correo = formData.correo
@@ -69,8 +70,9 @@ export const handleEmailChangeFormSubmit = async (formData, setFormData, setConf
     setFormData({})
 
     // confirmar el cambio
-    setConfirmation(true)
+    setConfirmation('Correo actualizado correctamente')
   } catch (error) {
     console.error('Error al cambiar el correo:', error.message)
+    setErrorMessage(error.message)
   }
 }
