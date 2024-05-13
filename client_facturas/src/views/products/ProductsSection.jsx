@@ -4,7 +4,7 @@ import TableComponent from '../../components/pages/TableComponent'
 import HeaderComponent from '../../components/fragments/HeaderComponent'
 import SideNavbar from '../../components/fragments/SideNavbar'
 import PopupComponent from '../../components/popups/PopupComponent'
-import { handleDelete } from './actionHandlers'
+import { handleDelete, handleEdit } from './actionHandlers'
 import '../../assets/css/global.css'
 import '../../assets/css/product-client-invoice-styles.css'
 import '../../assets/css/fragments/header.css'
@@ -14,6 +14,7 @@ const ProductsSection = () => {
   const getAllProductsApiUrl = 'http://localhost:8080/api/products/'
   // Estado para almacenar los clientes
   const [products, setProducts] = useState([])
+  const [currentProduct, setCurrentProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -51,27 +52,45 @@ const ProductsSection = () => {
     fetchProducts()
   }, [])
 
-  if (loading) {
-    return <div>Cargando...</div>
-  }
+  const currentProductName = currentProduct ? currentProduct[1] : ''
+  const currentProductDescription = currentProduct ? currentProduct[2] : ''
+  const currentProductPrice = currentProduct ? currentProduct[3] : ''
+
+  const popupHeaders = ['Id Producto', 'Nombre', 'Descripcion', 'Precio Unitario']
+
+  const popupFields = [
+    { name: 'nombre', label: 'Nombre', type: 'text', value: currentProductName },
+    { name: 'descripcion', label: 'Descripción', type: 'text', value: currentProductDescription },
+    { name: 'precioUnitario', label: 'Precio Unitario', type: 'number', value: currentProductPrice }
+  ]
 
   return (
     <>
-      <HeaderComponent loggedUser={{ nombre: loggedUser.nombre }} />
-      <SideNavbar currentPage='products' />
-      <div className='container-container'>
-        <div className='container'>
-          <TitleComponent title='Products' />
-          <TableComponent
-            headers={['Id Producto', 'Nombre', 'Descripcion', 'Precio Unitario']}
-            data={products.map(product => [product.idProducto, product.nombre, product.descripcion, product.precioUnitario])}
-            handleEdit={product => console.log(product)}
-            handleDelete={handleDelete}
-            handleSendToInvoice={product => console.log(product)}
-            setErrorMessage={setErrorMessage}
-          />
-        </div>
-      </div>
+      {loading
+        ? <p>Cargando productos...</p>
+        : (
+          <>
+            <HeaderComponent loggedUser={{ nombre: loggedUser.nombre }} />
+            <SideNavbar currentPage='products' />
+            <div className='container-container'>
+              <div className='container'>
+                <TitleComponent title='Products' />
+                <TableComponent
+                  headers={popupHeaders}
+                  data={products.map(product => [product.idProducto, product.nombre, product.descripcion, product.precioUnitario])}
+                  handleEdit={handleEdit}
+                  handleDelete={handleDelete}
+                  handleSendToInvoice={product => console.log(product)}
+                  setErrorMessage={setErrorMessage}
+                  popupTitle='Editar Producto'
+                  popupFields={popupFields}
+                  setCurrentElement={setCurrentProduct}
+                  setProducts={setProducts}
+                />
+              </div>
+            </div>
+          </>
+          )}
       {errorMessage && <PopupComponent message={errorMessage} onClose={() => setErrorMessage('')} type='error' />}
     </>
   )
