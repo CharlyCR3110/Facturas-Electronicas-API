@@ -25,17 +25,13 @@ public class UsuarioController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // http://localhost:8080/api/providers/account/change-email?idProveedor=1&newEmail="newemail@example.com"
     @PutMapping("/account/change-email")
-    public ResponseEntity<Object> changeEmail(@Valid @RequestBody UsuarioEntity usuarioEntity) {
-        UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
-        if (userLogged == null) {
-            return ResponseEntity.status(401).build();
-        }
-
+    public ResponseEntity<Object> changeEmail(@RequestParam("idProveedor") Integer idProveedor,
+                                              @RequestParam("newEmail") String newEmail) {
         try {
-            UsuarioEntity updatedProveedor = usuarioService.changeEmail(userLogged, usuarioEntity.getCorreo());
-            httpSession.setAttribute("userLogged", updatedProveedor);
-            return ResponseEntity.ok("Correo actualizado correctamente");
+            UsuarioEntity updatedProveedor = usuarioService.changeEmail(idProveedor, newEmail);
+            return ResponseEntity.ok(updatedProveedor);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
