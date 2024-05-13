@@ -1,7 +1,7 @@
 import React from 'react'
-import ErrorComponent from '../popups/ErrorComponent'
 import '../../assets/css/forms.css'
 import '../../assets/css/global.css'
+import PopupComponent from '../popups/PopupComponent'
 
 // sectionName (Iniciar Sesion|Registro)
 const AuthComponent = ({ formData, setFormData, onSubmit, fields, sectionName, isRegisterSuccess, errorMessage, setErrorMessage }) => {
@@ -60,7 +60,7 @@ const AuthComponent = ({ formData, setFormData, onSubmit, fields, sectionName, i
           </div>
         )}
       </div>
-      {errorMessage && <ErrorComponent error={errorMessage} onClose={() => setErrorMessage('')} />}
+      {errorMessage && <PopupComponent error={errorMessage} onClose={() => setErrorMessage('')} type='error' />}
     </div>
   )
 }
