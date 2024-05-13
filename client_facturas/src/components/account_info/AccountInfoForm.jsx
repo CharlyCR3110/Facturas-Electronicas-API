@@ -19,7 +19,7 @@ function AccountInfoForm ({ title, onSubmit, fields }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    onSubmit(formData)
+    onSubmit(formData, setFormData)
   }
 
   return (
