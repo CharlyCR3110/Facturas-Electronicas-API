@@ -6,10 +6,14 @@ import '../../assets/css/global.css'
 import '../../assets/css/account_info.css'
 import '../../assets/css/fragments/header.css'
 import '../../assets/css/fragments/nav.css'
-import { handlePasswordChangeFormSubmit } from './formHandlers' // Importar las funciones
+import { handlePasswordChangeFormSubmit, handleEmailChangeFormSubmit } from './formHandlers' // Importar las funciones
 
 const AccountInfoContainer = () => {
   const [confirmation, setConfirmation] = useState(false)
+
+  const changeEmailField = [
+    { name: 'email', type: 'email', placeholder: 'proveedora@example.com', label: 'Correo Electrónico' }
+  ]
 
   const changePasswordFields = [
     { name: 'currentPassword', type: 'password', placeholder: 'Contraseña actual', label: 'Contraseña Actual' },
@@ -43,10 +47,8 @@ const AccountInfoContainer = () => {
 
           <AccountInfoForm
             title='Correo'
-            onSubmit={handleFormSubmit}
-            fields={[
-              { name: 'correo', type: 'email', placeholder: 'Correo', label: 'Cambiar Correo' }
-            ]}
+            onSubmit={handleEmailChangeFormSubmit}
+            fields={changeEmailField}
             setConfirmation={setConfirmation}
           />
 
