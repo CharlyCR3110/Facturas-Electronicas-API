@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 const API_URL_LOGIN = 'http://localhost:8080/api/auth/login'
 
-const LoginSection = ({ sectionName, setLoggedUser }) => {
+const LoginSection = ({ sectionName }) => {
   const [formData, setFormData] = useState({})
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -24,14 +24,16 @@ const LoginSection = ({ sectionName, setLoggedUser }) => {
         body: JSON.stringify(formData)
       })
 
+      // TODO: manejar errores de autenticación
       if (!response.ok) {
         throw new Error('Inicio de sesión fallido')
       }
 
       const user = await response.json()
-      console.log('Usuario autenticado:', user)
 
-      setLoggedUser(user) // Establecer el usuario autenticado en el estado
+      window.sessionStorage.setItem('loggedUser', JSON.stringify(user))
+      // redirigir a la pagina de cuenta
+      window.location.href = 'http://localhost:5173/account_info'
     } catch (error) {
       console.error('Error al iniciar sesión:', error.message)
       setErrorMessage(error.message)
