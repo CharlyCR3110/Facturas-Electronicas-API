@@ -17,6 +17,7 @@ const SideNavbar = ({ currentPage }) => {
       .catch(error => {
         console.error('Error al cerrar sesión:', error.message)
         window.sessionStorage.removeItem('loggedUser')
+        window.location.href = 'http://localhost:5173/login'
       })
   }
 
