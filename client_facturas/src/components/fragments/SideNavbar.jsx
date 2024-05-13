@@ -1,6 +1,24 @@
 import React from 'react'
 
 const SideNavbar = ({ currentPage }) => {
+  const logout = () => {
+    fetch('http://localhost:8080/api/auth/logout', {
+      method: 'GET',
+      credentials: 'include'
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error al cerrar sesión')
+        } else {
+          window.sessionStorage.removeItem('loggedUser')
+          window.location.href = 'http://localhost:5173/login'
+        }
+      })
+      .catch(error => {
+        console.error('Error al cerrar sesión:', error.message)
+      })
+  }
+
   return (
     <ul className='nav'>
       <div className='left-side-nav-container'>
@@ -32,7 +50,7 @@ const SideNavbar = ({ currentPage }) => {
               <a href='/invoices/history' className={currentPage === 'invoicesHistory' ? 'active' : ''}>Historial de Facturas</a>
             </li>
             <li>
-              <a href='/logout'>Cerrar Sesión</a>
+              <a onClick={logout}>Cerrar Sesión</a>
             </li>
           </ul>
         </li>
