@@ -66,17 +66,17 @@ public class UsuarioService {
         return usuarioRepository.save(userLogged);
     }
 
-    public UsuarioEntity changeProviderInfo(UsuarioEntity userLogged, UsuarioEntity usuarioEntity) {
-        if (usuarioEntity.getNombre().equals(userLogged.getNombre()) &&
-                usuarioEntity.getTelefono().equals(userLogged.getTelefono()) &&
-                usuarioEntity.getDireccion().equals(userLogged.getDireccion())) {
-            throw new IllegalArgumentException("No se realizaron cambios.");
+    public UsuarioEntity changeProviderInfo(UsuarioEntity userLogged, Integer idProveedor, String name, String address, String phone) {
+        Optional<UsuarioEntity> proveedorOptional = usuarioRepository.findById(idProveedor);
+        if (proveedorOptional.isPresent()) {
+            UsuarioEntity proveedor = proveedorOptional.get();
+            proveedor.setNombre(name);
+            proveedor.setDireccion(address);
+            proveedor.setTelefono(phone);
+            return usuarioRepository.save(proveedor);
+        } else {
+            throw new IllegalArgumentException("No se encontró un proveedor con el ID proporcionado.");
         }
-
-        userLogged.setNombre(usuarioEntity.getNombre());
-        userLogged.setTelefono(usuarioEntity.getTelefono());
-        userLogged.setDireccion(usuarioEntity.getDireccion());
-        return usuarioRepository.save(userLogged);
     }
 
     public List<UsuarioEntity> getAllProviders() {
@@ -97,5 +97,6 @@ public class UsuarioService {
             throw new IllegalArgumentException("No se encontró un proveedor con el ID proporcionado.");
         }
     }
+
 }
 
