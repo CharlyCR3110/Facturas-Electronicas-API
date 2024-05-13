@@ -2,14 +2,16 @@ import React, { useState } from 'react'
 import AccountInfoForm from '../../components/account_info/AccountInfoForm'
 import HeaderComponent from '../../components/fragments/HeaderComponent'
 import SideNavbar from '../../components/fragments/SideNavbar'
+import PopupComponent from '../../components/popups/PopupComponent'
+import { handlePasswordChangeFormSubmit, handleEmailChangeFormSubmit } from './formHandlers' // Importar las funciones
 import '../../assets/css/global.css'
 import '../../assets/css/account_info.css'
 import '../../assets/css/fragments/header.css'
 import '../../assets/css/fragments/nav.css'
-import { handlePasswordChangeFormSubmit, handleEmailChangeFormSubmit } from './formHandlers' // Importar las funciones
 
 const AccountInfoContainer = () => {
-  const [confirmation, setConfirmation] = useState(false)
+  const [confirmationMessage, setConfirmationMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   const changeEmailField = [
     { name: 'email', type: 'email', placeholder: 'proveedora@example.com', label: 'Correo Electrónico' }
@@ -25,7 +27,7 @@ const AccountInfoContainer = () => {
     // Aquí puedes manejar el envío del formulario
     console.log('Datos del formulario:', formData)
     // Simulación de confirmación
-    setConfirmation(true)
+    confirmationMessage('true')
   }
 
   const loggedUser = JSON.parse(window.sessionStorage.getItem('loggedUser'))
@@ -49,13 +51,16 @@ const AccountInfoContainer = () => {
             title='Correo'
             onSubmit={handleEmailChangeFormSubmit}
             fields={changeEmailField}
-            setConfirmation={setConfirmation}
+            setConfirmationMessage={setConfirmationMessage}
+            setErrorMessage={setErrorMessage}
           />
 
           <AccountInfoForm
             title='Contraseña'
             onSubmit={handlePasswordChangeFormSubmit}
             fields={changePasswordFields}
+            setConfirmationMessage={setConfirmationMessage}
+            setErrorMessage={setErrorMessage}
           />
 
           <AccountInfoForm
@@ -66,9 +71,14 @@ const AccountInfoContainer = () => {
               { name: 'direccion', type: 'text', placeholder: 'Dirección', label: 'Dirección', value: loggedUser.direccion },
               { name: 'telefono', type: 'text', placeholder: 'Teléfono', label: 'Teléfono', value: loggedUser.telefono }
             ]}
+            setConfirmationMessage={setConfirmationMessage}
+            setErrorMessage={setErrorMessage}
           />
         </section>
+        {confirmationMessage && <PopupComponent messsage={confirmationMessage} onClose={() => setConfirmationMessage('')} type='confirmation' />}
+        {errorMessage && <PopupComponent messsage={errorMessage} onClose={() => setErrorMessage('')} type='error' />}
       </div>
+
     </>
   )
 }
