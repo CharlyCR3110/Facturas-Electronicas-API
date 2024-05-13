@@ -73,57 +73,6 @@ li {
   list-style-type: none;
 }
 
-/* Pop-up */
-.overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9999;
-}
-
-.popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  color: white;
-  border-radius: 5px;
-  z-index: 10000;
-}
-
-.confirmation {
-  background-color: var(--success-color);
-}
-
-.error {
-  background-color: var(--accent-color);
-}
-
-.message {
-  margin: 0;
-}
-
-.toggle {
-  display: none;
-}
-
-.close-btn {
-  position: absolute;
-  top: 5px;
-  right: 10px;
-  cursor: pointer;
-}
-
-.toggle:checked+.overlay {
-  display: block;
-}
-
-
 @media (max-width: 767px) {
   .nav {
     width: 100%;
