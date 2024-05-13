@@ -50,24 +50,15 @@ public class UsuarioService {
         }
     }
 
-    public UsuarioEntity changeEmail(UsuarioEntity proveedor, String correo) {
-        // se intenta actualizar el correo del proveedor en la base de datos para el proveedor loggeado (se hace primero para evitar errores)
-        String correoAnterior = proveedor.getCorreo();
-        if (correo.equals(correoAnterior)) {
-            throw new IllegalArgumentException("El correo proporcionado es igual al actual.");
+    public UsuarioEntity changeEmail(Integer idProveedor, String newEmail) {
+        Optional<UsuarioEntity> proveedorOptional = usuarioRepository.findById(idProveedor);
+        if (proveedorOptional.isPresent()) {
+            UsuarioEntity proveedor = proveedorOptional.get();
+            proveedor.setCorreo(newEmail);
+            return usuarioRepository.save(proveedor);
+        } else {
+            throw new IllegalArgumentException("No se encontró un proveedor con el ID proporcionado.");
         }
-        proveedor.setCorreo(correo);
-        try {
-            usuarioRepository.save(proveedor);
-        } catch (DataIntegrityViolationException e) {
-            proveedor.setCorreo(correoAnterior);
-            if (e.getMessage().contains("Duplicate")) {
-                throw new IllegalArgumentException("Parece que ya existe una cuenta con este correo.");
-            } else {
-                throw new IllegalArgumentException("Hubo un error al actualizar el correo. Intenta de nuevo.");
-            }
-        }
-        return proveedor;
     }
 
     public UsuarioEntity changePassword(UsuarioEntity userLogged, String newPassword) {
