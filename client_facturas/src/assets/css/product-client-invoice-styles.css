@@ -158,13 +158,17 @@
   background-color: var(--xml-export-color-hover);
 }
 
-/* labels dentro de la tabla que contengan la palabra "delete" en el atributo for */
-.table td>label[for*="edit" i] {
-  background-color: var(--edit-color);
+.table td>.action-btn {
+  margin-right: 5px;
 }
 
-.table td>label[for*="edit" i]:hover {
-  background-color: var(--edit-color-hover);
+/* labels dentro de la tabla que contengan la palabra "delete" en el atributo for */
+.table td>#edit_button {
+  background-color: var(--edit-color) !important;
+}
+
+.table td>#edit_button:hover {
+  background-color: var(--edit-color-hover) !important;
 }
 
 /* lo mismo para los detalles */
@@ -193,23 +197,19 @@
   background-color: var(--export-color-hover);
 }
 
-.table td>.deactivate-btn {
+.table td>#delete_button {
   background-color: var(--danger-color);
 }
 
-.table td>.deactivate-btn:hover {
+.table td>#delete_button:hover {
   background-color: var(--danger-color-hover);
 }
 
-.table td>form {
-  display: inline-block;
-}
-
-.table td>form .action-btn {
+.table td>#to_invoice_button {
   background-color: var(--send-invoice-color);
 }
 
-.table td>form .action-btn:hover {
+.table td>#to_invoice_button:hover {
   background-color: var(--send-invoice-color-hover);
 }
 
