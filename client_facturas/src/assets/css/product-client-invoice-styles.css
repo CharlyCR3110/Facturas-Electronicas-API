@@ -65,7 +65,7 @@
 }
 
 .action-btn,
-.close-btn {
+.cancel-btn {
   color: #fff;
   background-color: var(--primary-color);
   display: inline-block;
@@ -96,7 +96,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-.close-btn:hover {
+.cancel-btn:hover {
   background-color: var(--primary-color-dark);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
@@ -214,14 +214,9 @@
 }
 
 /* pop-up */
-/* ocultar el checkbox  */
-input[type="checkbox"] {
-  display: none;
-}
 
 /* Estilos para el pop-up */
-.popup {
-  display: none;
+.edit-popup {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -266,7 +261,7 @@ input[type="checkbox"] {
 }
 
 .popup-body .action-btn,
-.popup-body .close-btn {
+.popup-body .cancel-btn {
   width: 100%;
   padding: 10px;
   border-radius: 4px;
@@ -278,37 +273,16 @@ input[type="checkbox"] {
   background-color: var(--primary-color-dark);
 }
 
-.popup-body .close-btn {
+.popup-body .cancel-btn {
   background-color: #ccc;
   color: #fff;
   border: none;
 }
 
-.popup-body .close-btn:hover {
+.popup-body .cancel-btn:hover {
   background-color: #999;
 }
 
-/* Mostrar el popup cuando el checkbox está marcado */
-
-/* uno por cada tipo de popup para evitar que se muestren todos a la vez */
-
-.toggle-add-popup[type="checkbox"]:checked~.add-popup {
-  display: block;
-}
-
-.toggle-edit-popup[type="checkbox"]:checked~.edit-popup {
-  display: block;
-}
-
-.toggle-details-popup[type="checkbox"]:checked~.details-popup {
-  display: block;
-}
-
-.toggle-export-popup[type="checkbox"]:checked~.export-popup {
-  display: block;
-}
-
-/* Estilos extra para la pagina del historial de facturas */
 .details-table {
   margin-bottom: 20px;
 }
