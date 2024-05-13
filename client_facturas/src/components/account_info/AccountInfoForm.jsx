@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-function AccountInfoForm ({ title, onSubmit, fields }) {
+function AccountInfoForm ({ title, onSubmit, fields, setConfirmation }) {
   const [formData, setFormData] = useState({})
 
   // Actualiza el formData cuando fields cambie
@@ -19,7 +19,7 @@ function AccountInfoForm ({ title, onSubmit, fields }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    onSubmit(formData, setFormData)
+    onSubmit(formData, setFormData, setConfirmation)
   }
 
   return (
