@@ -120,7 +120,7 @@ public class FacturasController {
     }
 
     // http://localhost:8080/api/invoices/search?searchClientID=1
-    @PostMapping("/search")
+    @GetMapping("/search")
     public ResponseEntity<ArrayList<FacturaConDetallesDTO>> searchInvoice(@RequestParam(name = "searchClientID", required = false) Integer searchClientID, Model model) {
         UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
