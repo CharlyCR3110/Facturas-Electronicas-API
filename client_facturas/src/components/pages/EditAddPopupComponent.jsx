@@ -1,6 +1,8 @@
 import React from 'react'
 
 const EditAddPopupComponent = ({ title, fields, onSubmit, handleClosePopup, setErrorMessage, currentElementId, setUpdatedElements }) => {
+  const textOnButton = currentElementId ? 'Editar' : 'Agregar'
+
   return (
     <div className='edit-popup'>
       <div className='popup-content'>
@@ -27,7 +29,7 @@ const EditAddPopupComponent = ({ title, fields, onSubmit, handleClosePopup, setE
               const formData = fields.reduce((acc, field) => ({ ...acc, [field.name]: document.getElementById(`${field.name}-edit`).value }), {})
               onSubmit(currentElementId, formData, setErrorMessage, setUpdatedElements, handleClosePopup)
             }}
-          >Actualizar
+          >{textOnButton}
           </button>
           <button className='cancel-btn' onClick={handleClosePopup}>Cancelar</button>
         </div>
