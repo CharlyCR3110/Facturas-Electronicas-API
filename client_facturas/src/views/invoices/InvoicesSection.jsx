@@ -10,6 +10,7 @@ import '../../assets/css/fragments/nav.css'
 import TitleComponent from '../../components/pages/TitleComponent'
 import SearchComponent from '../../components/pages/SearchComponent'
 import TableComponent from '../../components/pages/TableComponent'
+import PopupComponent from '../../components/popups/PopupComponent'
 
 const InvoicesSection = () => {
   const getAllInvoicesApiUrl = 'http://localhost:8080/api/invoices/history'
@@ -98,6 +99,7 @@ const InvoicesSection = () => {
             </div>
           </>
           )}
+      {errorMessage && <PopupComponent message={errorMessage} onClose={() => setErrorMessage('')} type='error' />}
     </>
   )
 }
