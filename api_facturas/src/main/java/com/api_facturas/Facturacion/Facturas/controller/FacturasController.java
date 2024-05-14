@@ -149,15 +149,11 @@ public class FacturasController {
 
     @PostMapping("/sendClientToInvoiceCreator")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> sendClientToInvoiceCreator(@RequestParam(name = "idCliente") Integer idCliente, HttpSession httpSession) {
-        Map<String, Object> response = new HashMap<>();
-
+    public ResponseEntity<ClienteEntity> sendClientToInvoiceCreator(@RequestParam(name = "idCliente") Integer idCliente, HttpSession httpSession) {
         // obtener el usuario loggeado (se obtiene de la sesion)
         UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
-            response.put("status", "error");
-            response.put("message", "Usuario no autenticado");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
         // obtener el cliente
@@ -166,10 +162,7 @@ public class FacturasController {
         // Guardar el cliente en la sesión
         httpSession.setAttribute("currentClientSelected", client);
 
-        response.put("status", "success");
-        response.put("currentClientSelected", client);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(client);
     }
     
 }
