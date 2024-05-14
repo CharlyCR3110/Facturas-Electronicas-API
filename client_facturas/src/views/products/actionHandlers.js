@@ -70,7 +70,7 @@ export const handleEdit = async (currentElementId, formData, setErrorMessage, se
   }
 }
 
-export const handleAdd = async (formData, setErrorMessage, setUpdatedElements, handleClosePopup) => {
+export const handleAdd = async (currentElementId, formData, setErrorMessage, setUpdatedElements, handleClosePopup) => {
   try {
     const response = await fetch('http://localhost:8080/api/products/add', {
       method: 'POST',
