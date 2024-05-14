@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const SideNavbar = ({ currentPage }) => {
   const logout = () => {
@@ -37,19 +38,19 @@ const SideNavbar = ({ currentPage }) => {
           </div>
           <ul className='menu-group-label'>
             <li>
-              <a href='/account_info' className={currentPage === 'account_info' ? 'active' : ''}>Información de la Cuenta</a>
+              <Link to='/account_info' className={currentPage === 'account_info' ? 'active' : ''}>Información de la Cuenta</Link>
             </li>
             <li>
-              <a href='/clients' className={currentPage === 'clients' ? 'active' : ''}>Clientes</a>
+              <Link to='/clients' className={currentPage === 'clients' ? 'active' : ''}>Clientes</Link>
             </li>
             <li>
-              <a href='/products' className={currentPage === 'products' ? 'active' : ''}>Productos</a>
+              <Link to='/products' className={currentPage === 'products' ? 'active' : ''}>Productos</Link>
             </li>
             <li>
-              <a href='/invoice_creator' className={currentPage === 'invoiceCreator' ? 'active' : ''}>Facturar</a>
+              <Link to='/invoice_creator' className={currentPage === 'invoiceCreator' ? 'active' : ''}>Facturar</Link>
             </li>
             <li>
-              <a href='/invoices' className={currentPage === 'invoicesHistory' ? 'active' : ''}>Historial de Facturas</a>
+              <Link to='/invoices' className={currentPage === 'invoicesHistory' ? 'active' : ''}>Historial de Facturas</Link>
             </li>
             <li>
               <a onClick={logout}>Cerrar Sesión</a>
