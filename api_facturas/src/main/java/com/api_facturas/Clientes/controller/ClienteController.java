@@ -65,14 +65,15 @@ public class ClienteController {
         }
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<ClienteEntity> updateClient(@Valid @RequestBody ClienteEntity cliente) {
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ClienteEntity> updateClient(@PathVariable("id") Integer clienteId, @RequestBody ClienteEntity cliente) {
         UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
             return ResponseEntity.status(401).build();
         }
 
         cliente.setIdUsuario(userLogged.getIdUsuario());
+        cliente.setIdCliente(clienteId);
         ClienteEntity updatedClient = clienteService.editCliente(cliente);
         if (updatedClient != null) {
             return ResponseEntity.ok(updatedClient);
