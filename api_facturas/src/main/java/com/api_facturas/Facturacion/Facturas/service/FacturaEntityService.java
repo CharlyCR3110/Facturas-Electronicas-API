@@ -6,6 +6,7 @@ import com.api_facturas.Facturacion.Detalles.model.DetalleFacturaEntity;
 import com.api_facturas.Facturacion.Detalles.repository.DetalleFacturaEntityRepository;
 import com.api_facturas.Facturacion.Facturas.model.FacturaEntity;
 import com.api_facturas.Facturacion.Facturas.repository.FacturaEntityRepository;
+import com.api_facturas.Facturacion.exportRelated.InvoiceExporter;
 import com.api_facturas.Usuarios.model.UsuarioEntity;
 import org.springframework.stereotype.Service;
 
@@ -99,4 +100,14 @@ public class FacturaEntityService {
         return facturaConDetallesDTO;
     }
 
+    public byte[] exportInvoiceInPDF(Integer facturaId) {
+        FacturaConDetallesDTO facturaConDetallesDTO = getFacturaById(facturaId);
+
+        InvoiceExporter invoiceExporter = new InvoiceExporter();
+        try {
+            return invoiceExporter.exportToPDF(facturaConDetallesDTO);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }
