@@ -7,6 +7,7 @@ const AuthSection = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path='/' element={<LoginSection sectionName='Iniciar Sesión' />} />
         <Route path='/login' element={<LoginSection sectionName='Iniciar Sesión' />} />
         <Route path='/register' element={<RegisterSection sectionName='Registrarse' />} />
       </Routes>
