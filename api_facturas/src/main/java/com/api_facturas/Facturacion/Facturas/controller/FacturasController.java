@@ -12,7 +12,10 @@ import com.api_facturas.Facturacion.Facturas.service.FacturaEntityService;
 import com.api_facturas.Productos.service.ProductoService;
 import com.api_facturas.Usuarios.model.UsuarioEntity;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -209,6 +212,33 @@ public class FacturasController {
         httpSession.setAttribute("currentClientSelected", client);
 
         return ResponseEntity.ok(client);
+    }
+
+    @GetMapping("/export/pdf/{id}")
+    public ResponseEntity<ByteArrayResource> exportInvoicePDF(@PathVariable("id") Integer id) {
+        try {
+            // Exportar la factura como un archivo PDF
+            byte[] pdfBytes = facturaEntityService.exportInvoiceInPDF(id);
+
+            // Crear un ByteArrayResource con los bytes del PDF
+            ByteArrayResource resource = new ByteArrayResource(pdfBytes);
+
+            // Configurar los encabezados de la respuesta
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=factura.pdf");
+            headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE);
+
+            // Devolver una respuesta con el recurso ByteArrayResource y las cabeceras configuradas
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(pdfBytes.length)
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(resource);
+        } catch (Exception e) {
+            // Manejar cualquier excepción y establecer un mensaje de error en la sesión HTTP
+            httpSession.setAttribute("errorMessage", "No se pudo exportar la factura");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
     
 }
