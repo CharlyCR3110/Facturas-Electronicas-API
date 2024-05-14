@@ -11,6 +11,7 @@ import '../../assets/css/global.css'
 import '../../assets/css/product-client-invoice-styles.css'
 import '../../assets/css/fragments/header.css'
 import '../../assets/css/fragments/nav.css'
+import LoadingComponent from '../../components/misc/LoadingComponent'
 
 const ProductsSection = () => {
   const getAllProductsApiUrl = 'http://localhost:8080/api/products/'
@@ -76,7 +77,9 @@ const ProductsSection = () => {
   return (
     <>
       {loading
-        ? <p>Cargando productos...</p>
+        ? (
+          <LoadingComponent />
+          )
         : (
           <>
             <HeaderComponent loggedUser={{ nombre: loggedUser.nombre }} />

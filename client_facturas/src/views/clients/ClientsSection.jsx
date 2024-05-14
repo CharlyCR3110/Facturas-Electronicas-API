@@ -7,6 +7,7 @@ import PopupComponent from '../../components/popups/PopupComponent'
 import EditAddPopupComponent from '../../components/pages/EditAddPopupComponent'
 import SearchComponent from '../../components/pages/SearchComponent'
 import { handleDelete, handleEdit, handleAdd, handleSearch, handleSendToInvoice } from './actionHandlers'
+import LoadingComponent from '../../components/misc/LoadingComponent'
 import '../../assets/css/global.css'
 import '../../assets/css/product-client-invoice-styles.css'
 import '../../assets/css/fragments/header.css'
@@ -79,7 +80,9 @@ const ClientsSections = () => {
   return (
     <>
       {loading
-        ? <p>Cargando clientes...</p>
+        ? (
+          <LoadingComponent />
+          )
         : (
           <>
             <HeaderComponent loggedUser={{ nombre: loggedUser.nombre }} />
