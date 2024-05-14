@@ -49,7 +49,7 @@ const SideNavbar = ({ currentPage }) => {
               <a href='/invoice_creator' className={currentPage === 'invoiceCreator' ? 'active' : ''}>Facturar</a>
             </li>
             <li>
-              <a href='/invoices/history' className={currentPage === 'invoicesHistory' ? 'active' : ''}>Historial de Facturas</a>
+              <a href='/invoices' className={currentPage === 'invoicesHistory' ? 'active' : ''}>Historial de Facturas</a>
             </li>
             <li>
               <a onClick={logout}>Cerrar Sesión</a>
