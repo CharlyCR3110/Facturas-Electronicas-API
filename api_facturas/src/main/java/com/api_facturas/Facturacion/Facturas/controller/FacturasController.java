@@ -6,6 +6,8 @@ import com.api_facturas.Clientes.model.ClienteEntity;
 import com.api_facturas.Clientes.service.ClienteService;
 import com.api_facturas.Facturacion.DTO.FacturaConDetallesDTO;
 import com.api_facturas.Facturacion.DTO.ProductOnCart;
+import com.api_facturas.Facturacion.Detalles.model.DetalleFacturaEntity;
+import com.api_facturas.Facturacion.Facturas.model.FacturaEntity;
 import com.api_facturas.Facturacion.Facturas.service.FacturaEntityService;
 import com.api_facturas.Productos.service.ProductoService;
 import com.api_facturas.Usuarios.model.UsuarioEntity;
@@ -18,6 +20,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.Collections;
 
 
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
@@ -52,6 +56,48 @@ public class FacturasController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/details/{id}")
+    public ResponseEntity<Map<String, Object>> getInvoiceDetails(@PathVariable("id") Integer id) {
+        UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        try {
+            FacturaConDetallesDTO facturaConDetallesDTO = facturaEntityService.getFacturaById(id);
+            FacturaEntity factura = facturaConDetallesDTO.getFactura();
+
+            // Crear el objeto JSON con el formato deseado
+            Map<String, Object> facturaJson = new HashMap<>();
+            Map<String, Object> facturaObject = new HashMap<>();
+            facturaObject.put("fechaEmision", factura.getFechaEmision());
+            facturaObject.put("idProveedor", factura.getIdProveedor());
+            facturaObject.put("idCliente", factura.getIdCliente());
+            facturaObject.put("subtotal", factura.getSubtotal());
+            facturaObject.put("impuesto", factura.getImpuesto());
+            facturaObject.put("total", factura.getTotal());
+
+            // Crear la lista de detalles
+            List<Map<String, Object>> detalles = new ArrayList<>();
+            for (DetalleFacturaEntity detalle : facturaConDetallesDTO.getDetalles()) {
+                Map<String, Object> detalleObject = new HashMap<>();
+                detalleObject.put("idProducto", detalle.getIdProducto());
+                detalleObject.put("cantidad", detalle.getCantidad());
+                detalleObject.put("precioUnitario", detalle.getPrecioUnitario());
+                detalleObject.put("total", detalle.getTotal());
+                detalles.add(detalleObject);
+            }
+            facturaObject.put("detalles", detalles);
+
+            facturaJson.put("factura", facturaObject);
+
+            return ResponseEntity.ok(facturaJson);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
+        }
+    }
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteInvoice(@PathVariable("id") Integer id, Model model) {
