@@ -69,3 +69,29 @@ export const handleEdit = async (currentElementId, formData, setErrorMessage, se
     setErrorMessage(`Error al editar el producto con id ${currentElementId}`)
   }
 }
+
+export const handleAdd = async (formData, setErrorMessage, setUpdatedElements, handleClosePopup) => {
+  try {
+    const response = await fetch('http://localhost:8080/api/products/add', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al agregar el producto')
+    }
+
+    console.log('Producto agregado correctamente')
+
+    fetchUpdatedProducts(setUpdatedElements)
+
+    handleClosePopup()
+  } catch (error) {
+    console.error('Error al agregar el producto:', error.message)
+    setErrorMessage('Error al agregar el producto')
+  }
+}
