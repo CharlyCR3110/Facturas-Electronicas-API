@@ -1,4 +1,5 @@
-import { DOMParser } from 'xmldom'
+import { toXML } from 'jstoxml'
+
 export const exportPDF = async (invoiceId, setErrorMessage) => {
   try {
     const response = await fetch(`http://localhost:8080/api/invoices/export/pdf/${invoiceId}`, {
@@ -51,5 +52,53 @@ export const fetchDetailsInvoiceInfo = async (invoiceId) => {
     return data
   } catch (error) {
     console.error('Error al obtener los detalles de la factura:', error.message)
+  }
+}
+
+export const exportXML = async (invoiceId, setErrorMessage) => {
+  try {
+    // Obtener los detalles de la factura
+    const facturaData = await fetchDetailsInvoiceInfo(invoiceId)
+
+    // Reformatear los datos para que coincidan con la estructura deseada
+    const facturaConDetallesDTO = {
+      facturaConDetalles: {
+        factura: {
+          idFactura: invoiceId,
+          fechaEmision: facturaData.factura.fechaEmision,
+          idProveedor: facturaData.factura.idProveedor,
+          idCliente: facturaData.factura.idCliente,
+          subtotal: facturaData.factura.subtotal,
+          impuesto: facturaData.factura.impuesto,
+          total: facturaData.factura.total
+        },
+        detalles: facturaData.factura.detalles.map(detalle => ({
+          detalle: {
+            idProducto: detalle.idProducto,
+            cantidad: detalle.cantidad,
+            precioUnitario: detalle.precioUnitario,
+            total: detalle.total
+          }
+        }))
+      }
+    }
+
+    // Convertir los datos reformateados a XML
+    const config = {
+      indent: '    '
+    }
+    const converted = toXML(facturaConDetallesDTO, config)
+    // descargar el archivo
+    const blob = new Blob([converted], { type: 'application/xml' })
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', 'factura.xml')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  } catch (error) {
+    console.error('Error al exportar la factura como XML:', error.message)
+    setErrorMessage('No se pudo exportar la factura como XML')
   }
 }
