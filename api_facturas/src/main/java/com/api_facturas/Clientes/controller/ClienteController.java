@@ -83,7 +83,7 @@ public class ClienteController {
     }
 
     // http://localhost:8080/api/clients/search?searchName=Juan
-    @PostMapping("/search")
+    @GetMapping("/search")
     public ResponseEntity<ArrayList<ClienteEntity>> searchClients(@RequestParam("searchName") String searchName) {
         UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
