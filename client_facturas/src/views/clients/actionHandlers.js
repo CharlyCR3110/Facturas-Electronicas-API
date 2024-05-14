@@ -120,3 +120,28 @@ export const handleSearch = async (searchValue, setErrorMessage, setUpdatedEleme
     setErrorMessage('Error al buscar clientes')
   }
 }
+
+export const handleSendToInvoice = async (row, setErrorMessage) => {
+  const idCliente = row[0]
+  try {
+    const response = await fetch(`http://localhost:8080/api/invoices/sendClientToInvoiceCreator?idCliente=${idCliente}`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al enviar el cliente a la factura')
+    }
+
+    console.log('cliente enviado a la factura correctamente')
+    const data = await response.json()
+    console.log(data)
+    window.sessionStorage.setItem('onInvoiceClient', JSON.stringify(data))
+  } catch (error) {
+    console.error('Error al enviar el cliente a la factura:', error.message)
+    setErrorMessage(`Error al enviar el cliente con id ${idCliente} a la factura`)
+  }
+}
