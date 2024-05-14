@@ -4,7 +4,8 @@ import TableComponent from '../../components/pages/TableComponent'
 import HeaderComponent from '../../components/fragments/HeaderComponent'
 import SideNavbar from '../../components/fragments/SideNavbar'
 import PopupComponent from '../../components/popups/PopupComponent'
-import { handleDelete, handleEdit } from './actionHandlers'
+import EditAddPopupComponent from '../../components/pages/EditAddPopupComponent'
+import { handleDelete, handleEdit, handleAdd } from './actionHandlers'
 import '../../assets/css/global.css'
 import '../../assets/css/product-client-invoice-styles.css'
 import '../../assets/css/fragments/header.css'
@@ -17,6 +18,7 @@ const ProductsSection = () => {
   const [currentProduct, setCurrentProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
+  const [showAddPopup, setShowAddPopup] = useState(false)
 
   const loggedUser = JSON.parse(window.sessionStorage.getItem('loggedUser'))
 
@@ -64,6 +66,12 @@ const ProductsSection = () => {
     { name: 'precioUnitario', label: 'Precio Unitario', type: 'number', value: currentProductPrice }
   ]
 
+  const addPopupFields = [
+    { name: 'nombre', label: 'Nombre', type: 'text', value: '' },
+    { name: 'descripcion', label: 'Descripción', type: 'text', value: '' },
+    { name: 'precioUnitario', label: 'Precio Unitario', type: 'number', value: '' }
+  ]
+
   return (
     <>
       {loading
@@ -75,6 +83,22 @@ const ProductsSection = () => {
             <div className='container-container'>
               <div className='container'>
                 <TitleComponent title='Products' />
+                <div className='forms'>
+                  <div className='form-inline pull-left'>
+                    <button className='action-btn' onClick={() => setShowAddPopup(true)}>Agregar Producto</button>
+                    {showAddPopup && (
+                      <EditAddPopupComponent
+                        title='Agregar Producto'
+                        fields={addPopupFields}
+                        onSubmit={handleAdd}
+                        handleClosePopup={() => setShowAddPopup(false)}
+                        setErrorMessage={setErrorMessage}
+                        currentElementId={null}
+                        setUpdatedElements={setProducts}
+                      />
+                    )}
+                  </div>
+                </div>
                 <TableComponent
                   headers={popupHeaders}
                   data={products.map(product => [product.idProducto, product.nombre, product.descripcion, product.precioUnitario])}
