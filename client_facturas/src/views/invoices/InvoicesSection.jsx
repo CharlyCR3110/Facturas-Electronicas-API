@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import LoadingComponent from '../../components/misc/LoadingComponent'
 import HeaderComponent from '../../components/fragments/HeaderComponent'
 import SideNavbar from '../../components/fragments/SideNavbar'
-import { handleDelete, fetchUpdatedInvoices } from './actionHandlers'
+import { handleDelete, fetchUpdatedInvoices, handleSearch } from './actionHandlers'
 import '../../assets/css/global.css'
 import '../../assets/css/product-client-invoice-styles.css'
 import '../../assets/css/fragments/header.css'
@@ -22,10 +22,6 @@ const InvoicesSection = () => {
   if (!loggedUser) {
     window.location.href = 'http://localhost:5173/login'
     console.error('Usuario no autenticado')
-  }
-
-  const handleSearch = (searchName) => {
-    console.log('Buscando:', searchName)
   }
 
   useEffect(() => {
