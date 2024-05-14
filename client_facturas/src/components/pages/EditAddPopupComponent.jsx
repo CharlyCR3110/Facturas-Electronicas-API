@@ -1,6 +1,6 @@
 import React from 'react'
 
-const EditPopupComponent = ({ title, fields, onSubmit, handleClosePopup, setErrorMessage, currentElementId, setUpdatedElements }) => {
+const EditAddPopupComponent = ({ title, fields, onSubmit, handleClosePopup, setErrorMessage, currentElementId, setUpdatedElements }) => {
   return (
     <div className='edit-popup'>
       <div className='popup-content'>
@@ -36,4 +36,4 @@ const EditPopupComponent = ({ title, fields, onSubmit, handleClosePopup, setErro
   )
 }
 
-export default EditPopupComponent
+export default EditAddPopupComponent
