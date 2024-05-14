@@ -13,10 +13,8 @@ import TableComponent from '../../components/pages/TableComponent'
 import PopupComponent from '../../components/popups/PopupComponent'
 
 const InvoicesSection = () => {
-  const getAllInvoicesApiUrl = 'http://localhost:8080/api/invoices/history'
-
   const [invoices, setInvoices] = useState([])
-  const [loading, setLoading] = useState(false) // todo: change to true
+  const [loading, setLoading] = useState(true) // todo: change to true
   const [errorMessage, setErrorMessage] = useState('')
 
   const loggedUser = JSON.parse(window.sessionStorage.getItem('loggedUser'))
@@ -31,7 +29,8 @@ const InvoicesSection = () => {
   }
 
   useEffect(() => {
-    fetchUpdatedInvoices(setInvoices)
+    setLoading(true)
+    fetchUpdatedInvoices(setInvoices).then(() => setLoading(false))
   }, [])
 
   return (
