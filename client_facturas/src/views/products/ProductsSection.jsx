@@ -5,7 +5,8 @@ import HeaderComponent from '../../components/fragments/HeaderComponent'
 import SideNavbar from '../../components/fragments/SideNavbar'
 import PopupComponent from '../../components/popups/PopupComponent'
 import EditAddPopupComponent from '../../components/pages/EditAddPopupComponent'
-import { handleDelete, handleEdit, handleAdd } from './actionHandlers'
+import SearchComponent from '../../components/pages/SearchComponent'
+import { handleDelete, handleEdit, handleAdd, handleSearch } from './actionHandlers'
 import '../../assets/css/global.css'
 import '../../assets/css/product-client-invoice-styles.css'
 import '../../assets/css/fragments/header.css'
@@ -97,6 +98,15 @@ const ProductsSection = () => {
                         setUpdatedElements={setProducts}
                       />
                     )}
+                  </div>
+                  <div className='form-inline pull-right'>
+                    <SearchComponent
+                      inputName='searchName'
+                      inputPlaceHolder='Nombre del producto'
+                      onSubmit={handleSearch}
+                      setErrorMessage={setErrorMessage}
+                      setFoundElements={setProducts}
+                    />
                   </div>
                 </div>
                 <TableComponent
