@@ -131,31 +131,21 @@
   text-decoration: underline;
 }
 
-/* anchors dentro de la tabla que contengan la palabra "delete" en el atributo href */
-.table a[href*="delete" i] {
-  background-color: var(--danger-color);
-}
-
-.table a[href*="delete" i]:hover {
-  background-color: var(--danger-color-hover);
-}
-
-
 /* lo mismo para los exportar */
-.table a[href*="pdf" i] {
+.export-btns .pdf-btn {
   background-color: var(--pdf-export-color);
 }
 
-.table a[href*="pdf" i]:hover {
+.export-btns .pdf-btn:hover {
   background-color: var(--pdf-export-color-hover);
 }
 
 /* lo mismo para los exportar */
-.table a[href*="xml" i] {
+.export-btns .xml-btn {
   background-color: var(--xml-export-color);
 }
 
-.table a[href*="xml" i]:hover {
+.export-btns .xml-btn:hover {
   background-color: var(--xml-export-color-hover);
 }
 
