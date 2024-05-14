@@ -173,20 +173,20 @@
 }
 
 /* lo mismo para los detalles */
-.table td>label[for*="details" i] {
+.table td>#expand_button {
   background-color: var(--details-color);
 }
 
-.table td>label[for*="details" i]:hover {
+.table td>#expand_button:hover {
   background-color: var(--details-color-hover);
 }
 
 /* lo mismo para los exportar */
-.table td>label[for*="export" i] {
+.table td>#export_button {
   background-color: var(--export-color);
 }
 
-.table td>label[for*="export" i]:hover {
+.table td>#export_button:hover {
   background-color: var(--export-color-hover);
 }
 
