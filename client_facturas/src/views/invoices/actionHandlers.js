@@ -22,6 +22,31 @@ export const handleDelete = (row, setErrorMessage, setUpdatedElements) => {
     })
 }
 
+export const handleSearch = async (searchValue, setErrorMessage, setUpdatedElements) => {
+  try {
+    const response = await fetch(`http://localhost:8080/api/invoices/search?searchClientID=${searchValue}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al buscar facturas')
+    }
+
+    const data = await response.json()
+    const formattedInvoices = formatInvoices(data)
+    setUpdatedElements(formattedInvoices)
+
+    console.log('facturas encontrados:', formattedInvoices)
+  } catch (error) {
+    console.error('Error al buscar facturas:', error.message)
+    setErrorMessage('Error al buscar facturas')
+  }
+}
+
 export const fetchUpdatedInvoices = async (setInvoices) => {
   try {
     const response = await fetch('http://localhost:8080/api/invoices/history', {
