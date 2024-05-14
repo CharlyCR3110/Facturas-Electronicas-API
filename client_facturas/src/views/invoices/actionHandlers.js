@@ -1,3 +1,27 @@
+export const handleDelete = (row, setErrorMessage, setUpdatedElements) => {
+  const idFactura = row[0]
+  fetch(`http://localhost:8080/api/invoices/delete/${idFactura}`, {
+    method: 'DELETE',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error al eliminar el factura')
+      }
+
+      fetchUpdatedInvoices(setUpdatedElements)
+
+      console.log('Factura eliminado correctamente')
+    })
+    .catch(error => {
+      console.error('Error al eliminar la factura:', error.message)
+      setErrorMessage(`Error al eliminar la factura con id ${idFactura}`)
+    })
+}
+
 const fetchUpdatedInvoices = async (setInvoices) => {
   try {
     const response = await fetch('http://localhost:8080/api/invoices/', {
