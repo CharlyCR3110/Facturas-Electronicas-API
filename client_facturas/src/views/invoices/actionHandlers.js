@@ -22,7 +22,7 @@ export const handleDelete = (row, setErrorMessage, setUpdatedElements) => {
     })
 }
 
-const fetchUpdatedInvoices = async (setInvoices) => {
+export const fetchUpdatedInvoices = async (setInvoices) => {
   try {
     const response = await fetch('http://localhost:8080/api/invoices/history', {
       method: 'GET',
