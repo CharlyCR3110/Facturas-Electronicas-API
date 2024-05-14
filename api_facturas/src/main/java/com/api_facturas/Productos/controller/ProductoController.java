@@ -100,7 +100,7 @@ public class ProductoController {
         if (!productos.isEmpty()) {
             return new ResponseEntity<>(productos, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return ResponseEntity.noContent().build();
         }
     }
 
