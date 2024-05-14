@@ -30,7 +30,7 @@ const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToI
               ))}
               <td>
                 <button id='edit_button' className='toggle-popup toggle-edit-popup action-btn' onClick={() => handleShowPopup(row)}>Editar</button>
-                <button id='delete_button' className='action-btn' onClick={() => handleDelete(row, setErrorMessage)}>Eliminar</button>
+                <button id='delete_button' className='action-btn' onClick={() => handleDelete(row, setErrorMessage, setProducts)}>Eliminar</button>
                 <button id='to_invoice_button' className='action-btn' onClick={() => handleSendToInvoice(row, setErrorMessage)}>Enviar a Factura</button>
               </td>
             </tr>
