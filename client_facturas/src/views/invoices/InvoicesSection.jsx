@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import LoadingComponent from '../../components/misc/LoadingComponent'
 import HeaderComponent from '../../components/fragments/HeaderComponent'
 import SideNavbar from '../../components/fragments/SideNavbar'
-import { formatInvoices, handleDelete } from './actionHandlers'
+import { formatInvoices, handleDelete, fetchUpdatedInvoices } from './actionHandlers'
 import '../../assets/css/global.css'
 import '../../assets/css/product-client-invoice-styles.css'
 import '../../assets/css/fragments/header.css'
@@ -31,31 +31,7 @@ const InvoicesSection = () => {
   }
 
   useEffect(() => {
-    const fetchInvoices = async () => {
-      try {
-        const response = await fetch(getAllInvoicesApiUrl, {
-          method: 'GET',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-
-        if (!response.ok) {
-          throw new Error('Error al obtener las facturas')
-        }
-
-        const data = await response.json()
-        const formattedInvoices = formatInvoices(data)
-        setInvoices(formattedInvoices)
-        setLoading(false)
-      } catch (error) {
-        console.error('Error al obtener las facturas:', error.message)
-        setLoading(false)
-      }
-    }
-
-    fetchInvoices()
+    fetchUpdatedInvoices(setInvoices)
   }, [])
 
   return (
