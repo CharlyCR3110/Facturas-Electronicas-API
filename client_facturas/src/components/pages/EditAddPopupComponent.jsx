@@ -1,7 +1,26 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
-const EditAddPopupComponent = ({ title, fields, onSubmit, handleClosePopup, setErrorMessage, currentElementId, setUpdatedElements }) => {
+const EditAddPopupComponent = ({
+  title,
+  fields,
+  onSubmit,
+  handleClosePopup,
+  setErrorMessage,
+  currentElementId,
+  setUpdatedElements
+}) => {
+  const formRef = useRef(null)
   const textOnButton = currentElementId ? 'Editar' : 'Agregar'
+
+  const handleSubmit = () => {
+    const formData = Array.from(formRef.current.elements).reduce((acc, field) => {
+      if (field.name) {
+        acc[field.name] = field.value
+      }
+      return acc
+    }, {})
+    onSubmit(currentElementId, formData, setErrorMessage, setUpdatedElements, handleClosePopup)
+  }
 
   return (
     <div className='edit-popup'>
@@ -10,8 +29,8 @@ const EditAddPopupComponent = ({ title, fields, onSubmit, handleClosePopup, setE
           <h2>{title}</h2>
         </div>
         <div className='popup-body'>
-          <form>
-            {fields.map(field => (
+          <form ref={formRef}>
+            {fields.map((field) => (
               <div className='form-group' key={field.name}>
                 <label htmlFor={`${field.name}-edit`}>{field.label}</label>
                 <input
@@ -24,14 +43,12 @@ const EditAddPopupComponent = ({ title, fields, onSubmit, handleClosePopup, setE
               </div>
             ))}
           </form>
-          <button
-            className='action-btn' onClick={() => {
-              const formData = fields.reduce((acc, field) => ({ ...acc, [field.name]: document.getElementById(`${field.name}-edit`).value }), {})
-              onSubmit(currentElementId, formData, setErrorMessage, setUpdatedElements, handleClosePopup)
-            }}
-          >{textOnButton}
+          <button className='action-btn' onClick={handleSubmit}>
+            {textOnButton}
           </button>
-          <button className='cancel-btn' onClick={handleClosePopup}>Cancelar</button>
+          <button className='cancel-btn' onClick={handleClosePopup}>
+            Cancelar
+          </button>
         </div>
       </div>
     </div>
