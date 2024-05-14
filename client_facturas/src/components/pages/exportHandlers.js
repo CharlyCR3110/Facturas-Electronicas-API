@@ -1,3 +1,4 @@
+import { DOMParser } from 'xmldom'
 export const exportPDF = async (invoiceId, setErrorMessage) => {
   try {
     const response = await fetch(`http://localhost:8080/api/invoices/export/pdf/${invoiceId}`, {
@@ -29,5 +30,26 @@ export const exportPDF = async (invoiceId, setErrorMessage) => {
     document.body.removeChild(link)
   } catch (error) {
     setErrorMessage('No se pudo exportar la factura')
+  }
+}
+
+export const fetchDetailsInvoiceInfo = async (invoiceId) => {
+  try {
+    const response = await fetch(`http://localhost:8080/api/invoices/details/${invoiceId}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al obtener los detalles de la factura')
+    }
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error('Error al obtener los detalles de la factura:', error.message)
   }
 }
