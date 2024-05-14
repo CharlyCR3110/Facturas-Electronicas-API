@@ -42,3 +42,32 @@ const fetchUpdatedClients = async (setClients) => {
     console.error('Error al obtener los clientes:', error.message)
   }
 }
+
+export const handleEdit = async (currentElementId, formData, setErrorMessage, setUpdatedElements, handleClosePopup) => {
+  try {
+    // URL de la solicitud
+    const apiUrl = `http://localhost:8080/api/clients/update/${currentElementId}`
+
+    const response = await fetch(apiUrl, {
+      method: 'PUT',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al editar el cliente')
+    }
+
+    console.log('Cliente editado correctamente')
+
+    fetchUpdatedClients(setUpdatedElements)
+
+    handleClosePopup()
+  } catch (error) {
+    console.error('Error al editar el cliente:', error.message)
+    setErrorMessage(`Error al editar el cliente con id ${currentElementId}`)
+  }
+}
