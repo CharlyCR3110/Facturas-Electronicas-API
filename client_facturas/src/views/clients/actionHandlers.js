@@ -71,3 +71,29 @@ export const handleEdit = async (currentElementId, formData, setErrorMessage, se
     setErrorMessage(`Error al editar el cliente con id ${currentElementId}`)
   }
 }
+
+export const handleAdd = async (currentElementId, formData, setErrorMessage, setUpdatedElements, handleClosePopup) => {
+  try {
+    const response = await fetch('http://localhost:8080/api/clients/add', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al agregar el cliente')
+    }
+
+    console.log('Cliente agregado correctamente')
+
+    fetchUpdatedClients(setUpdatedElements)
+
+    handleClosePopup()
+  } catch (error) {
+    console.error('Error al agregar el cliente:', error.message)
+    setErrorMessage('Error al agregar el cliente')
+  }
+}
