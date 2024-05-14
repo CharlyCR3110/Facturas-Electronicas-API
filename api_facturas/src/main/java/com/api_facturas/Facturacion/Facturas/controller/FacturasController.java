@@ -2,6 +2,7 @@ package com.api_facturas.Facturacion.Facturas.controller;
 
 
 import ch.qos.logback.core.model.Model;
+import com.api_facturas.Clientes.model.ClienteEntity;
 import com.api_facturas.Clientes.service.ClienteService;
 import com.api_facturas.Facturacion.DTO.FacturaConDetallesDTO;
 import com.api_facturas.Facturacion.DTO.ProductOnCart;
@@ -146,6 +147,30 @@ public class FacturasController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/sendClientToInvoiceCreator")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> sendClientToInvoiceCreator(@RequestParam(name = "idCliente") Integer idCliente, HttpSession httpSession) {
+        Map<String, Object> response = new HashMap<>();
 
+        // obtener el usuario loggeado (se obtiene de la sesion)
+        UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            response.put("status", "error");
+            response.put("message", "Usuario no autenticado");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        // obtener el cliente
+        ClienteEntity client = clienteService.getClientById(idCliente);
+
+        // Guardar el cliente en la sesión
+        httpSession.setAttribute("currentClientSelected", client);
+
+        response.put("status", "success");
+        response.put("currentClientSelected", client);
+
+        return ResponseEntity.ok(response);
+    }
+    
 }
 
