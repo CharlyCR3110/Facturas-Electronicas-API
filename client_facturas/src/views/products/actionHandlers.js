@@ -1,4 +1,4 @@
-export const handleDelete = (row, setErrorMessage) => {
+export const handleDelete = (row, setErrorMessage, setUpdatedElements) => {
   const idProducto = row[0]
   fetch(`http://localhost:8080/api/products/delete/${idProducto}`, {
     method: 'DELETE',
@@ -12,7 +12,9 @@ export const handleDelete = (row, setErrorMessage) => {
         throw new Error('Error al eliminar el producto')
       }
 
-      window.location.reload()
+      fetchUpdatedProducts(setUpdatedElements)
+
+      console.log('Producto eliminado correctamente')
     })
     .catch(error => {
       console.error('Error al eliminar el producto:', error.message)
