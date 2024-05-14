@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import EditAddPopupComponent from './EditAddPopupComponent'
 import InvoiceDetailsPopupComponent from './InvoiceDetailsPopupComponent'
+import ExportPopupComponent from './ExportPopupComponent'
 import { fetchDetailsInvoiceInfo } from './tableHelper'
 
 const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToInvoice, setErrorMessage, popupTitle, popupFields, setCurrentElement, setElements, handleExport }) => {
   const [showPopup, setShowPopup] = useState(false)
+  const [showExportPopup, setShowExportPopup] = useState(false)
   const [currentElementId, setCurrentElementId] = useState('')
   const [currentElement, setLocalCurrentElement] = useState(null)
 
@@ -21,8 +23,12 @@ const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToI
         setCurrentElement(factura)
         setShowPopup(true)
       })
+  }
 
-    // setCurrentElement(row)
+  const handleShowExportPopup = (row) => {
+    setCurrentElement(row)
+    setCurrentElementId(row[0])
+    setShowExportPopup(true)
   }
 
   const handleClosePopup = () => { setShowPopup(false) }
@@ -58,7 +64,7 @@ const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToI
                     <>
                       <button id='expand_button' className='toggle-popup toggle-edit-popup action-btn' onClick={() => handleShowDetailsPopup(row)}>Expandir</button>
                       <button id='delete_button' className='action-btn' onClick={() => handleDelete(row, setErrorMessage, setElements)}>Eliminar</button>
-                      <button id='export_button' className='action-btn' onClick={() => handleExport(row, setErrorMessage)}>Exportar</button>
+                      <button id='export_button' className='action-btn' onClick={() => handleShowExportPopup(row)}>Exportar</button>
                     </>
                     )}
               </td>
@@ -92,6 +98,7 @@ const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToI
                   null
                 )
           )}
+      {showExportPopup && <ExportPopupComponent handleClosePopup={() => setShowExportPopup(false)} setErrorMessage={setErrorMessage} invoiceId={currentElementId} />}
     </>
   )
 }
