@@ -6,7 +6,7 @@ import SideNavbar from '../../components/fragments/SideNavbar'
 import PopupComponent from '../../components/popups/PopupComponent'
 import EditAddPopupComponent from '../../components/pages/EditAddPopupComponent'
 import SearchComponent from '../../components/pages/SearchComponent'
-import { handleDelete, handleEdit, handleAdd, handleSearch } from './actionHandlers'
+import { handleDelete, handleEdit, handleAdd, handleSearch, handleSendToInvoice } from './actionHandlers'
 import '../../assets/css/global.css'
 import '../../assets/css/product-client-invoice-styles.css'
 import '../../assets/css/fragments/header.css'
@@ -117,7 +117,7 @@ const ClientsSections = () => {
                   data={clients.map(client => [client.idCliente, client.nombre, client.identificacion, client.telefono, client.correo])}
                   handleEdit={handleEdit}
                   handleDelete={handleDelete}
-                  handleSendToInvoice={client => console.log(client)}
+                  handleSendToInvoice={handleSendToInvoice}
                   setErrorMessage={setErrorMessage}
                   popupTitle='Editar Producto'
                   popupFields={popupFields}
