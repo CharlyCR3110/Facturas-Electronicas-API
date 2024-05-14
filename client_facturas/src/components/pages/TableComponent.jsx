@@ -1,14 +1,28 @@
 import React, { useState } from 'react'
 import EditAddPopupComponent from './EditAddPopupComponent'
+import InvoiceDetailsPopupComponent from './InvoiceDetailsPopupComponent'
+import { fetchDetailsInvoiceInfo } from './tableHelper'
 
 const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToInvoice, setErrorMessage, popupTitle, popupFields, setCurrentElement, setElements, handleExport }) => {
   const [showPopup, setShowPopup] = useState(false)
   const [currentElementId, setCurrentElementId] = useState('')
+  const [currentElement, setLocalCurrentElement] = useState(null)
 
   const handleShowPopup = (row) => {
     setCurrentElement(row)
     setCurrentElementId(row[0])
     setShowPopup(true)
+  }
+
+  const handleShowDetailsPopup = (row) => {
+    fetchDetailsInvoiceInfo(row)
+      .then(factura => {
+        setLocalCurrentElement(factura)
+        setCurrentElement(factura)
+        setShowPopup(true)
+      })
+
+    // setCurrentElement(row)
   }
 
   const handleClosePopup = () => { setShowPopup(false) }
@@ -42,7 +56,7 @@ const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToI
                     )
                   : (
                     <>
-                      <button id='expand_button' className='toggle-popup toggle-edit-popup action-btn' onClick={() => handleShowPopup(row)}>Expandir</button>
+                      <button id='expand_button' className='toggle-popup toggle-edit-popup action-btn' onClick={() => handleShowDetailsPopup(row)}>Expandir</button>
                       <button id='delete_button' className='action-btn' onClick={() => handleDelete(row, setErrorMessage, setElements)}>Eliminar</button>
                       <button id='export_button' className='action-btn' onClick={() => handleExport(row, setErrorMessage)}>Exportar</button>
                     </>
@@ -72,12 +86,15 @@ const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToI
         : (
             showPopup
               ? (
-                <p>WORKING ON</p>
+                <InvoiceDetailsPopupComponent factura={currentElement} handleClosePopup={handleClosePopup} />
                 )
-              : null
+              : (
+                  null
+                )
           )}
     </>
   )
 }
 
 export default TableComponent
+// InvoiceDetailsPopupComponent = ({ factura, handleClosePopup })
