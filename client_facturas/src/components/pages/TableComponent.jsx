@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import EditAddPopupComponent from './EditAddPopupComponent'
 
-const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToInvoice, setErrorMessage, popupTitle, popupFields, setCurrentElement, setProducts }) => {
+const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToInvoice, setErrorMessage, popupTitle, popupFields, setCurrentElement, setElements }) => {
   const [showPopup, setShowPopup] = useState(false)
   const [currentElementId, setCurrentElementId] = useState('')
 
@@ -30,7 +30,7 @@ const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToI
               ))}
               <td>
                 <button id='edit_button' className='toggle-popup toggle-edit-popup action-btn' onClick={() => handleShowPopup(row)}>Editar</button>
-                <button id='delete_button' className='action-btn' onClick={() => handleDelete(row, setErrorMessage, setProducts)}>Eliminar</button>
+                <button id='delete_button' className='action-btn' onClick={() => handleDelete(row, setErrorMessage, setElements)}>Eliminar</button>
                 <button id='to_invoice_button' className='action-btn' onClick={() => handleSendToInvoice(row, setErrorMessage)}>Enviar a Factura</button>
               </td>
             </tr>
@@ -46,7 +46,7 @@ const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToI
           handleClosePopup={handleClosePopup}
           setErrorMessage={setErrorMessage}
           currentElementId={currentElementId}
-          setUpdatedElements={setProducts}
+          setUpdatedElements={setElements}
         />
       )}
     </>
