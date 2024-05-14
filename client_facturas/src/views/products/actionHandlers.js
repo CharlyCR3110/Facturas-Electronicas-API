@@ -97,3 +97,25 @@ export const handleAdd = async (currentElementId, formData, setErrorMessage, set
     setErrorMessage('Error al agregar el producto')
   }
 }
+
+export const handleSearch = async (searchValue, setErrorMessage, setUpdatedElements) => {
+  try {
+    const response = await fetch(`http://localhost:8080/api/products/search?searchName=${searchValue}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al buscar productos')
+    }
+
+    const data = await response.json()
+    setUpdatedElements(data)
+  } catch (error) {
+    console.error('Error al buscar productos:', error.message)
+    setErrorMessage('Error al buscar productos')
+  }
+}
