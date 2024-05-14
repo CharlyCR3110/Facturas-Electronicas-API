@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import EditPopupComponent from './EditPopupComponent'
+import EditAddPopupComponent from './EditAddPopupComponent'
 
 const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToInvoice, setErrorMessage, popupTitle, popupFields, setCurrentElement, setProducts }) => {
   const [showPopup, setShowPopup] = useState(false)
@@ -39,12 +39,11 @@ const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToI
       </table>
 
       {showPopup && (
-        <EditPopupComponent
+        <EditAddPopupComponent
           title={popupTitle}
           fields={popupFields}
           onSubmit={handleEdit}
           handleClosePopup={handleClosePopup}
-          formData={popupFields.reduce((acc, field) => ({ ...acc, [field.name]: field.value }), {})}
           setErrorMessage={setErrorMessage}
           currentElementId={currentElementId}
           setUpdatedElements={setProducts}
