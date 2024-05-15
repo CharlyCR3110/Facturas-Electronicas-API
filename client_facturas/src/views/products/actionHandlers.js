@@ -122,25 +122,29 @@ export const handleSearch = async (searchValue, setErrorMessage, setUpdatedEleme
 
 export const handleSendToInvoice = async (row, setErrorMessage) => {
   const idProducto = row[0]
+  const onInvoiceProducts = JSON.parse(window.sessionStorage.getItem('onInvoiceProducts'))
+  let body = []
+  if (onInvoiceProducts) {
+    body = onInvoiceProducts.cart
+  }
+
   try {
     const response = await fetch(`http://localhost:8080/api/invoices/sendProductToInvoiceCreator?idProducto=${idProducto}`, {
       method: 'POST',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify(body)
     })
 
     if (!response.ok) {
       throw new Error('Error al enviar el producto a la factura')
     }
 
-    console.log('Producto enviado a la factura correctamente')
     const data = await response.json()
-    console.log(data)
     window.sessionStorage.setItem('onInvoiceProducts', JSON.stringify(data))
   } catch (error) {
-    console.error('Error al enviar el producto a la factura:', error.message)
     setErrorMessage(`Error al enviar el producto con id ${idProducto} a la factura`)
   }
 }
