@@ -82,3 +82,27 @@ export const handleAddProductToCartSubmit = async (event, cart, setCart, setErro
     setErrorMessage(`Error al agregar el producto con id ${idProducto} al carrito`)
   }
 }
+
+export const handleCreateInvoice = async (cart, client, setErrorMessage, setConfirmationMessage, setCart, setClient) => {
+  try {
+    const response = await fetch(`http://localhost:8080/api/invoices/createInvoice?clientIdentification=${client.identificacion}`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(cart)
+    })
+
+    if (!response.ok) {
+      const data = await response.json()
+      throw new Error(data.message)
+    }
+
+    setCart([])
+    setClient(null)
+    setConfirmationMessage('Factura creada exitosamente')
+  } catch (error) {
+    setErrorMessage('Error al crear la factura')
+  }
+}
