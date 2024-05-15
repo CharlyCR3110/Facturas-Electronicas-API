@@ -48,3 +48,9 @@ export const handleQuantityChange = (productId, change, cart, setCart) => {
 
   setCart(newCart)
 }
+
+export const handleClientSearch = async (event, setClient, setErrorMessage) => {
+  event.preventDefault()
+  const idCliente = event.target.client.value
+  handleAddClientToInvoice(idCliente, setClient, setErrorMessage)
+}
