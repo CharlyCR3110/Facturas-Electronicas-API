@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import HeaderComponent from '../../components/fragments/HeaderComponent'
 import SideNavbar from '../../components/fragments/SideNavbar'
 import PopupComponent from '../../components/popups/PopupComponent'
-import { handleRemoveClientFromCart, handleRemoveFromCart, handleQuantityChange, handleClientSearchSubmit, handleAddProductToCartSubmit } from './actionHandlers'
+import { handleRemoveClientFromCart, handleRemoveFromCart, handleQuantityChange, handleClientSearchSubmit, handleAddProductToCartSubmit, handleCreateInvoice } from './actionHandlers'
 import '../../assets/css/global.css'
 import '../../assets/css/invoice_creator.css'
 import '../../assets/css/fragments/header.css'
@@ -13,6 +13,7 @@ const InvoiceCreatorSection = () => {
   const [client, setClient] = useState(window.sessionStorage.getItem('onInvoiceClient') ? JSON.parse(window.sessionStorage.getItem('onInvoiceClient')) : null)
   const [cart, setCart] = useState(window.sessionStorage.getItem('onInvoiceProducts') ? JSON.parse(window.sessionStorage.getItem('onInvoiceProducts')) : [])
   const [errorMessage, setErrorMessage] = useState('')
+  const [confirmationMessage, setConfirmationMessage] = useState('')
 
   const loggedUser = { nombre: 'Juan' }
   useEffect(() => {
@@ -36,10 +37,6 @@ const InvoiceCreatorSection = () => {
     window.sessionStorage.setItem('onInvoiceClient', JSON.stringify(client))
     window.sessionStorage.setItem('onInvoiceProducts', JSON.stringify(cart))
   }, [client, cart])
-
-  const handleInvoiceSubmit = (event) => {
-    console.log('handleInvoiceSubmit')
-  }
 
   return (
     <>
@@ -158,20 +155,19 @@ const InvoiceCreatorSection = () => {
             )}
 
             {cart.length > 0 && client && (
-              <form onSubmit={handleInvoiceSubmit}>
-                <div className='form-group'>
-                  <div className='invoice-actions'>
-                    <button type='submit' className='action-btn'>
-                      Facturar
-                    </button>
-                  </div>
+              <div className='form-group'>
+                <div className='invoice-actions'>
+                  <button className='action-btn' onClick={() => handleCreateInvoice(cart, client, setErrorMessage, setConfirmationMessage, setCart, setClient)}>
+                    Facturar
+                  </button>
                 </div>
-              </form>
+              </div>
             )}
           </div>
         </section>
       </div>
       {errorMessage && <PopupComponent message={errorMessage} onClose={() => setErrorMessage('')} type='error' />}
+      {confirmationMessage && <PopupComponent message={confirmationMessage} onClose={() => setConfirmationMessage('')} type='confirmation' />}
     </>
   )
 }
