@@ -125,7 +125,7 @@ export const handleSendToInvoice = async (row, setErrorMessage) => {
   const onInvoiceProducts = JSON.parse(window.sessionStorage.getItem('onInvoiceProducts'))
   let body = []
   if (onInvoiceProducts) {
-    body = onInvoiceProducts.cart
+    body = onInvoiceProducts
   }
 
   try {
@@ -143,7 +143,7 @@ export const handleSendToInvoice = async (row, setErrorMessage) => {
     }
 
     const data = await response.json()
-    window.sessionStorage.setItem('onInvoiceProducts', JSON.stringify(data))
+    window.sessionStorage.setItem('onInvoiceProducts', JSON.stringify(data.cart))
   } catch (error) {
     setErrorMessage(`Error al enviar el producto con id ${idProducto} a la factura`)
   }
