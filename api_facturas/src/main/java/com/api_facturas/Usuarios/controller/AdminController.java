@@ -27,4 +27,14 @@ public class AdminController {
         List<UsuarioEntity> admins = usuarioService.getAllProviders();
         return ResponseEntity.ok(admins);
     }
+
+    @PatchMapping("/changeProviderState")
+    public ResponseEntity<List<UsuarioEntity>> changeProviderState(@RequestParam("idProvider") Integer idProvider) {
+        try {
+            UsuarioEntity updatedProvider = usuarioService.changeProviderState(idProvider);
+            return getAdminDashboard();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(400).build();
+        }
+    }
 }
