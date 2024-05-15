@@ -208,9 +208,6 @@ public class FacturasController {
         // obtener el cliente
         ClienteEntity client = clienteService.getClientById(idCliente);
 
-        // Guardar el cliente en la sesión
-        httpSession.setAttribute("currentClientSelected", client);
-
         return ResponseEntity.ok(client);
     }
 
@@ -235,8 +232,6 @@ public class FacturasController {
                     .contentType(MediaType.APPLICATION_PDF)
                     .body(resource);
         } catch (Exception e) {
-            // Manejar cualquier excepción y establecer un mensaje de error en la sesión HTTP
-            httpSession.setAttribute("errorMessage", "No se pudo exportar la factura");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
