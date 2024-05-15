@@ -28,3 +28,23 @@ export const handleRemoveFromCart = (productId, cart, setCart) => {
   const newCart = cart.filter(item => item.product.idProducto !== productId)
   setCart(newCart)
 }
+
+export const handleQuantityChange = (productId, change, cart, setCart) => {
+  console.log('handleQuantityChange', cart)
+  const index = cart.findIndex(item => item.product.idProducto === productId)
+
+  if (index === -1) {
+    return
+  }
+
+  const newCart = [...cart]
+
+  if (newCart[index].quantity + change <= 0) {
+    handleRemoveFromCart(productId, newCart, setCart)
+    return
+  }
+
+  newCart[index].quantity += change
+
+  setCart(newCart)
+}
