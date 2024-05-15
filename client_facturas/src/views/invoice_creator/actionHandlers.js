@@ -49,8 +49,36 @@ export const handleQuantityChange = (productId, change, cart, setCart) => {
   setCart(newCart)
 }
 
-export const handleClientSearch = async (event, setClient, setErrorMessage) => {
+export const handleClientSearchSubmit = async (event, setClient, setErrorMessage) => {
   event.preventDefault()
   const idCliente = event.target.client.value
   handleAddClientToInvoice(idCliente, setClient, setErrorMessage)
+}
+
+export const handleAddProductToCartSubmit = async (event, cart, setCart, setErrorMessage) => {
+  event.preventDefault()
+  const idProducto = event.target.product.value
+  const cantidad = event.target.quantity.value
+  console.log(cart)
+
+  try {
+    const response = await fetch(`http://localhost:8080/api/invoices/addToCart?productName=${idProducto}&quantity=${cantidad}`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(cart)
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al agregar el producto al carrito')
+    }
+
+    const data = await response.json()
+    console.log(data.cart)
+    setCart(data.cart)
+  } catch (error) {
+    setErrorMessage(`Error al agregar el producto con id ${idProducto} al carrito`)
+  }
 }
