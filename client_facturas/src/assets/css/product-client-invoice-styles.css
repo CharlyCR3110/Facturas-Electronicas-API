@@ -320,6 +320,12 @@
   width: 48%;
 }
 
+.admin-logout-btn .logout-btn  {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
 /* usar un svg */
 .admin-logout-btn .logout-btn {
   background-image: url(../icons/logout-3-svgrepo-com.svg);
