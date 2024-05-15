@@ -23,3 +23,8 @@ export const handleAddClientToInvoice = async (clientIdentification, setClient, 
 export const handleRemoveClientFromCart = (setClient) => {
   setClient(null)
 }
+
+export const handleRemoveFromCart = (productId, cart, setCart) => {
+  const newCart = cart.filter(item => item.product.idProducto !== productId)
+  setCart(newCart)
+}
