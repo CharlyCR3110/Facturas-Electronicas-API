@@ -31,9 +31,13 @@ const LoginSection = ({ sectionName }) => {
 
       const user = await response.json()
 
-      window.sessionStorage.setItem('loggedUser', JSON.stringify(user))
-      // redirigir a la pagina de cuenta
-      window.location.href = 'http://localhost:5173/account_info'
+      if (user.rol === 'proveedor') {
+        window.sessionStorage.setItem('loggedUser', JSON.stringify(user))
+        window.location.href = 'http://localhost:5173/account_info'
+      } else if (user.rol === 'admin') {
+        window.sessionStorage.setItem('loggedAdmin', JSON.stringify(user))
+        window.location.href = 'http://localhost:5173/admin/dashboard'
+      }
     } catch (error) {
       console.error('Error al iniciar sesión:', error.message)
       setErrorMessage(error.message)
