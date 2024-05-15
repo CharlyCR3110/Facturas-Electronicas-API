@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.Collections;
+import java.util.Objects;
 
 
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
@@ -136,6 +137,62 @@ public class FacturasController {
         }
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/addToCart")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> addToCart(@RequestParam(name = "productName") String productName, @RequestParam(name = "quantity") Integer quantity,@RequestBody ArrayList<ProductOnCart> cart) {
+        Map<String, Object> response = new HashMap<>();
+        // obtener el usuario loggeado (se obtiene de la sesion)
+        UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            response.put("status", "error");
+            response.put("message", "Usuario no autenticado");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+
+        // obtener el producto
+        ProductOnCart productOnCart = new ProductOnCart();
+        try {
+            productOnCart.setProduct(productoService.getProductoByNombreAndProveedor(productName, userLogged));
+            productOnCart.setQuantity(quantity);
+        } catch (Exception e) {
+            httpSession.setAttribute("errorMessage", e.getMessage());
+        }
+
+        if (cart == null) {
+            cart = new ArrayList<>();
+        }
+
+        // verificar que en el carrito no haya un producto con el mismo id
+        boolean found = false;
+        for (ProductOnCart p : cart) {
+            if (Objects.equals(p.getProduct().getNombre(), productName)) {
+                p.setQuantity(p.getQuantity() + quantity);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            cart.add(productOnCart);
+        }
+
+
+        //total
+        BigDecimal total = BigDecimal.ZERO;
+        for (ProductOnCart p : cart) {
+            BigDecimal price = p.getProduct().getPrecioUnitario();
+            BigDecimal quantityP = BigDecimal.valueOf(p.getQuantity());
+            total = total.add(price.multiply(quantityP));
+        }
+
+        response.put("status", "success");
+        response.put("cart", cart);
+        response.put("total", total);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/sendProductToInvoiceCreator")
