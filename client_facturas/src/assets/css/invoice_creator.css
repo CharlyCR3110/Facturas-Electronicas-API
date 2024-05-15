@@ -143,7 +143,14 @@ li {
   background-color: #f2f2f2;
 }
 
-.cart table a {
+/* eliminar los estilos por defecto del button */
+.cart table button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.cart table button {
   text-decoration: none;
   color: var(--primary-color);
   /* utilizar el icon (svg) de eliminar */
