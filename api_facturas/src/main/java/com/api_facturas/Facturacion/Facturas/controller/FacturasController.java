@@ -140,7 +140,10 @@ public class FacturasController {
 
     @PostMapping("/sendProductToInvoiceCreator")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> sendProductToInvoiceCreator(@RequestParam(name = "idProducto") Integer idProducto, HttpSession httpSession) {
+    public ResponseEntity<Map<String, Object>> sendProductToInvoiceCreator(
+            @RequestParam(name = "idProducto") Integer idProducto,
+            @RequestBody ArrayList<ProductOnCart> cart
+    ) {
         Map<String, Object> response = new HashMap<>();
 
         // obtener el usuario loggeado (se obtiene de la sesion)
@@ -156,10 +159,7 @@ public class FacturasController {
         productOnCart.setProduct(productoService.getProductoByID(idProducto));
         productOnCart.setQuantity(1);
 
-        // obtener o crear el carrito en la sesión
-        @SuppressWarnings("unchecked")
-        ArrayList<ProductOnCart> cart = (ArrayList<ProductOnCart>) httpSession.getAttribute("cart");
-        if (cart == null) {
+        if (cart == null || cart.isEmpty()) {
             cart = new ArrayList<>();
         }
 
@@ -184,10 +184,6 @@ public class FacturasController {
             BigDecimal quantityP = BigDecimal.valueOf(p.getQuantity());
             total = total.add(price.multiply(quantityP));
         }
-
-        // Guardar el carrito y el total en la sesión
-        httpSession.setAttribute("cart", cart);
-        httpSession.setAttribute("total", total);
 
         response.put("status", "success");
         response.put("cart", cart);
