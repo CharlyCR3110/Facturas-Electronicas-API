@@ -196,6 +196,23 @@ public class FacturasController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/selectClient")
+    @ResponseBody
+    public ResponseEntity<ClienteEntity> selectClient(@RequestParam(name = "client") String clientIdentification, HttpSession httpSession) {
+        // obtener el usuario loggeado (se obtiene de la sesion)
+        UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        try {
+            ClienteEntity client = clienteService.getClientByIdentificationAndProveedor(clientIdentification, userLogged);
+            return ResponseEntity.ok(client);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
     @PostMapping("/sendClientToInvoiceCreator")
     @ResponseBody
     public ResponseEntity<ClienteEntity> sendClientToInvoiceCreator(@RequestParam(name = "idCliente") Integer idCliente, HttpSession httpSession) {
