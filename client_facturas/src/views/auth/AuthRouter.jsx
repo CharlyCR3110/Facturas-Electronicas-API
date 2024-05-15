@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import LoginSection from './LoginSection'
 import RegisterSection from './RegisterSection'
 
-const AuthSection = () => {
+const AuthRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
@@ -15,4 +15,4 @@ const AuthSection = () => {
   )
 }
 
-export default AuthSection
+export default AuthRouter

@@ -1,10 +1,10 @@
-import AuthSection from './views/auth/AuthSection'
+import AuthRouter from './views/auth/AuthRouter'
 import MainRouter from './views/main/MainRouter'
 
 function App () {
   return (
     <div className='App'>
-      <AuthSection />
+      <AuthRouter />
       <MainRouter />
     </div>
   )
