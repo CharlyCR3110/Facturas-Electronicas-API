@@ -19,3 +19,7 @@ export const handleAddClientToInvoice = async (clientIdentification, setClient, 
     setErrorMessage(`Error al agregar el cliente con id ${clientIdentification} a la factura`)
   }
 }
+
+export const handleRemoveClientFromCart = (setClient) => {
+  setClient(null)
+}
