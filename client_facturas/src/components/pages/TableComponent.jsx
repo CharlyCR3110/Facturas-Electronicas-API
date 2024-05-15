@@ -4,7 +4,7 @@ import InvoiceDetailsPopupComponent from './InvoiceDetailsPopupComponent'
 import ExportPopupComponent from './ExportPopupComponent'
 import { fetchDetailsInvoiceInfo } from './tableHelper'
 
-const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToInvoice, setErrorMessage, popupTitle, popupFields, setCurrentElement, setElements, handleExport }) => {
+const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToInvoice, setErrorMessage, popupTitle, popupFields, setCurrentElement, setElements, handleChangeStatus }) => {
   const [showPopup, setShowPopup] = useState(false)
   const [showExportPopup, setShowExportPopup] = useState(false)
   const [currentElementId, setCurrentElementId] = useState('')
@@ -35,6 +35,8 @@ const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToI
 
   const isEditAvailable = popupTitle.includes('Editar')
 
+  const isAdminTable = popupTitle.includes('Administrar')
+
   return (
     <>
       <table className='table'>
@@ -52,20 +54,27 @@ const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToI
                 <td key={cellIndex}>{cell}</td>
               ))}
               <td>
-                {isEditAvailable
+                {!isAdminTable
                   ? (
-                    <>
-                      <button id='edit_button' className='toggle-popup toggle-edit-popup action-btn' onClick={() => handleShowPopup(row)}>Editar</button>
-                      <button id='delete_button' className='action-btn' onClick={() => handleDelete(row, setErrorMessage, setElements)}>Eliminar</button>
-                      <button id='to_invoice_button' className='action-btn' onClick={() => handleSendToInvoice(row, setErrorMessage)}>Enviar a Factura</button>
-                    </>
+                      isEditAvailable
+                        ? (
+                          <>
+                            <button id='edit_button' className='toggle-popup toggle-edit-popup action-btn' onClick={() => handleShowPopup(row)}>Editar</button>
+                            <button id='delete_button' className='action-btn' onClick={() => handleDelete(row, setErrorMessage, setElements)}>Eliminar</button>
+                            <button id='to_invoice_button' className='action-btn' onClick={() => handleSendToInvoice(row, setErrorMessage)}>Enviar a Factura</button>
+                          </>
+                          )
+                        : (
+                          <>
+                            <button id='expand_button' className='toggle-popup toggle-edit-popup action-btn' onClick={() => handleShowDetailsPopup(row)}>Expandir</button>
+                            <button id='delete_button' className='action-btn' onClick={() => handleDelete(row, setErrorMessage, setElements)}>Eliminar</button>
+                            <button id='export_button' className='action-btn' onClick={() => handleShowExportPopup(row)}>Exportar</button>
+                          </>
+                          )
+
                     )
                   : (
-                    <>
-                      <button id='expand_button' className='toggle-popup toggle-edit-popup action-btn' onClick={() => handleShowDetailsPopup(row)}>Expandir</button>
-                      <button id='delete_button' className='action-btn' onClick={() => handleDelete(row, setErrorMessage, setElements)}>Eliminar</button>
-                      <button id='export_button' className='action-btn' onClick={() => handleShowExportPopup(row)}>Exportar</button>
-                    </>
+                    <button id='admin_button' className={`action-btn ${row[5] === 'activo' ? 'deactivate-btn' : 'activate-btn'}`} onClick={() => handleChangeStatus(row, setElements)}>{row[5] === 'activo' ? 'Desactivar' : 'Activar'}</button>
                     )}
               </td>
             </tr>
@@ -104,4 +113,3 @@ const TableComponent = ({ headers, data, handleEdit, handleDelete, handleSendToI
 }
 
 export default TableComponent
-// InvoiceDetailsPopupComponent = ({ factura, handleClosePopup })
