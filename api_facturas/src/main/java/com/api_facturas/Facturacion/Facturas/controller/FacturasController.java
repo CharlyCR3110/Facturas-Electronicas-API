@@ -281,6 +281,67 @@ public class FacturasController {
         return ResponseEntity.ok(client);
     }
 
+    // para crear la factura
+    @PostMapping("/createInvoice")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> createInvoice(@RequestParam(name = "clientIdentification") String clientIdentification,
+                                                             @RequestBody ArrayList<ProductOnCart> cart) {
+        Map<String, Object> response = new HashMap<>();
+
+        // obtener el usuario loggeado (se obtiene de la sesion)
+        UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
+        if (userLogged == null) {
+            response.put("status", "error");
+            response.put("message", "Usuario no autenticado");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        // obtener el carrito
+        if (cart == null || cart.isEmpty()) {
+            response.put("status", "error");
+            response.put("message", "No hay productos en el carrito");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // obtener el cliente
+        ClienteEntity client = clienteService.getClientByIdentificationAndProveedor(clientIdentification, userLogged);
+        if (client == null) {
+            response.put("status", "error");
+            response.put("message", "No se ha seleccionado un cliente valido");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Crear la factura
+        FacturaEntity factura = new FacturaEntity();
+        factura.setIdProveedor(userLogged.getIdUsuario());
+        factura.setIdCliente(client.getIdCliente());
+        factura.setImpuesto(BigDecimal.valueOf(13)); // 13% -> en el trigger -> SET total = subtotal + (subtotal * impuesto / 100)
+        // se calculan al agregar los detalles, pero se ponen aqui para que no sean null
+        factura.setSubtotal(BigDecimal.ZERO);
+        factura.setTotal(BigDecimal.ZERO);
+
+        // Obteniendo la fecha actual
+        java.util.Date date = new java.util.Date();
+        java.sql.Timestamp todaysDate = new java.sql.Timestamp(date.getTime());
+
+        factura.setFechaEmision(todaysDate);
+
+        // Guardar la factura
+        factura = facturaEntityService.saveFactura(factura);
+
+        // Guardar los detalles de la factura
+        for (ProductOnCart productOnCart : cart) {
+            facturaEntityService.saveDetalleFactura(factura.getIdFactura(), productOnCart.getProduct().getIdProducto(), productOnCart.getQuantity());
+        }
+
+        response.put("status", "success");
+        response.put("message", "Factura creada exitosamente");
+        response.put("invoice", factura);
+
+        return ResponseEntity.ok(response);
+    }
+
+
     @GetMapping("/export/pdf/{id}")
     public ResponseEntity<ByteArrayResource> exportInvoicePDF(@PathVariable("id") Integer id) {
         try {
