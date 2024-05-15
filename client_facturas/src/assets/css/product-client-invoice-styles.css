@@ -204,6 +204,14 @@
   background-color: var(--send-invoice-color-hover);
 }
 
+.table td>.deactivate-btn {
+  background-color: var(--danger-color);
+}
+
+.table td>.deactivate-btn:hover {
+  background-color: var(--danger-color-hover);
+}
+
 /* pop-up */
 
 /* Estilos para el pop-up */
