@@ -84,17 +84,16 @@ export const handleAdd = async (currentElementId, formData, setErrorMessage, set
     })
 
     if (!response.ok) {
-      throw new Error('Error al agregar el cliente')
-    }
+      const errorMessage = await response.text()
 
-    console.log('Cliente agregado correctamente')
+      throw new Error(errorMessage || 'Error al agregar el cliente')
+    }
 
     fetchUpdatedClients(setUpdatedElements)
 
     handleClosePopup()
   } catch (error) {
-    console.error('Error al agregar el cliente:', error.message)
-    setErrorMessage('Error al agregar el cliente')
+    setErrorMessage(error.message)
   }
 }
 
