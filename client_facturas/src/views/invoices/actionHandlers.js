@@ -4,7 +4,7 @@ export const handleDelete = (row, setErrorMessage, setUpdatedElements) => {
     method: 'DELETE',
     credentials: 'include',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/text'
     }
   })
     .then(response => {
@@ -38,10 +38,7 @@ export const handleSearch = async (searchValue, setErrorMessage, setUpdatedEleme
     const data = await response.json()
     const formattedInvoices = formatInvoices(data)
     setUpdatedElements(formattedInvoices)
-
-    console.log('facturas encontrados:', formattedInvoices)
   } catch (error) {
-    console.error('Error al buscar facturas:', error.message)
     setErrorMessage('Error al buscar facturas')
   }
 }
