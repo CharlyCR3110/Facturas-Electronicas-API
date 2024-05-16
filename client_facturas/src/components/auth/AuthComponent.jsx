@@ -35,7 +35,7 @@ const AuthComponent = ({ formData, setFormData, onSubmit, fields, sectionName, i
         {!isRegisterSuccess && (
           <div className='form'>
             <h2>{sectionName}</h2>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={(event) => onSubmit(event, formData, setErrorMessage, setFormData, setIsRegisterSuccess)}>
               {fields.map((field) => (
                 <div key={field.name} className='form-group'>
                   <label htmlFor={field.name}>{field.label}</label>
