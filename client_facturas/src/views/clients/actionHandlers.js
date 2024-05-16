@@ -20,7 +20,6 @@ export const fetchClients = async (setClients, setLoading) => {
     setClients(data)
     setLoading(false)
   } catch (error) {
-    console.error('Error al obtener los clientes:', error.message)
     setLoading(false)
   }
 }
@@ -36,16 +35,14 @@ export const handleDelete = (row, setErrorMessage, setUpdatedElements) => {
   })
     .then(response => {
       if (!response.ok) {
-        throw new Error('Error al eliminar el cliente')
+        const errorMessage = response.text()
+        throw new Error(errorMessage || 'Error al eliminar el cliente')
       }
 
       fetchUpdatedClients(setUpdatedElements)
-
-      console.log('Cliente eliminado correctamente')
     })
     .catch(error => {
-      console.error('Error al eliminar el cliente:', error.message)
-      setErrorMessage(`Error al eliminar el cliente con id ${idCliente}`)
+      setErrorMessage(error.message)
     })
 }
 
