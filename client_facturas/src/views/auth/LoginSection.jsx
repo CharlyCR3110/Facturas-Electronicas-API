@@ -12,16 +12,19 @@ const LoginSection = ({ sectionName }) => {
   ]
 
   return (
-    <AuthComponent
-      formData={formData}
-      setFormData={setFormData}
-      onSubmit={onLoginSubmit}
-      fields={fields}
-      sectionName={sectionName}
-      isRegisterSuccess={false}
-      errorMessage={errorMessage}
-      setErrorMessage={setErrorMessage}
-    />
+    <>
+      <title>{sectionName}</title>
+      <AuthComponent
+        formData={formData}
+        setFormData={setFormData}
+        onSubmit={onLoginSubmit}
+        fields={fields}
+        sectionName={sectionName}
+        isRegisterSuccess={false}
+        errorMessage={errorMessage}
+        setErrorMessage={setErrorMessage}
+      />
+    </>
   )
 }
 
