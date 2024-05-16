@@ -6,9 +6,11 @@ import com.api_facturas.Usuarios.service.UsuarioService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -76,16 +78,20 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UsuarioEntity> register(@RequestBody UsuarioEntity form) {
+    public ResponseEntity<Object> register(@Valid @RequestBody UsuarioEntity form, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(result.getAllErrors().get(0).getDefaultMessage());
+        }
+
         // Encriptar la contraseña
         form.setContrasena(passwordEncoder.encode(form.getContrasena()));
         try {
             return ResponseEntity.ok(usuarioService.registerProveedor(form));
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("correo")) {
-                return ResponseEntity.status(409).build();
+                return ResponseEntity.status(400).body("Correo ya registrado");
             } else {
-                return ResponseEntity.status(400).build();
+                return ResponseEntity.status(400).body(e.getMessage());
             }
         }
 
