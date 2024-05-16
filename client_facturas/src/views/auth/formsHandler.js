@@ -46,23 +46,16 @@ export const onRegisterSubmit = async (event, formData, setErrorMessage, setForm
       body: JSON.stringify(formData)
     })
 
-    if (response.status === 409) {
-      throw new Error('El correo ya está registrado')
-    } else if (!response.ok) {
-      throw new Error('Error al registrar el usuario')
+    if (!response.ok) {
+      const errorMessage = await response.text()
+
+      throw new Error(errorMessage || 'Error al registrar usuario')
     }
-
-    const user = await response.json()
-
-    console.log('Usuario registrado', user)
-
     // Limpiar el formulario
     setFormData({})
-
     // Mostrar mensaje de éxito
     setIsRegisterSuccess(true)
   } catch (error) {
-    console.error('Error al registrar el usuario:', error.message)
     setErrorMessage(error.message)
   }
 }
