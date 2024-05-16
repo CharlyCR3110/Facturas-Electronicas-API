@@ -71,20 +71,24 @@ public class ClienteController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ClienteEntity> updateClient(@PathVariable("id") Integer clienteId, @RequestBody ClienteEntity cliente) {
+    public ResponseEntity<Object> updateClient(@PathVariable("id") Integer clienteId, @RequestBody ClienteEntity cliente, BindingResult result) {
         UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
             return ResponseEntity.status(401).build();
         }
 
-        cliente.setIdUsuario(userLogged.getIdUsuario());
-        cliente.setIdCliente(clienteId);
-        ClienteEntity updatedClient = clienteService.editCliente(cliente);
-        if (updatedClient != null) {
-            return ResponseEntity.ok(updatedClient);
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(result.getAllErrors().get(0).getDefaultMessage());
         }
 
-        return ResponseEntity.badRequest().build();
+        cliente.setIdUsuario(userLogged.getIdUsuario());
+        cliente.setIdCliente(clienteId);
+        try {
+            ClienteEntity updatedClient = clienteService.editCliente(cliente);
+            return ResponseEntity.ok(updatedClient);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     // http://localhost:8080/api/clients/search?searchName=Juan
