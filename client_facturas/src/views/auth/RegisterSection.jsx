@@ -1,7 +1,6 @@
-import AuthComponent from '../../components/auth/AuthComponent'
 import { useState } from 'react'
-
-const API_URL_REGISTER = 'http://localhost:8080/api/auth/register'
+import AuthComponent from '../../components/auth/AuthComponent'
+import { onRegisterSubmit } from './formsHandler'
 
 const RegisterSection = ({ sectionName }) => {
   const [formData, setFormData] = useState({})
@@ -16,39 +15,19 @@ const RegisterSection = ({ sectionName }) => {
     { name: 'contrasena', label: 'Contraseña', type: 'password', placeholder: 'Ej. ********' }
   ]
 
-  const onSubmit = async (e) => {
-    e.preventDefault()
-    try {
-      const response = await fetch(API_URL_REGISTER, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      })
-
-      if (response.status === 409) {
-        throw new Error('El correo ya está registrado')
-      } else if (!response.ok) {
-        throw new Error('Error al registrar el usuario')
-      }
-
-      const user = await response.json()
-
-      console.log('Usuario registrado', user)
-
-      // Limpiar el formulario
-      setFormData({})
-
-      // Mostrar mensaje de éxito
-      setIsRegisterSuccess(true)
-    } catch (error) {
-      console.error('Error al registrar el usuario:', error.message)
-      setErrorMessage(error.message)
-    }
-  }
-
-  return AuthComponent({ formData, setFormData, onSubmit, fields, sectionName, isRegisterSuccess, errorMessage, setErrorMessage })
+  return (
+    <AuthComponent
+      formData={formData}
+      setFormData={setFormData}
+      onSubmit={onRegisterSubmit}
+      fields={fields}
+      sectionName={sectionName}
+      isRegisterSuccess={isRegisterSuccess}
+      setIsRegisterSuccess={setIsRegisterSuccess}
+      errorMessage={errorMessage}
+      setErrorMessage={setErrorMessage}
+    />
+  )
 }
 
 export default RegisterSection
