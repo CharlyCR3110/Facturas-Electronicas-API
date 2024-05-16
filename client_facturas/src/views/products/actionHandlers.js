@@ -117,7 +117,6 @@ export const handleSearch = async (searchValue, setErrorMessage, setUpdatedEleme
     const data = await response.json()
     setUpdatedElements(data)
   } catch (error) {
-    console.error('Error al buscar productos:', error.message)
     setErrorMessage('Error al buscar productos')
   }
 }
@@ -141,12 +140,14 @@ export const handleSendToInvoice = async (row, setErrorMessage) => {
     })
 
     if (!response.ok) {
-      throw new Error('Error al enviar el producto a la factura')
+      const errorMessage = await response.text()
+
+      throw new Error(errorMessage || 'Error al enviar el producto a la factura')
     }
 
     const data = await response.json()
     window.sessionStorage.setItem('onInvoiceProducts', JSON.stringify(data.cart))
   } catch (error) {
-    setErrorMessage(`Error al enviar el producto con id ${idProducto} a la factura`)
+    setErrorMessage(error.message)
   }
 }
