@@ -1,21 +1,22 @@
 USE facturas_electronicas_api;
 -- proveedores --
+-- las contraseñas son: 123
 INSERT INTO tbl_usuarios (nombre, direccion, telefono, correo, contrasena, estado, rol) 
 VALUES 
-("Proveedor A", "Calle Principal 123", "555-1234", "proveedora@example.com", "123", "activo", "proveedor"),
-("Proveedor B", "Avenida Central 456", "555-5678", "proveedorb@example.com", "123", "activo", "proveedor"),
-("Proveedor C", "Plaza Mayor 789", "555-9012", "proveedorc@example.com", "123", "activo", "proveedor"),
-("Proveedor D", "Calle 15A", "555-3110", "proveedord@example.com", "123", "inactivo", "proveedor"),
-("Proveedor E", "Calle 15B", "506-2138", "proveedore@example.com", "123", "inactivo", "proveedor"),
-("Proveedor F", "Calle 15C", "555-3104", "proveedorf@example.com", "123", "inactivo", "proveedor"),
-("Proveedor G", "Calle 15G", "506-2222", "proveedorg@example.com", "123", "activo", "proveedor"),
-("Proveedor H", "Calle 15H", "64583082", "proveedorh@example.com", "123", "inactivo", "proveedor"),
-("Proveedor I", "Calle 15I", "13145", "proveedori@example.com", "123", "activo", "proveedor"),
-("Proveedor J", "Calle 15J", "883-331-231", "proveedorj@example.com", "123", "activo", "proveedor"),
-("Carlos Garita", "Miramar", "64583082", "carlosgarita3110@gmail.com", "123", "inactivo", "proveedor"),
-("Proveedor API_TEST_EDIT", "Calle Principal 12345", "555-4343", "proveedor_api@example.com", "123", "activo", "proveedor"),
-("admin", "Calle Principal 123", "555-1234", "admin@admin.com", "admin", "activo", "admin"),
-("root", "Calle Principal 123", "555-1234", "root@root.com", "root", "activo", "admin");
+("Proveedor A", "Calle Principal 123", "555-1234", "proveedora@example.com", "$2a$12$YBIa7ZxoXTVYiVS6.VW.zenNS0lLYv8kuT5Rqp0x1804SRid5On76", "activo", "proveedor"),
+("Proveedor B", "Avenida Central 456", "555-5678", "proveedorb@example.com", "$2a$12$YBIa7ZxoXTVYiVS6.VW.zenNS0lLYv8kuT5Rqp0x1804SRid5On76", "activo", "proveedor"),
+("Proveedor C", "Plaza Mayor 789", "555-9012", "proveedorc@example.com", "$2a$12$YBIa7ZxoXTVYiVS6.VW.zenNS0lLYv8kuT5Rqp0x1804SRid5On76", "activo", "proveedor"),
+("Proveedor D", "Calle 15A", "555-3110", "proveedord@example.com", "$2a$12$YBIa7ZxoXTVYiVS6.VW.zenNS0lLYv8kuT5Rqp0x1804SRid5On76", "inactivo", "proveedor"),
+("Proveedor E", "Calle 15B", "506-2138", "proveedore@example.com", "$2a$12$YBIa7ZxoXTVYiVS6.VW.zenNS0lLYv8kuT5Rqp0x1804SRid5On76", "inactivo", "proveedor"),
+("Proveedor F", "Calle 15C", "555-3104", "proveedorf@example.com", "$2a$12$YBIa7ZxoXTVYiVS6.VW.zenNS0lLYv8kuT5Rqp0x1804SRid5On76", "inactivo", "proveedor"),
+("Proveedor G", "Calle 15G", "506-2222", "proveedorg@example.com", "$2a$12$YBIa7ZxoXTVYiVS6.VW.zenNS0lLYv8kuT5Rqp0x1804SRid5On76", "activo", "proveedor"),
+("Proveedor H", "Calle 15H", "64583082", "proveedorh@example.com", "$2a$12$YBIa7ZxoXTVYiVS6.VW.zenNS0lLYv8kuT5Rqp0x1804SRid5On76", "inactivo", "proveedor"),
+("Proveedor I", "Calle 15I", "13145", "proveedori@example.com", "$2a$12$YBIa7ZxoXTVYiVS6.VW.zenNS0lLYv8kuT5Rqp0x1804SRid5On76", "activo", "proveedor"),
+("Proveedor J", "Calle 15J", "883-331-231", "proveedorj@example.com", "$2a$12$YBIa7ZxoXTVYiVS6.VW.zenNS0lLYv8kuT5Rqp0x1804SRid5On76", "activo", "proveedor"),
+("Carlos Garita", "Miramar", "64583082", "carlosgarita3110@gmail.com", "$2a$12$YBIa7ZxoXTVYiVS6.VW.zenNS0lLYv8kuT5Rqp0x1804SRid5On76", "inactivo", "proveedor"),
+("Proveedor API_TEST_EDIT", "Calle Principal 12345", "555-4343", "proveedor_api@example.com", "$2a$12$YBIa7ZxoXTVYiVS6.VW.zenNS0lLYv8kuT5Rqp0x1804SRid5On76", "activo", "proveedor"),
+("admin", "Calle Principal 123", "555-1234", "admin@admin.com", "$2a$12$YBIa7ZxoXTVYiVS6.VW.zenNS0lLYv8kuT5Rqp0x1804SRid5On76", "activo", "admin"),
+("root", "Calle Principal 123", "555-1234", "root@root.com", "$2a$12$YBIa7ZxoXTVYiVS6.VW.zenNS0lLYv8kuT5Rqp0x1804SRid5On76", "activo", "admin");
 
 -- clientes --
 INSERT INTO tbl_clientes (nombre, identificacion, telefono, correo, id_usuario)
