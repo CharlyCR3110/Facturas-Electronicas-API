@@ -9,16 +9,15 @@ export const handleDelete = (row, setErrorMessage, setUpdatedElements) => {
   })
     .then(response => {
       if (!response.ok) {
-        throw new Error('Error al eliminar el factura')
+        const errorMessage = response.text()
+
+        throw new Error(errorMessage || 'Error al eliminar la factura')
       }
 
       fetchUpdatedInvoices(setUpdatedElements)
-
-      console.log('Factura eliminado correctamente')
     })
     .catch(error => {
-      console.error('Error al eliminar la factura:', error.message)
-      setErrorMessage(`Error al eliminar la factura con id ${idFactura}`)
+      setErrorMessage(error.message)
     })
 }
 
