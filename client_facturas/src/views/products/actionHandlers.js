@@ -20,7 +20,6 @@ export const fetchProducts = async (setProducts, setLoading) => {
     setProducts(data)
     setLoading(false)
   } catch (error) {
-    console.error('Error al obtener los productos:', error.message)
     setLoading(false)
   }
 }
