@@ -62,17 +62,16 @@ export const handleEdit = async (currentElementId, formData, setErrorMessage, se
     })
 
     if (!response.ok) {
-      throw new Error('Error al editar el producto')
+      const errorMessage = await response.text()
+
+      throw new Error(errorMessage || 'Error al editar el producto')
     }
-
-    console.log('Producto editado correctamente')
-
-    fetchProducts(setUpdatedElements, null)
 
     handleClosePopup()
   } catch (error) {
-    console.error('Error al editar el producto:', error.message)
-    setErrorMessage(`Error al editar el producto con id ${currentElementId}`)
+    setErrorMessage(error.message)
+  } finally {
+    fetchProducts(setUpdatedElements, null)
   }
 }
 
