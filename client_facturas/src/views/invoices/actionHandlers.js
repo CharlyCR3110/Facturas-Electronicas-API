@@ -54,6 +54,10 @@ export const fetchUpdatedInvoices = async (setInvoices) => {
     })
 
     if (!response.ok) {
+      if (response.status === 401) {
+        window.location.href = '/login'
+      }
+
       throw new Error('Error al obtener las facturas')
     }
 
