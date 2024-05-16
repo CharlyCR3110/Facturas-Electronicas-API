@@ -98,7 +98,7 @@ const ProductsSection = () => {
                   popupTitle='Editar Producto'
                   popupFields={popupFields}
                   setCurrentElement={setCurrentProduct}
-                  setProducts={setProducts}
+                  setElements={setProducts}
                 />
               </div>
             </div>
