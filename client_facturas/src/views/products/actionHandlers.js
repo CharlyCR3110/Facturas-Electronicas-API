@@ -25,28 +25,26 @@ export const fetchProducts = async (setProducts, setLoading) => {
   }
 }
 
-export const handleDelete = (row, setErrorMessage, setUpdatedElements) => {
+export const handleDelete = async (row, setErrorMessage, setUpdatedElements) => {
   const idProducto = row[0]
-  fetch(`http://localhost:8080/api/products/delete/${idProducto}`, {
-    method: 'DELETE',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Error al eliminar el producto')
+  try {
+    const response = await fetch(`http://localhost:8080/api/products/delete/${idProducto}`, {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/text'
       }
-
-      fetchUpdatedProducts(setUpdatedElements)
-
-      console.log('Producto eliminado correctamente')
     })
-    .catch(error => {
-      console.error('Error al eliminar el producto:', error.message)
-      setErrorMessage(`Error al eliminar el producto con id ${idProducto}`)
-    })
+
+    if (!response.ok) {
+      const errorMessage = await response.text()
+      throw new Error(errorMessage || 'Error al eliminar el producto')
+    }
+  } catch (error) {
+    setErrorMessage(error.message)
+  } finally {
+    fetchProducts(setUpdatedElements, null)
+  }
 }
 
 const fetchUpdatedProducts = async (setProducts) => {
