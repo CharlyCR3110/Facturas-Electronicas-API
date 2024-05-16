@@ -16,7 +16,9 @@ export const onLoginSubmit = async (event, formData, setErrorMessage, setFormDat
 
     // TODO: manejar errores de autenticación
     if (!response.ok) {
-      throw new Error('Inicio de sesión fallido')
+      const errorMessage = await response.text()
+
+      throw new Error(errorMessage || 'Error al iniciar sesión')
     }
 
     const user = await response.json()
@@ -29,7 +31,6 @@ export const onLoginSubmit = async (event, formData, setErrorMessage, setFormDat
       window.location.href = 'http://localhost:5173/admin/dashboard'
     }
   } catch (error) {
-    console.error('Error al iniciar sesión:', error.message)
     setErrorMessage(error.message)
   }
 }
