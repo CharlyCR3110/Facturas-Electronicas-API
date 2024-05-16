@@ -1,3 +1,26 @@
+export const fetchProducts = async (setProducts, setLoading) => {
+  try {
+    const response = await fetch('http://localhost:8080/api/products/', {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error('Error al obtener los productos')
+    }
+
+    const data = await response.json()
+    setProducts(data)
+    setLoading(false)
+  } catch (error) {
+    console.error('Error al obtener los productos:', error.message)
+    setLoading(false)
+  }
+}
+
 export const handleDelete = (row, setErrorMessage, setUpdatedElements) => {
   const idProducto = row[0]
   fetch(`http://localhost:8080/api/products/delete/${idProducto}`, {
