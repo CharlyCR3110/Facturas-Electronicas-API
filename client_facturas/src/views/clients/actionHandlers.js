@@ -61,17 +61,15 @@ export const handleEdit = async (currentElementId, formData, setErrorMessage, se
     })
 
     if (!response.ok) {
-      throw new Error('Error al editar el cliente')
+      const errorMessage = await response.text()
+      throw new Error(errorMessage || 'Error al editar el cliente')
     }
-
-    console.log('Cliente editado correctamente')
 
     fetchClients(setUpdatedElements, null)
 
     handleClosePopup()
   } catch (error) {
-    console.error('Error al editar el cliente:', error.message)
-    setErrorMessage(`Error al editar el cliente con id ${currentElementId}`)
+    setErrorMessage(error.message)
   }
 }
 
