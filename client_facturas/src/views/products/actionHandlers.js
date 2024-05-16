@@ -87,17 +87,16 @@ export const handleAdd = async (currentElementId, formData, setErrorMessage, set
     })
 
     if (!response.ok) {
-      throw new Error('Error al agregar el producto')
-    }
+      const errorMessage = await response.text()
 
-    console.log('Producto agregado correctamente')
+      throw new Error(errorMessage || 'Error al agregar el producto')
+    }
 
     fetchProducts(setUpdatedElements, null)
 
     handleClosePopup()
   } catch (error) {
-    console.error('Error al agregar el producto:', error.message)
-    setErrorMessage('Error al agregar el producto')
+    setErrorMessage(error.message)
   }
 }
 
