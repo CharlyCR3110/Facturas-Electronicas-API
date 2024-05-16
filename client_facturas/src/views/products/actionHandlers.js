@@ -47,27 +47,6 @@ export const handleDelete = async (row, setErrorMessage, setUpdatedElements) => 
   }
 }
 
-const fetchUpdatedProducts = async (setProducts) => {
-  try {
-    const response = await fetch('http://localhost:8080/api/products/', {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-
-    if (!response.ok) {
-      throw new Error('Error al obtener los productos')
-    }
-
-    const data = await response.json()
-    setProducts(data)
-  } catch (error) {
-    console.error('Error al obtener los productos:', error.message)
-  }
-}
-
 export const handleEdit = async (currentElementId, formData, setErrorMessage, setUpdatedElements, handleClosePopup) => {
   try {
     // URL de la solicitud
@@ -88,7 +67,7 @@ export const handleEdit = async (currentElementId, formData, setErrorMessage, se
 
     console.log('Producto editado correctamente')
 
-    fetchUpdatedProducts(setUpdatedElements)
+    fetchProducts(setUpdatedElements, null)
 
     handleClosePopup()
   } catch (error) {
@@ -114,7 +93,7 @@ export const handleAdd = async (currentElementId, formData, setErrorMessage, set
 
     console.log('Producto agregado correctamente')
 
-    fetchUpdatedProducts(setUpdatedElements)
+    fetchProducts(setUpdatedElements, null)
 
     handleClosePopup()
   } catch (error) {
