@@ -9,6 +9,10 @@ export const fetchClients = async (setClients, setLoading) => {
     })
 
     if (!response.ok) {
+      if (response.status === 401) {
+        window.location.href = '/login'
+      }
+
       throw new Error('Error al obtener los clientes')
     }
 
