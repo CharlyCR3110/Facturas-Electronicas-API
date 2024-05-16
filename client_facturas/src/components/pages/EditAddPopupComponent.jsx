@@ -29,7 +29,7 @@ const EditAddPopupComponent = ({
           <h2>{title}</h2>
         </div>
         <div className='popup-body'>
-          <form ref={formRef}>
+          <form ref={formRef} onSubmit={handleSubmit}>
             {fields.map((field) => (
               <div className='form-group' key={field.name}>
                 <label htmlFor={`${field.name}-edit`}>{field.label}</label>
@@ -42,10 +42,10 @@ const EditAddPopupComponent = ({
                 />
               </div>
             ))}
+            <button className='action-btn'>
+              {textOnButton}
+            </button>
           </form>
-          <button className='action-btn' onClick={handleSubmit}>
-            {textOnButton}
-          </button>
           <button className='cancel-btn' onClick={handleClosePopup}>
             Cancelar
           </button>
