@@ -31,18 +31,18 @@ public class AuthController {
 
     // http://localhost:8080/api/auth/login
     @PostMapping("/login")
-    public UsuarioEntity login(@RequestBody UsuarioEntity form, HttpServletRequest request) {
+    public ResponseEntity<Object> login(@RequestBody UsuarioEntity form, HttpServletRequest request) {
         // Buscar al usuario por su correo electrónico
         Optional<UsuarioEntity> usuarioOptional = usuarioRepository.findByCorreo(form.getCorreo());
         if (usuarioOptional.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario no encontrado");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no encontrado");
         }
 
         UsuarioEntity usuario = usuarioOptional.get();
 
         // Verificar si la contraseña coincide
         if (!passwordEncoder.matches(form.getContrasena(), usuario.getContrasena())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Contraseña incorrecta");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña incorrecta");
         }
 
         // agregar el usuario a la http session (para el controlador de productos, clientes, etc)  
@@ -57,11 +57,11 @@ public class AuthController {
         try {
             request.login(usuario.getCorreo(), usuario.getContrasena());
         } catch (ServletException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Error al iniciar sesión");
         }
 
         // El usuario está autenticado correctamente, puedes devolverlo
-        return usuario;
+        return ResponseEntity.ok(usuario);
     }
 
 
