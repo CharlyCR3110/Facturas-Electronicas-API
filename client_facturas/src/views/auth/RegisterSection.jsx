@@ -16,17 +16,20 @@ const RegisterSection = ({ sectionName }) => {
   ]
 
   return (
-    <AuthComponent
-      formData={formData}
-      setFormData={setFormData}
-      onSubmit={onRegisterSubmit}
-      fields={fields}
-      sectionName={sectionName}
-      isRegisterSuccess={isRegisterSuccess}
-      setIsRegisterSuccess={setIsRegisterSuccess}
-      errorMessage={errorMessage}
-      setErrorMessage={setErrorMessage}
-    />
+    <>
+      <title>{sectionName}</title>
+      <AuthComponent
+        formData={formData}
+        setFormData={setFormData}
+        onSubmit={onRegisterSubmit}
+        fields={fields}
+        sectionName={sectionName}
+        isRegisterSuccess={isRegisterSuccess}
+        setIsRegisterSuccess={setIsRegisterSuccess}
+        errorMessage={errorMessage}
+        setErrorMessage={setErrorMessage}
+      />
+    </>
   )
 }
 

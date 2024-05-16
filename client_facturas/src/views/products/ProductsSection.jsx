@@ -52,6 +52,7 @@ const ProductsSection = () => {
 
   return (
     <>
+      <title>Productos</title>
       {loading
         ? (
           <LoadingComponent />

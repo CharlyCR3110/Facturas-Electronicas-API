@@ -55,6 +55,7 @@ const ClientsSections = () => {
 
   return (
     <>
+      <title>Clientes</title>
       {loading
         ? (
           <LoadingComponent />

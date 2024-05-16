@@ -38,6 +38,7 @@ const AccountInfoSection = () => {
 
   return (
     <>
+      <title>Información de la Cuenta</title>
       <HeaderComponent loggedUser={{ nombre: loggedUser.nombre }} />
       <SideNavbar currentPage='account_info' />
       <div className='account-info-container'>
