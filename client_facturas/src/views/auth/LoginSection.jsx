@@ -44,7 +44,18 @@ const LoginSection = ({ sectionName }) => {
     }
   }
 
-  return AuthComponent({ formData, setFormData, onSubmit, fields, sectionName, isRegisterSuccess: false, errorMessage, setErrorMessage })
+  return (
+    <AuthComponent
+      formData={formData}
+      setFormData={setFormData}
+      onSubmit={onSubmit}
+      fields={fields}
+      sectionName={sectionName}
+      isRegisterSuccess={false}
+      errorMessage={errorMessage}
+      setErrorMessage={setErrorMessage}
+    />
+  )
 }
 
 export default LoginSection
