@@ -1,0 +1,345 @@
+.container-container {
+  display: flex;
+  width: calc(100% - 235px);
+  margin-left: 235px;
+  margin-bottom: 30px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem;
+  text-align: center;
+}
+
+.container h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.crud-table {
+  margin-bottom: 20px;
+}
+
+.forms {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.form-group label {
+  display: block;
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+.form-inline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pull-left {
+  margin-right: auto;
+}
+
+.pull-right {
+  margin-left: auto;
+}
+
+.pull-right input {
+  width: auto;
+  padding: 10px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-right: 5px;
+}
+
+.pull-right input:hover {
+  border-color: var(--primary-color);
+}
+
+.action-btn,
+.cancel-btn {
+  color: #fff;
+  background-color: var(--primary-color);
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5rem;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.action-btn a {
+  text-decoration: none;
+  color: #fff;
+}
+
+
+.action-btn:hover {
+  background-color: var(--primary-color-hover);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.cancel-btn:hover {
+  background-color: var(--primary-color-dark);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  border: 1px solid var(--neutral-color);
+  padding: 10px;
+}
+
+.table th {
+  background-color: var(--primary-color);
+  color: white;
+  text-align: left;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: var(--primary-background-color);
+}
+
+.table a {
+  text-decoration: none;
+}
+
+.table .action-btn:hover {
+  text-decoration: underline;
+}
+
+/* lo mismo para los exportar */
+.export-btns .pdf-btn {
+  background-color: var(--pdf-export-color);
+}
+
+.export-btns .pdf-btn:hover {
+  background-color: var(--pdf-export-color-hover);
+}
+
+/* lo mismo para los exportar */
+.export-btns .xml-btn {
+  background-color: var(--xml-export-color);
+}
+
+.export-btns .xml-btn:hover {
+  background-color: var(--xml-export-color-hover);
+}
+
+.table td>.action-btn {
+  margin-right: 5px;
+}
+
+/* labels dentro de la tabla que contengan la palabra "delete" en el atributo for */
+.table td>#edit_button {
+  background-color: var(--edit-color) !important;
+}
+
+.table td>#edit_button:hover {
+  background-color: var(--edit-color-hover) !important;
+}
+
+/* lo mismo para los detalles */
+.table td>#expand_button {
+  background-color: var(--details-color);
+}
+
+.table td>#expand_button:hover {
+  background-color: var(--details-color-hover);
+}
+
+/* lo mismo para los exportar */
+.table td>#export_button {
+  background-color: var(--export-color);
+}
+
+.table td>#export_button:hover {
+  background-color: var(--export-color-hover);
+}
+
+.table td>.activate-btn {
+  background-color: var(--export-color);
+}
+
+.table td>.activate-btn:hover {
+  background-color: var(--export-color-hover);
+}
+
+.table td>#delete_button {
+  background-color: var(--danger-color);
+}
+
+.table td>#delete_button:hover {
+  background-color: var(--danger-color-hover);
+}
+
+.table td>#to_invoice_button {
+  background-color: var(--send-invoice-color);
+}
+
+.table td>#to_invoice_button:hover {
+  background-color: var(--send-invoice-color-hover);
+}
+
+.table td>.deactivate-btn {
+  background-color: var(--danger-color);
+}
+
+.table td>.deactivate-btn:hover {
+  background-color: var(--danger-color-hover);
+}
+
+/* pop-up */
+
+/* Estilos para el pop-up */
+.edit-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  width: 400px;
+}
+
+/* transicion para el pop-up */
+.edit-popup {
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.popup-header h2 {
+  margin: 0;
+}
+
+.popup-body .form-group {
+  margin-bottom: 20px;
+}
+
+.popup-body input[type="text"],
+.popup-body input[type="number"],
+.popup-body input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.popup-body input[type="text"]:hover,
+.popup-body input[type="number"]:hover,
+.popup-body input[type="email"]:hover {
+  border-color: var(--primary-color);
+}
+
+.popup-body .action-btn,
+.popup-body .cancel-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
+.popup-body .action-btn[type="submit"]:hover {
+  background-color: var(--primary-color-dark);
+}
+
+.popup-body .cancel-btn {
+  background-color: #ccc;
+  color: #fff;
+  border: none;
+}
+
+.popup-body .cancel-btn:hover {
+  background-color: #999;
+}
+
+.details-table {
+  margin-bottom: 20px;
+}
+
+.details-table th {
+  background-color: var(--primary-color);
+  color: white;
+  text-align: left;
+}
+
+.details-table tbody tr:nth-child(even) {
+  background-color: var(--primary-background-color);
+}
+
+.details-popup {
+  text-align: left;
+}
+
+.details-popup p {
+  font-weight: bold;
+}
+
+.details-popup span {
+  font-weight: normal;
+}
+
+/* estilos para la opcion de exportar pdf o xml */
+.inline-btns .action-btn {
+  width: 48%;
+}
+
+.admin-logout-btn .logout-btn  {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+/* usar un svg */
+.admin-logout-btn .logout-btn {
+  background-image: url(../icons/logout-3-svgrepo-com.svg);
+  width: 40px;
+  height: 40px;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+}
