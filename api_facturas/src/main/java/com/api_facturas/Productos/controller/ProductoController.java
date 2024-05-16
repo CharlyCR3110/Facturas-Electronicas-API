@@ -75,10 +75,14 @@ public class ProductoController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ProductoEntity> updateProduct(@PathVariable("id") Integer productoId, @Valid @RequestBody ProductoEntity producto) {
+    public ResponseEntity<Object> updateProduct(@PathVariable("id") Integer productoId, @Valid @RequestBody ProductoEntity producto, BindingResult result) {
         UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
         if (userLogged == null) {
             return ResponseEntity.status(401).build();
+        }
+
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(result.getAllErrors().get(0).getDefaultMessage());
         }
 
         producto.setIdUsuario(userLogged.getIdUsuario());
@@ -88,7 +92,7 @@ public class ProductoController {
             ProductoEntity updatedProduct = productoService.editProduct(producto);
             return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.badRequest().body("No se encontró el producto con ID " + productoId);
         }
     }
 
