@@ -56,7 +56,8 @@ export const handleEmailChangeFormSubmit = async (formData, setFormData, setConf
     })
 
     if (!response.ok) {
-      throw new Error('Error al cambiar el correo')
+      const setErrorMessage = await response.text()
+      throw new Error(setErrorMessage || 'Error al cambiar el correo')
     }
 
     // expected: updated json object
@@ -72,7 +73,6 @@ export const handleEmailChangeFormSubmit = async (formData, setFormData, setConf
     // confirmar el cambio
     setConfirmation('Correo actualizado correctamente')
   } catch (error) {
-    console.error('Error al cambiar el correo:', error.message)
     setErrorMessage(error.message)
   }
 }
