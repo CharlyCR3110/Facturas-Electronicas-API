@@ -19,21 +19,15 @@ export const handlePasswordChangeFormSubmit = async (formData, setFormData, setC
     })
 
     if (!response.ok) {
-      throw new Error('Error al cambiar la contraseña')
+      const errorMessage = await response.text()
+      throw new Error(errorMessage || 'Error al cambiar la contraseña')
     }
-
-    // expected: Contraseña actualizada correctamente
-    const data = await response.text()
-
-    console.log('Respuesta del servidor:', data)
 
     // Limpiar los campos del formulario
     setFormData({})
-
     // confirmar el cambio
     setConfirmationMessage('Contraseña actualizada correctamente')
   } catch (error) {
-    console.error('Error al cambiar la contraseña:', error.message)
     setErrorMessage(error.message)
   }
 }
