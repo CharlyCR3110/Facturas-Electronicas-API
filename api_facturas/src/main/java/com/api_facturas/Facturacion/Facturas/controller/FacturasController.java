@@ -9,6 +9,7 @@ import com.api_facturas.Facturacion.DTO.ProductOnCart;
 import com.api_facturas.Facturacion.Detalles.model.DetalleFacturaEntity;
 import com.api_facturas.Facturacion.Facturas.model.FacturaEntity;
 import com.api_facturas.Facturacion.Facturas.service.FacturaEntityService;
+import com.api_facturas.Productos.model.ProductoEntity;
 import com.api_facturas.Productos.service.ProductoService;
 import com.api_facturas.Usuarios.model.UsuarioEntity;
 import jakarta.servlet.http.HttpSession;
@@ -180,12 +181,20 @@ public class FacturasController {
         }
 
 
-        //total
         BigDecimal total = BigDecimal.ZERO;
+
+            //total
         for (ProductOnCart p : cart) {
-            BigDecimal price = p.getProduct().getPrecioUnitario();
-            BigDecimal quantityP = BigDecimal.valueOf(p.getQuantity());
-            total = total.add(price.multiply(quantityP));
+            ProductoEntity producto = p.getProduct();
+            if (producto != null) {
+                BigDecimal price = producto.getPrecioUnitario();
+                BigDecimal quantityP = BigDecimal.valueOf(p.getQuantity());
+                total = total.add(price.multiply(quantityP));
+            } else {
+                response.put("status", "error");
+                response.put("message", "Producto no encontrado");
+                return ResponseEntity.badRequest().body(response);
+            }
         }
 
         response.put("status", "success");
