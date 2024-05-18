@@ -140,6 +140,7 @@ export const handleSendToInvoice = async (row, setErrorMessage) => {
     const data = await response.json()
     console.log(data)
     window.sessionStorage.setItem('onInvoiceClient', JSON.stringify(data))
+    window.location.href = 'http://localhost:5173/invoice_creator'
   } catch (error) {
     console.error('Error al enviar el cliente a la factura:', error.message)
     setErrorMessage(`Error al enviar el cliente con id ${idCliente} a la factura`)

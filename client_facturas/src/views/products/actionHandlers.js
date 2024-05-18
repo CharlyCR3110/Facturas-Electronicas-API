@@ -146,6 +146,7 @@ export const handleSendToInvoice = async (row, setErrorMessage) => {
 
     const data = await response.json()
     window.sessionStorage.setItem('onInvoiceProducts', JSON.stringify(data.cart))
+    window.location.href = 'http://localhost:5173/invoice_creator'
   } catch (error) {
     setErrorMessage(error.message)
   }
