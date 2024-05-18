@@ -47,6 +47,17 @@ export const handleDelete = async (row, setErrorMessage, setUpdatedElements) => 
 }
 
 export const handleEdit = async (currentElementId, formData, setErrorMessage, setUpdatedElements, handleClosePopup) => {
+  // verificar que el producto no este en el carrito
+  const onInvoiceProducts = JSON.parse(window.sessionStorage.getItem('onInvoiceProducts'))
+  if (onInvoiceProducts) {
+    const productInCart = onInvoiceProducts.find(product => product.product.idProducto === currentElementId)
+    if (productInCart) {
+      setErrorMessage('El producto no puede ser editado porque actualmente se encuentra en el carrito de compras')
+      handleClosePopup()
+      return
+    }
+  }
+
   try {
     // URL de la solicitud
     const apiUrl = `http://localhost:8080/api/products/update/${currentElementId}`
