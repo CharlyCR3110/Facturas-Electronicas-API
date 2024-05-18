@@ -26,6 +26,11 @@ export const fetchClients = async (setClients, setLoading) => {
 
 export const handleDelete = (row, setErrorMessage, setUpdatedElements) => {
   const idCliente = row[0]
+  if (isClientInInvoice(idCliente, setErrorMessage)) {
+    setErrorMessage('El cliente no puede ser eliminado porque actualmente se encuentra en la factura')
+    return
+  }
+
   fetch(`http://localhost:8080/api/clients/delete/${idCliente}`, {
     method: 'DELETE',
     credentials: 'include',
@@ -153,4 +158,14 @@ export const handleSendToInvoice = async (row, setErrorMessage) => {
     console.error('Error al enviar el cliente a la factura:', error.message)
     setErrorMessage(`Error al enviar el cliente con id ${idCliente} a la factura`)
   }
+}
+
+const isClientInInvoice = (idCliente) => {
+  const onInvoiceClient = JSON.parse(window.sessionStorage.getItem('onInvoiceClient'))
+  if (onInvoiceClient) {
+    if (onInvoiceClient.idCliente === idCliente) {
+      return true
+    }
+  }
+  return false
 }
