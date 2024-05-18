@@ -52,12 +52,20 @@ public class UsuarioService {
 
     public UsuarioEntity changeEmail(Integer idProveedor, String newEmail) {
         Optional<UsuarioEntity> proveedorOptional = usuarioRepository.findById(idProveedor);
-        if (proveedorOptional.isPresent()) {
-            UsuarioEntity proveedor = proveedorOptional.get();
-            proveedor.setCorreo(newEmail);
-            return usuarioRepository.save(proveedor);
-        } else {
-            throw new IllegalArgumentException("No se encontró un proveedor con el ID proporcionado.");
+        try {
+            if (proveedorOptional.isPresent()) {
+                UsuarioEntity proveedor = proveedorOptional.get();
+                proveedor.setCorreo(newEmail);
+                return usuarioRepository.save(proveedor);
+            } else {
+                throw new IllegalArgumentException("No se encontró un proveedor con el ID proporcionado.");
+            }
+        } catch (DataIntegrityViolationException e) {
+            if (e.getMessage().contains("correo")) {
+                throw new IllegalArgumentException("Parece que ya existe una cuenta con este correo.");
+            } else {
+                throw new IllegalArgumentException("Hubo un error al cambiar el correo. Intenta de nuevo.");
+            }
         }
     }
 
