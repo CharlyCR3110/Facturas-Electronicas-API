@@ -3,6 +3,7 @@ package com.api_facturas.Usuarios.service;
 import com.api_facturas.Usuarios.model.UsuarioEntity;
 import com.api_facturas.Usuarios.repository.UsuarioRepository;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,10 +11,11 @@ import java.util.Optional;
 
 @Service
 public class UsuarioService {
-
+    private final PasswordEncoder passwordEncoder;
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioService(PasswordEncoder passwordEncoder, UsuarioRepository usuarioRepository) {
+        this.passwordEncoder = passwordEncoder;
         this.usuarioRepository = usuarioRepository;
     }
 
@@ -69,9 +71,18 @@ public class UsuarioService {
         }
     }
 
-    public UsuarioEntity changePassword(UsuarioEntity userLogged, String newPassword) {
-        userLogged.setContrasena(newPassword);
-        return usuarioRepository.save(userLogged);
+    public UsuarioEntity changePassword(UsuarioEntity userLogged, String newPassword, String currentPassword) {
+        try {
+            if (!passwordEncoder.matches(currentPassword, userLogged.getContrasena())) {
+                userLogged.setContrasena(passwordEncoder.encode(newPassword));
+                return usuarioRepository.save(userLogged);
+            } else {
+                throw new IllegalArgumentException("La contraseña actual no es válida.");
+            }
+
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalArgumentException("Hubo un error al cambiar la contraseña. Intenta de nuevo.");
+        }
     }
 
     public UsuarioEntity changeProviderInfo(UsuarioEntity userLogged, Integer idProveedor, String name, String address, String phone) {
