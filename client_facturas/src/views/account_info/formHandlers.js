@@ -2,10 +2,6 @@ export const handlePasswordChangeFormSubmit = async (formData, setFormData, setC
   try {
     const { currentPassword, newPassword, confirmPassword } = formData
 
-    console.log('currentPassword:', currentPassword)
-    console.log('newPassword:', newPassword)
-    console.log('confirmPassword:', confirmPassword)
-
     if (newPassword !== confirmPassword) {
       throw new Error('Las contraseñas no coinciden')
     }
@@ -38,8 +34,6 @@ export const handleEmailChangeFormSubmit = async (formData, setFormData, setConf
   const userLoggedId = userLogged.idUsuario
   userLogged.correo = formData.correo
 
-  console.log('Usuario logueado:', userLogged)
-
   try {
     const response = await fetch(`http://localhost:8080/api/providers/account/change-email?idProveedor=${userLoggedId}&newEmail=${formData.email}`, {
       method: 'PUT',
@@ -56,7 +50,6 @@ export const handleEmailChangeFormSubmit = async (formData, setFormData, setConf
 
     // expected: updated json object
     const data = await response.json()
-    console.log('Respuesta del servidor:', data)
 
     // Actualizar el usuario logueado
     window.sessionStorage.setItem('loggedUser', JSON.stringify(data))
@@ -94,7 +87,6 @@ export const handlePersonalInfoChangeFormSubmit = async (formData, setFormData, 
 
     // expected: updated json object
     const data = await response.json()
-    console.log('Respuesta del servidor:', data)
 
     // Actualizar el usuario logueado
     window.sessionStorage.setItem('loggedUser', JSON.stringify(data))
