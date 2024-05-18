@@ -54,7 +54,7 @@ public class ProveedorController {
         }
 
         try {
-            UsuarioEntity updatedProveedor = usuarioService.changePassword(userLogged, passwordEncoder.encode(newPassword));
+            UsuarioEntity updatedProveedor = usuarioService.changePassword(userLogged, newPassword, currentPassword);
             httpSession.setAttribute("userLogged", updatedProveedor);
             return ResponseEntity.ok("Contraseña actualizada correctamente");
         } catch (IllegalArgumentException e) {
