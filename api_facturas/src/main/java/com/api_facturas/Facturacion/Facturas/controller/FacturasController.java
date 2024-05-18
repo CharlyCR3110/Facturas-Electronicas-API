@@ -159,7 +159,9 @@ public class FacturasController {
             productOnCart.setProduct(productoService.getProductoByNombreAndProveedor(productName, userLogged));
             productOnCart.setQuantity(quantity);
         } catch (Exception e) {
-            httpSession.setAttribute("errorMessage", e.getMessage());
+            response.put("status", "error");
+            response.put("message", "Producto no encontrado");
+            return ResponseEntity.badRequest().body(response);
         }
 
         if (cart == null) {
