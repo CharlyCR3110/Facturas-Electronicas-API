@@ -143,6 +143,13 @@ public class FacturasController {
     @PostMapping("/addToCart")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> addToCart(@RequestParam(name = "productName") String productName, @RequestParam(name = "quantity") Integer quantity,@RequestBody ArrayList<ProductOnCart> cart) {
+        if (quantity <= 0) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "error");
+            response.put("message", "La cantidad debe ser mayor a 0");
+            return ResponseEntity.badRequest().body(response);
+        }
+
         Map<String, Object> response = new HashMap<>();
         // obtener el usuario loggeado (se obtiene de la sesion)
         UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
