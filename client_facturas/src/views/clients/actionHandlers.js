@@ -47,29 +47,37 @@ export const handleDelete = (row, setErrorMessage, setUpdatedElements) => {
 }
 
 export const handleEdit = async (currentElementId, formData, setErrorMessage, setUpdatedElements, handleClosePopup) => {
-  try {
-    // URL de la solicitud
-    const apiUrl = `http://localhost:8080/api/clients/update/${currentElementId}`
-
-    const response = await fetch(apiUrl, {
-      method: 'PUT',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    })
-
-    if (!response.ok) {
-      const errorMessage = await response.text()
-      throw new Error(errorMessage || 'Error al editar el cliente')
+  const onInvoiceClient = JSON.parse(window.sessionStorage.getItem('onInvoiceClient'))
+  if (onInvoiceClient) {
+    if (onInvoiceClient.idCliente === currentElementId) {
+      setErrorMessage('El cliente no puede ser editado porque actualmente se encuentra en la factura')
+      handleClosePopup()
+      return
     }
+    try {
+    // URL de la solicitud
+      const apiUrl = `http://localhost:8080/api/clients/update/${currentElementId}`
 
-    fetchClients(setUpdatedElements, null)
+      const response = await fetch(apiUrl, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
 
-    handleClosePopup()
-  } catch (error) {
-    setErrorMessage(error.message)
+      if (!response.ok) {
+        const errorMessage = await response.text()
+        throw new Error(errorMessage || 'Error al editar el cliente')
+      }
+
+      fetchClients(setUpdatedElements, null)
+
+      handleClosePopup()
+    } catch (error) {
+      setErrorMessage(error.message)
+    }
   }
 }
 
