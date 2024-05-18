@@ -72,14 +72,15 @@ export const handleAddProductToCartSubmit = async (event, cart, setCart, setErro
     })
 
     if (!response.ok) {
-      throw new Error('Error al agregar el producto al carrito')
+      const errorMessage = await response.json().then(data => data.message)
+      throw new Error(errorMessage || 'Error al agregar el producto al carrito')
     }
 
     const data = await response.json()
     console.log(data.cart)
     setCart(data.cart)
   } catch (error) {
-    setErrorMessage(`Error al agregar el producto con id ${idProducto} al carrito`)
+    setErrorMessage(error.message)
   }
 }
 
