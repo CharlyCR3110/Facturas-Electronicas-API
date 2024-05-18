@@ -11,7 +11,7 @@ const InvoiceDetailsPopupComponent = ({ factura, handleClosePopup }) => {
           <h2>Detalles de la Factura</h2>
         </div>
         <div className='popup-body'>
-          <p>Fecha de Emisión: <span>{getFactura().fechaEmision}</span></p>
+          <p>Fecha de Emisión: <span>{new Date(getFactura().fechaEmision).toLocaleDateString('ES-es')}</span></p>
           <p>ID Proveedor: <span>{getFactura().idProveedor}</span></p>
           <p>ID Cliente: <span>{getFactura().idCliente}</span></p>
           <p>Subtotal: <span>{getFactura().subtotal}</span></p>
