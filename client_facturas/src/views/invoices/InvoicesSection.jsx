@@ -31,6 +31,7 @@ const InvoicesSection = () => {
 
   return (
     <>
+      <title>Historial de Facturas</title>
       {loading
         ? (
           <LoadingComponent />

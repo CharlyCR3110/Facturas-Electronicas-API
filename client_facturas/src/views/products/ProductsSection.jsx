@@ -6,7 +6,7 @@ import SideNavbar from '../../components/fragments/SideNavbar'
 import PopupComponent from '../../components/popups/PopupComponent'
 import EditAddPopupComponent from '../../components/pages/EditAddPopupComponent'
 import SearchComponent from '../../components/pages/SearchComponent'
-import { handleDelete, handleEdit, handleAdd, handleSearch, handleSendToInvoice } from './actionHandlers'
+import { fetchProducts, handleDelete, handleEdit, handleAdd, handleSearch, handleSendToInvoice } from './actionHandlers'
 import '../../assets/css/global.css'
 import '../../assets/css/product-client-invoice-styles.css'
 import '../../assets/css/fragments/header.css'
@@ -14,7 +14,6 @@ import '../../assets/css/fragments/nav.css'
 import LoadingComponent from '../../components/misc/LoadingComponent'
 
 const ProductsSection = () => {
-  const getAllProductsApiUrl = 'http://localhost:8080/api/products/'
   // Estado para almacenar los clientes
   const [products, setProducts] = useState([])
   const [currentProduct, setCurrentProduct] = useState(null)
@@ -30,30 +29,7 @@ const ProductsSection = () => {
   }
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch(getAllProductsApiUrl, {
-          method: 'GET',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-
-        if (!response.ok) {
-          throw new Error('Error al obtener los productos')
-        }
-
-        const data = await response.json()
-        setProducts(data)
-        setLoading(false)
-      } catch (error) {
-        console.error('Error al obtener los productos:', error.message)
-        setLoading(false)
-      }
-    }
-
-    fetchProducts()
+    fetchProducts(setProducts, setLoading)
   }, [])
 
   const currentProductName = currentProduct ? currentProduct[1] : ''
@@ -76,6 +52,7 @@ const ProductsSection = () => {
 
   return (
     <>
+      <title>Productos</title>
       {loading
         ? (
           <LoadingComponent />
@@ -122,7 +99,7 @@ const ProductsSection = () => {
                   popupTitle='Editar Producto'
                   popupFields={popupFields}
                   setCurrentElement={setCurrentProduct}
-                  setProducts={setProducts}
+                  setElements={setProducts}
                 />
               </div>
             </div>

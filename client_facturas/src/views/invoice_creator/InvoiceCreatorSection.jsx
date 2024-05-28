@@ -40,6 +40,7 @@ const InvoiceCreatorSection = () => {
 
   return (
     <>
+      <title>Facturar</title>
       <HeaderComponent loggedUser={{ nombre: loggedUser.nombre }} />
       <SideNavbar currentPage='invoiceCreator' />
       <div className='invoice-info-container'>

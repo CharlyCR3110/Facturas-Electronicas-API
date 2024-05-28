@@ -4,21 +4,20 @@ export const handleDelete = (row, setErrorMessage, setUpdatedElements) => {
     method: 'DELETE',
     credentials: 'include',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/text'
     }
   })
     .then(response => {
       if (!response.ok) {
-        throw new Error('Error al eliminar el factura')
+        const errorMessage = response.text()
+
+        throw new Error(errorMessage || 'Error al eliminar la factura')
       }
 
       fetchUpdatedInvoices(setUpdatedElements)
-
-      console.log('Factura eliminado correctamente')
     })
     .catch(error => {
-      console.error('Error al eliminar la factura:', error.message)
-      setErrorMessage(`Error al eliminar la factura con id ${idFactura}`)
+      setErrorMessage(error.message)
     })
 }
 
@@ -39,10 +38,7 @@ export const handleSearch = async (searchValue, setErrorMessage, setUpdatedEleme
     const data = await response.json()
     const formattedInvoices = formatInvoices(data)
     setUpdatedElements(formattedInvoices)
-
-    console.log('facturas encontrados:', formattedInvoices)
   } catch (error) {
-    console.error('Error al buscar facturas:', error.message)
     setErrorMessage('Error al buscar facturas')
   }
 }
@@ -58,6 +54,10 @@ export const fetchUpdatedInvoices = async (setInvoices) => {
     })
 
     if (!response.ok) {
+      if (response.status === 401) {
+        window.location.href = '/login'
+      }
+
       throw new Error('Error al obtener las facturas')
     }
 

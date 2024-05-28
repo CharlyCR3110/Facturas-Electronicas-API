@@ -9,6 +9,7 @@ import com.api_facturas.Facturacion.DTO.ProductOnCart;
 import com.api_facturas.Facturacion.Detalles.model.DetalleFacturaEntity;
 import com.api_facturas.Facturacion.Facturas.model.FacturaEntity;
 import com.api_facturas.Facturacion.Facturas.service.FacturaEntityService;
+import com.api_facturas.Productos.model.ProductoEntity;
 import com.api_facturas.Productos.service.ProductoService;
 import com.api_facturas.Usuarios.model.UsuarioEntity;
 import jakarta.servlet.http.HttpSession;
@@ -142,6 +143,13 @@ public class FacturasController {
     @PostMapping("/addToCart")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> addToCart(@RequestParam(name = "productName") String productName, @RequestParam(name = "quantity") Integer quantity,@RequestBody ArrayList<ProductOnCart> cart) {
+        if (quantity <= 0) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "error");
+            response.put("message", "La cantidad debe ser mayor a 0");
+            return ResponseEntity.badRequest().body(response);
+        }
+
         Map<String, Object> response = new HashMap<>();
         // obtener el usuario loggeado (se obtiene de la sesion)
         UsuarioEntity userLogged = (UsuarioEntity) httpSession.getAttribute("userLogged");
@@ -158,7 +166,9 @@ public class FacturasController {
             productOnCart.setProduct(productoService.getProductoByNombreAndProveedor(productName, userLogged));
             productOnCart.setQuantity(quantity);
         } catch (Exception e) {
-            httpSession.setAttribute("errorMessage", e.getMessage());
+            response.put("status", "error");
+            response.put("message", "Producto no encontrado");
+            return ResponseEntity.badRequest().body(response);
         }
 
         if (cart == null) {
@@ -180,12 +190,20 @@ public class FacturasController {
         }
 
 
-        //total
         BigDecimal total = BigDecimal.ZERO;
+
+            //total
         for (ProductOnCart p : cart) {
-            BigDecimal price = p.getProduct().getPrecioUnitario();
-            BigDecimal quantityP = BigDecimal.valueOf(p.getQuantity());
-            total = total.add(price.multiply(quantityP));
+            ProductoEntity producto = p.getProduct();
+            if (producto != null) {
+                BigDecimal price = producto.getPrecioUnitario();
+                BigDecimal quantityP = BigDecimal.valueOf(p.getQuantity());
+                total = total.add(price.multiply(quantityP));
+            } else {
+                response.put("status", "error");
+                response.put("message", "Producto no encontrado");
+                return ResponseEntity.badRequest().body(response);
+            }
         }
 
         response.put("status", "success");

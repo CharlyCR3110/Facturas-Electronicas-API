@@ -4,7 +4,7 @@ import '../../assets/css/global.css'
 import PopupComponent from '../popups/PopupComponent'
 
 // sectionName (Iniciar Sesion|Registro)
-const AuthComponent = ({ formData, setFormData, onSubmit, fields, sectionName, isRegisterSuccess, errorMessage, setErrorMessage }) => {
+const AuthComponent = ({ formData, setFormData, onSubmit, fields, sectionName, isRegisterSuccess, setIsRegisterSuccess, errorMessage, setErrorMessage }) => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
@@ -35,7 +35,7 @@ const AuthComponent = ({ formData, setFormData, onSubmit, fields, sectionName, i
         {!isRegisterSuccess && (
           <div className='form'>
             <h2>{sectionName}</h2>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={(event) => onSubmit(event, formData, setErrorMessage, setFormData, setIsRegisterSuccess)}>
               {fields.map((field) => (
                 <div key={field.name} className='form-group'>
                   <label htmlFor={field.name}>{field.label}</label>

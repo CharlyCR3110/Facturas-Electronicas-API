@@ -13,6 +13,7 @@ const AdminDashboardSection = () => {
 
   return (
     <>
+      <title>Dashboard</title>
       <div className='admin-logout-btn'>
         <button onClick={logout} className='logout-btn' />
       </div>

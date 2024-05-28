@@ -2,10 +2,6 @@ export const handlePasswordChangeFormSubmit = async (formData, setFormData, setC
   try {
     const { currentPassword, newPassword, confirmPassword } = formData
 
-    console.log('currentPassword:', currentPassword)
-    console.log('newPassword:', newPassword)
-    console.log('confirmPassword:', confirmPassword)
-
     if (newPassword !== confirmPassword) {
       throw new Error('Las contraseñas no coinciden')
     }
@@ -19,21 +15,15 @@ export const handlePasswordChangeFormSubmit = async (formData, setFormData, setC
     })
 
     if (!response.ok) {
-      throw new Error('Error al cambiar la contraseña')
+      const errorMessage = await response.text()
+      throw new Error(errorMessage || 'Error al cambiar la contraseña')
     }
-
-    // expected: Contraseña actualizada correctamente
-    const data = await response.text()
-
-    console.log('Respuesta del servidor:', data)
 
     // Limpiar los campos del formulario
     setFormData({})
-
     // confirmar el cambio
     setConfirmationMessage('Contraseña actualizada correctamente')
   } catch (error) {
-    console.error('Error al cambiar la contraseña:', error.message)
     setErrorMessage(error.message)
   }
 }
@@ -43,8 +33,6 @@ export const handleEmailChangeFormSubmit = async (formData, setFormData, setConf
   const userLogged = JSON.parse(window.sessionStorage.getItem('loggedUser'))
   const userLoggedId = userLogged.idUsuario
   userLogged.correo = formData.correo
-
-  console.log('Usuario logueado:', userLogged)
 
   try {
     const response = await fetch(`http://localhost:8080/api/providers/account/change-email?idProveedor=${userLoggedId}&newEmail=${formData.email}`, {
@@ -56,12 +44,12 @@ export const handleEmailChangeFormSubmit = async (formData, setFormData, setConf
     })
 
     if (!response.ok) {
-      throw new Error('Error al cambiar el correo')
+      const setErrorMessage = await response.text()
+      throw new Error(setErrorMessage || 'Error al cambiar el correo')
     }
 
     // expected: updated json object
     const data = await response.json()
-    console.log('Respuesta del servidor:', data)
 
     // Actualizar el usuario logueado
     window.sessionStorage.setItem('loggedUser', JSON.stringify(data))
@@ -72,7 +60,6 @@ export const handleEmailChangeFormSubmit = async (formData, setFormData, setConf
     // confirmar el cambio
     setConfirmation('Correo actualizado correctamente')
   } catch (error) {
-    console.error('Error al cambiar el correo:', error.message)
     setErrorMessage(error.message)
   }
 }
@@ -100,7 +87,6 @@ export const handlePersonalInfoChangeFormSubmit = async (formData, setFormData, 
 
     // expected: updated json object
     const data = await response.json()
-    console.log('Respuesta del servidor:', data)
 
     // Actualizar el usuario logueado
     window.sessionStorage.setItem('loggedUser', JSON.stringify(data))

@@ -14,21 +14,14 @@ export const exportPDF = async (invoiceId, setErrorMessage) => {
       throw new Error('No se pudo exportar la factura')
     }
 
-    // Convertir la respuesta a un blob
+    // Convertir la respuesta a un blob con el tipo MIME adecuado
     const blob = await response.blob()
 
-    // Crear un objeto URL para el blob
-    const url = window.URL.createObjectURL(new Blob([blob]))
+    // URL para el blob con el tipo MIME adecuado (application/pdf)
+    const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }))
 
-    // Crear un enlace <a> para descargar el archivo
-    const link = document.createElement('a')
-    link.href = url
-    link.setAttribute('download', 'factura.pdf')
-
-    // Simular clic en el enlace para iniciar la descarga
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+    // abrir la URL en una nueva pestaña
+    window.open(url, '_blank')
   } catch (error) {
     setErrorMessage('No se pudo exportar la factura')
   }
@@ -88,15 +81,13 @@ export const exportXML = async (invoiceId, setErrorMessage) => {
       indent: '    '
     }
     const converted = toXML(facturaConDetallesDTO, config)
-    // descargar el archivo
+    // Crear un blob con el contenido del XML
     const blob = new Blob([converted], { type: 'application/xml' })
+    // Crear una URL para el blob
     const url = window.URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.setAttribute('download', 'factura.xml')
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+
+    // Abrir la URL en una nueva pesta
+    window.open(url, '_blank')
   } catch (error) {
     console.error('Error al exportar la factura como XML:', error.message)
     setErrorMessage('No se pudo exportar la factura como XML')
